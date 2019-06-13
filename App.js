@@ -6,9 +6,9 @@
  * @flow
  */
 
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Button } from 'react-native';
-import { createStackNavigator, createAppContainer } from "react-navigation";
+import React, { Component } from 'react';
+import { Platform, StyleSheet, Text, View } from 'react-native';
+import { createStackNavigator, createAppContainer } from 'react-navigation';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -33,10 +33,10 @@ class App extends Component {
 }
 
 const AppContainer = createStackNavigator({
-    Home: App
+    Home: App, 
   },
   {
-    initialRouteName: "Home"
+    initialRouteName: 'Home'
   }
 );
 
