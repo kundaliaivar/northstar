@@ -6,7 +6,7 @@ const GoalModel = require('../models/goalModel');
 
 const getGoal=function(req,res){
     // var goal = new GoalModel({
-    //      name: 'goal2', 
+    //      name: 'goal3', 
     //      description: '...', 
     //      createdBy:{userId:'11232',userName:'ravi'},
     //      createdFor:{userId:'232323',userName:'john'},
@@ -27,5 +27,13 @@ const getGoal=function(req,res){
     .catch(err=>res.status(400).send(err.message))
 }
 
+const goalLandingDetail = function(req, res){
+    GoalModel.findOne({_id:req.params.goalId})
+    .then(Response=>{
+        res.json(Response);
+    })
+    .catch(err=>res.status(400).send(err.message))
+}
 
-module.exports={getGoal};
+
+module.exports={getGoal, goalLandingDetail};
