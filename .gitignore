@@ -58,3 +58,4 @@ buck-out/
 
 MyPlayground.playground/
 yarn.lock
+package-lock.json
