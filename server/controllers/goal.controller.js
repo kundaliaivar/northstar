@@ -35,5 +35,32 @@ const goalLandingDetail = function(req, res){
     .catch(err=>res.status(400).send(err.message))
 }
 
+const createGoal=function (req,res) {
+    const {
+        name,
+        description,
+        createdBy,
+        createdFor,
+        taskType,
+        isHighImpact,
+        isPublic,
+        dueOn,
+        createdOn}=req.body
+    var newGoal = new GoalModel({
+        name,
+        description,
+        createdBy,
+        createdFor,
+        taskType,
+        isHighImpact,
+        isPublic,
+        dueOn,
+        createdOn});
+    
+    newGoal.save()
+    .then(Response=>res.send("Success"))
+    .catch(err=>res.status(400).send(err.message));
+}
 
-module.exports={getGoal, goalLandingDetail};
+
+module.exports={getGoal, goalLandingDetail, createGoal};

@@ -7,4 +7,5 @@ const goal_controller = require('../controllers/goal.controller');
 router.post('/login', user_controller.login);
 router.get('/getGoals', goal_controller.getGoal);
 router.get('/goal/:goalId', goal_controller.goalLandingDetail);
+router.post('/createGoal', goal_controller.createGoal);
 module.exports = router;
