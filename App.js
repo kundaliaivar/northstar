@@ -28,7 +28,7 @@ class App extends Component {
       <Icon
         name='add'
         size={36}
-        color='#e20074'
+        color='#b46bab'
         onPress={() => navigation.navigate('CreateGoalPage')}
       />
     )

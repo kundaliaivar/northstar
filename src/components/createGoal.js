@@ -4,20 +4,41 @@
  */
 
 import React, { Component } from 'react';
-import { Button, View } from 'react-native'; 
+import { View } from 'react-native';
+import Button from './common/button';
+import Input from './common/input';
 
 
 class CreateGoalPage extends Component {
     render() {
+        const { name, description } = this.props;
+        const saveButtonStyle = {
+            color: '#424372',
+            type: 'solid'
+        };
+        const deleteButtonStyle = {
+            color: '#424372',
+            type: 'clear'
+        };
         return (
             <View>
-                <Button
-                    title="Save"
-                    color="#424372"
+                <Input
+                    label="Goal Name"
+                    value={name}
+                />
+                <Input
+                    label="Description"
+                    multiline
+                    numberOfLines={4}
+                    value={description}
                 />
                 <Button
-                    title="Delete"
-                    color="#FFF"
+                    title='Save'
+                    style={saveButtonStyle}
+                />
+                <Button
+                    title='Delete'
+                    style={deleteButtonStyle}
                 />
             </View>
         );
