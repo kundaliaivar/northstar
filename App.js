@@ -7,11 +7,11 @@
  */
 
 import React, { Component } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import CreateGoalPage from './src/components/createGoal';
-import { StyleSheet, View} from 'react-native';
 import GoalListing from './src/components/goalListing';
+import CreateGoalPage from './src/components/createGoal';
 
 // const instructions = Platform.select({
 //   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
