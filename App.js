@@ -9,6 +9,7 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
+import GoalLandingDetail from './src/components/goalLandingDetail';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -19,14 +20,12 @@ const instructions = Platform.select({
 
 class App extends Component {
   static navigationOptions = {
-    headerTitle: 'Home',
+    headerTitle: 'GoalLandingDetail',
   };
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
+      <View style={{ backgroundColor: '#424372'}}>
+      <GoalLandingDetail />
       </View>
     );
   }
@@ -43,6 +42,7 @@ const AppContainer = createStackNavigator({
 export default createAppContainer(AppContainer);
 
 const styles = StyleSheet.create({
+
   container: {
     flex: 1,
     justifyContent: 'center',
