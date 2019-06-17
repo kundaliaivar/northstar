@@ -4,6 +4,10 @@ import {Collapse,CollapseHeader, CollapseBody, AccordionList} from 'accordion-co
 import GoalTemplate from './goalListingComponents/goalTemplate';
 import plusIcon from '../../images/add.png';
 import minusIcon from '../../images/remove.png';
+import { createStackNavigator, createAppContainer } from 'react-navigation';
+import GoalDetails from './goalDetail';
+
+
 
 
 
@@ -13,20 +17,24 @@ import minusIcon from '../../images/remove.png';
 class GoalListing extends Component {
     constructor() {
         super();
-        this.state = { showSoundImg: true };
+        this.state = { collapsed: false };
       }
     renderImage(){
-        if(this.state.showSoundImg){
+        if(!this.state.collapsed){
             return (<Image style={ styles.iconStyle } source={plusIcon}></Image>);
         }else{
             return (<Image style={ styles.iconStyle } source={minusIcon}></Image>);
         }
       }
+      handleRoute(route){
+       console.log(route) // >> x , y, z 
+          }
+      
     render() {
         return (
             <View>
-            <Collapse>
-              <CollapseHeader style={styles.containerStyle} onPress={ () => this.setState({ showSoundImg: !this.state.showSoundImg }) } >
+            <Collapse isCollapsed={this.state.collapsed} onToggle={(isCollapsed)=>this.setState({collapsed:isCollapsed})}>
+              <CollapseHeader style={styles.containerStyle}>
               <View style={styles.containerContentStyle} >
               <Text>Your Expired Goals</Text>
               {this.renderImage()}
@@ -34,7 +42,7 @@ class GoalListing extends Component {
                   
               </CollapseHeader>
               <CollapseBody>
-             <GoalTemplate data = {expData}></GoalTemplate>
+             <GoalTemplate data = {expData} navigation={this.props.navigation} onPress = {this.props.onPress} ></GoalTemplate>
                 </CollapseBody>
             </Collapse>
 
@@ -93,8 +101,9 @@ const expData =[
         isHighImpact : 'no',
         isPublic : 'no',
         isCompleted : 'no',
-        percentage : '99%',
-        expDay:161
+        percentage : 30,
+        expDay:161,
+        daysRemaining:-100
     },
 ]
 const inProgressGoalData =[
@@ -107,8 +116,14 @@ const inProgressGoalData =[
         isHighImpact : 'no',
         isPublic : 'no',
         isCompleted : 'no',
-        percentage : '99%',
+        percentage : 99,
         expDay:161
     },
 ]
+const RootStack = createStackNavigator({
+    CreateGoalPage: {
+      screen: GoalDetails,
+    },
+  },
+);
 export default GoalListing
