@@ -1,21 +1,9 @@
 import React, { Component } from 'react';
-import axios from 'axios'
 import { Text , View , Image  } from 'react-native';
 import defaultPhoto from '../../images/defaultPhoto.png'
 
 
 class GoalDetails extends Component {
-    state = {
-        data: []
-      }
-    
-      componentDidMount() {
-        axios.get()
-          .then(res => {
-            const data = res.data;
-            this.setState({ data });
-          })
-      }
     render() {
         return (
             <View style = {styles.GoalDetailsContainer}>

@@ -18,7 +18,7 @@ class GoalListing extends Component {
 
    componentDidMount(){
        //10.10.80.196--> system ip
-    axios.get(`http://10.10.80.196:8080/api/getGoals/${this.state.userId}`)
+    axios.get(`http://10.10.80.230:8080/api/getGoals/${this.state.userId}`)
     .then(response=>{
         let complete=[],inprogress=[],expire=[];
         for(let item of response.data){
@@ -36,23 +36,7 @@ class GoalListing extends Component {
    }
    
     render() {
-        const expiredGoalList = expData.map((data) => {
-            return (
-               <GoalTemplate data = {data} navigation={this.props.navigation} ></GoalTemplate>
-            )
-          })
-          const inProgressGoalList = inProgressGoalData.map((data) => {
-            return (
-               <GoalTemplate data = {data} navigation={this.props.navigation} ></GoalTemplate>
-            )
-          })
-          const completedGoalList = completedGoalData.map((data) => {
-            return (
-               <GoalTemplate data = {data} navigation={this.props.navigation} ></GoalTemplate>
-            )
-          })
-
-        return (
+      return (
             <View>
                 <GoalIndividualist title="Your Expired Goals" navigation={this.props.navigation} onPress={this.props.onPress} expData={this.state.expireGoalList}></GoalIndividualist>
                 <GoalIndividualist title="Your Completed Goals" navigation={this.props.navigation} onPress={this.props.onPress} expData={this.state.completedGoalList}></GoalIndividualist>
