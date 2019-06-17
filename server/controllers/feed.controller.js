@@ -21,21 +21,17 @@ const create=function(req,res){
 }
 
 const like = function(req, res){
-    FeedModel.findOne({_id:req.params.goalId})
-    .then(Response=>{
-        res.json(Response);
-    })
-    .catch(err=>res.status(400).send(err.message))
+    FeedModel.findOneAndUpdate(req.params.feedId, req.params.stars, {upsert:true}, function(err, doc){
+        if (err) return res.send(500, { error: err });
+        return res.send("true");
+    });
 }
 
 const edit = function(req, res){
     FeedModel.updateOne({
-        goalId: req.params.goalId,
         feedId: req.params.feedId,
-        userName : req.params.userName,
         feedBody : req.params.feedBody,
         createdOn : req.params.createdOn,
-        stars: 0
     })
     .then(Response=>{
         res.json(Response);
