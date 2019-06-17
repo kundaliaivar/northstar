@@ -26,45 +26,60 @@ class GoalListing extends Component {
             return (<Image style={ styles.iconStyle } source={minusIcon}></Image>);
         }
       }
-      handleRoute(route){
-       console.log(route) // >> x , y, z 
-          }
       
     render() {
-        return (
-            <View>
-            <Collapse isCollapsed={this.state.collapsed} onToggle={(isCollapsed)=>this.setState({collapsed:isCollapsed})}>
-              <CollapseHeader style={styles.containerStyle}>
-              <View style={styles.containerContentStyle} >
-              <Text>Your Expired Goals</Text>
-              {this.renderImage()}
-              </View>
-                  
-              </CollapseHeader>
-              <CollapseBody>
-             <GoalTemplate data = {expData} navigation={this.props.navigation} onPress = {this.props.onPress} ></GoalTemplate>
-                </CollapseBody>
-            </Collapse>
+        const expiredGoalList = expData.map((data) => {
+            return (
+               <GoalTemplate data = {data} navigation={this.props.navigation} ></GoalTemplate>
+            )
+          })
+          const inProgressGoalList = inProgressGoalData.map((data) => {
+            return (
+               <GoalTemplate data = {data} navigation={this.props.navigation} ></GoalTemplate>
+            )
+          })
+          const completedGoalList = completedGoalData.map((data) => {
+            return (
+               <GoalTemplate data = {data} navigation={this.props.navigation} ></GoalTemplate>
+            )
+          })
 
-            <Collapse>
-              <CollapseHeader style={styles.containerStyle}>
-                    <Text>Your Completed Goals</Text>
-              </CollapseHeader>
+        return (
+        <View>
+            <Collapse isCollapsed={this.state.collapsed}>
+              <CollapseHeader style={styles.containerStyle} onToggle={(isCollapsed)=>this.setState({collapsed:isCollapsed})}>
+                <View style={styles.containerContentStyle} >
+                  <Text>Your Expired Goals</Text>
+                  {this.renderImage()}
+              </View>
+                </CollapseHeader>
               <CollapseBody>
-                        <GoalTemplate data = {inProgressGoalData}></GoalTemplate>
-                </CollapseBody>
+              {expiredGoalList}
+              </CollapseBody>
             </Collapse>
-            <Collapse>
-              <CollapseHeader style={styles.containerStyle}>
-                    <Text>Your In progress Goals</Text>
-              </CollapseHeader>
+            <Collapse isCollapsed={this.state.collapsed}>
+              <CollapseHeader style={styles.containerStyle} onToggle={(isCollapsed)=>this.setState({collapsed:isCollapsed})}>
+                <View style={styles.containerContentStyle} >
+                  <Text>Your In progress Goals</Text>
+                  {this.renderImage()}
+              </View>
+                </CollapseHeader>
               <CollapseBody>
-                        <Text>Aaron Bennet</Text>
-                        <Text>Claire Barclay</Text>
-                        <Text>Kelso Brittany</Text>
-                </CollapseBody>
+              {inProgressGoalList}
+              </CollapseBody>
             </Collapse>
-           </View>
+            <Collapse isCollapsed={this.state.collapsed}>
+              <CollapseHeader style={styles.containerStyle} onToggle={(isCollapsed)=>this.setState({collapsed:isCollapsed})}>
+                <View style={styles.containerContentStyle} >
+                  <Text>Your Completed Goals</Text>
+                  {this.renderImage()}
+              </View>
+                </CollapseHeader>
+              <CollapseBody>
+              {completedGoalList}
+              </CollapseBody>
+            </Collapse>
+      </View>
         );
     }
 }
@@ -93,7 +108,7 @@ const styles = {
 }
 const expData =[
     {
-        name : "Expired Goal",
+        name : "Expired Goal1",
         description : "test",
         createdBy : "Abhijeet Kumar",
         createdFor : "Ganapati",
@@ -103,12 +118,44 @@ const expData =[
         isCompleted : 'no',
         percentage : 30,
         expDay:161,
-        daysRemaining:-100
+        daysRemaining:-100,
+        dueOn:'13-06-2019',
+        id:1
+    },
+    {
+        name : "Expired Goal2",
+        description : "test",
+        createdBy : "Abhijeet Kumar",
+        createdFor : "Ganapati",
+        taskType : "Project Goals",
+        isHighImpact : 'no',
+        isPublic : 'no',
+        isCompleted : 'no',
+        percentage : 30,
+        expDay:161,
+        daysRemaining:-100,
+        dueOn:'13-06-2019',
+        id:2
+    },
+    {
+        name : "Expired Goal2",
+        description : "test",
+        createdBy : "Abhijeet Kumar",
+        createdFor : "Ganapati",
+        taskType : "Project Goals",
+        isHighImpact : 'no',
+        isPublic : 'no',
+        isCompleted : 'no',
+        percentage : 30,
+        expDay:161,
+        daysRemaining:-100,
+        dueOn:'13-06-2019',
+        id:3
     },
 ]
 const inProgressGoalData =[
     {
-        name : "In progress goal",
+        name : "In progress goal1",
         description : "test2",
         createdBy : "Abhijeet Kumar",
         createdFor : "Ganapati",
@@ -116,14 +163,44 @@ const inProgressGoalData =[
         isHighImpact : 'no',
         isPublic : 'no',
         isCompleted : 'no',
-        percentage : 99,
-        expDay:161
+        percentage : 80,
+        daysRemaining:100,
+        expDay:161,
+        dueOn:'13-06-2019',
+        id:4
+    },
+    {
+        name : "In Progress Goal2",
+        description : "test",
+        createdBy : "Abhijeet Kumar",
+        createdFor : "Ganapati",
+        taskType : "Project Goals",
+        isHighImpact : 'no',
+        isPublic : 'no',
+        isCompleted : 'no',
+        percentage : 10,
+        expDay:161,
+        daysRemaining:100,
+        dueOn:'13-06-2019',
+        id:5
     },
 ]
-const RootStack = createStackNavigator({
-    CreateGoalPage: {
-      screen: GoalDetails,
+const completedGoalData =[
+    {
+        name : "CompletedGoal1",
+        description : "test",
+        createdBy : "Abhijeet Kumar",
+        createdFor : "Ganapati",
+        taskType : "Project Goals",
+        isHighImpact : 'no',
+        isPublic : 'no',
+        isCompleted : 'no',
+        percentage : 100,
+        expDay:161,
+        daysRemaining:100,
+        dueOn:'13-06-2019',
+        id:6
     },
-  },
-);
+    
+]
 export default GoalListing

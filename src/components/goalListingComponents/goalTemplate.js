@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Text , View , TouchableOpacity  } from 'react-native';
 import ProgressCircle from 'react-native-progress-circle';
+import GoalDetails from '../goalDetail';
 
 
 class GoalListing extends Component {
@@ -12,18 +13,29 @@ class GoalListing extends Component {
             
         }
     }
+    rendertext(data){
+     if(data.daysRemaining < 0){
+       return ("Expired by " + data.expDay + " Days");
+    }else if(data.daysRemaining > 0 && data.percentage != 100){
+       return (data.expDay + " Left");
+    }else{
+    return ("Completed " + data.dueOn );
+}
+    }
     render() {
+        const { navigation, data } = this.props;
         return (
-            <TouchableOpacity style = {styles.goalTemplateStyle} onPress = {this.props.onPress}>
+            <TouchableOpacity style = {styles.goalTemplateStyle} onPress = {() => navigation.navigate('GoalDetails',{
+                itemId: data.id,})}>
             <View style = {styles.contaierStyle}>
-            <Text style  = {styles.taskName}>{this.props.data[0].name}</Text>
+              <Text style  = {styles.taskName}>{data.name}</Text>
                 <View style  = {styles.statusStyle}>
-                    <Text>{this.props.data[0].percentage} % |</Text>
-                    <Text>Exp by {this.props.data[0].expDay} days</Text>
+                    <Text>{data.percentage} % |</Text>
+                    <Text>{this.rendertext(data)}</Text>
                 </View>
             </View>
             <View>
-            <ProgressCircle percent={this.props.data[0].percentage} radius={20} borderWidth={8} color={this.setColor(this.props.data[0].daysRemaining)}  shadowColor='#fafafa' bgColor="#fff"></ProgressCircle>
+              <ProgressCircle percent={data.percentage} radius={20} borderWidth={8} color={this.setColor(data.daysRemaining)}  shadowColor='#fafafa' bgColor="#fff"></ProgressCircle>
             </View>
             </TouchableOpacity>
           

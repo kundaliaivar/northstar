@@ -41,7 +41,7 @@ class App extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <GoalListing onPress={() => this.props.navigation.navigate('GoalDetails')}></GoalListing>
+        <GoalListing navigation={this.props.navigation} onPress={() => this.props.navigation.navigate('GoalDetails')}></GoalListing>
       </View>
     );
   }
