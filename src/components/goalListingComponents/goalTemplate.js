@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Text , View , TouchableOpacity  } from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
 import ProgressCircle from 'react-native-progress-circle';
 import moment from 'moment';
 
 class GoalListing extends Component {
-    setColor(item){
+    setColor(item) {
         if(item.percentage==100)
         return "green";
         else if(item.percentage<100 && moment(item.dueOn).isBefore(moment()))
@@ -30,31 +30,30 @@ class GoalListing extends Component {
             <ProgressCircle percent={this.props.data.percentage} radius={20} borderWidth={8} color={this.setColor(this.props.data)}  shadowColor='#fafafa' bgColor="#fff"></ProgressCircle>
             </View>
             </TouchableOpacity>
-          
         );
     }
 }
 const styles = {
-    goalTemplateStyle:{
-        flexDirection:'row',
-        justifyContent:'space-between',
-        margin:20,
-        opacity:0.5
+    goalTemplateStyle: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        margin: 20,
+        opacity: 0.5
     },
     
-    contaierStyle:{
-        flexDirection:'column',
+    contaierStyle: {
+        flexDirection: 'column',
     },
-    statusStyle:{
-        flexDirection:'row',
-        justifyContent:'flex-start'
+    statusStyle: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start'
     },
-    taskName:{
+    taskName: {
         textTransform: 'capitalize',
         letterSpacing: -0.5,
         // fontWeight: 600,
         width: '100%',
     }
-}
+};
 
-export default GoalListing
+export default GoalListing;

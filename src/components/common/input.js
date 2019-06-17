@@ -1,6 +1,6 @@
 /* eslint-disable eol-last */
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import { Input as TextInput } from 'react-native-elements';
 
 const Input = (props) => {
@@ -11,23 +11,24 @@ const Input = (props) => {
             borderWidth: 1
         },
         label: {
-            width: 60,
-            height: 17,
-            fontSize: 12,
             letterSpacing: -0.3,
-            color: '#aaaaaa'
+            marginLeft: 10,
+            marginTop: 5,
+            marginBottom: 10,
         }
     });
     return (
-        <TextInput
-            label={label}
-            labelStyle={inputContainerStyle.label}
-            value={value}
-            multiline={multiline}
-            numberOfLines={numberOfLines}
-            inputContainerStyle={inputContainerStyle.input}
-            placeholder={placeholder}
-        />
+        <View>
+            <Text style={inputContainerStyle.label}>{label}</Text>
+            <TextInput
+                labelStyle={inputContainerStyle.label}
+                value={value}
+                multiline={multiline}
+                numberOfLines={numberOfLines}
+                inputContainerStyle={inputContainerStyle.input}
+                placeholder={placeholder}
+            />
+        </View>
     );
 };
 
