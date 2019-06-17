@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Text , View , TouchableOpacity  } from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
 import ProgressCircle from 'react-native-progress-circle';
 import moment from 'moment';
 
 class GoalListing extends Component {
-    setColor(item){
+    setColor(item) {
         if(item.percentage==100)
         return "green";
         else if(item.percentage<100 && moment(item.dueOn).isBefore(moment()))
@@ -18,43 +18,49 @@ class GoalListing extends Component {
             return(<View></View>);
 
         return (
-            <TouchableOpacity style = {styles.goalTemplateStyle} onPress = {this.props.onPress}>
-            <View style = {styles.contaierStyle}>
-            <Text style  = {styles.taskName}>{this.props.data[0].name}</Text>
-                <View style  = {styles.statusStyle}>
+            <TouchableOpacity style={styles.goalTemplateStyle} onPress={this.props.onPress}>
+            <View style={styles.contaierStyle}>
+            <Text style={styles.taskName}>{this.props.data[0].name}</Text>
+                <View style={styles.statusStyle}>
                     <Text>{this.props.data[0].percentage} % |</Text>
                     <Text>Exp by {this.props.data[0].expDay} days</Text>
                 </View>
             </View>
             <View>
-            <ProgressCircle percent={this.props.data[0].percentage} radius={20} borderWidth={8} color={this.setColor(this.props.data[0])}  shadowColor='#fafafa' bgColor="#fff"></ProgressCircle>
+            <ProgressCircle
+                percent={this.props.data[0].percentage}
+                radius={20}
+                borderWidth={8}
+                color={this.setColor(this.props.data[0].daysRemaining)}
+                shadowColor='#fafafa'
+                bgColor="#fff"
+            />
             </View>
             </TouchableOpacity>
-          
         );
     }
 }
 const styles = {
-    goalTemplateStyle:{
-        flexDirection:'row',
-        justifyContent:'space-between',
-        margin:20,
-        opacity:0.5
+    goalTemplateStyle: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        margin: 20,
+        opacity: 0.5
     },
     
-    contaierStyle:{
-        flexDirection:'column',
+    contaierStyle: {
+        flexDirection: 'column',
     },
-    statusStyle:{
-        flexDirection:'row',
-        justifyContent:'flex-start'
+    statusStyle: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start'
     },
-    taskName:{
+    taskName: {
         textTransform: 'capitalize',
         letterSpacing: -0.5,
         // fontWeight: 600,
         width: '100%',
     }
-}
+};
 
-export default GoalListing
+export default GoalListing;
