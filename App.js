@@ -15,12 +15,7 @@ import CreateGoalPage from './src/components/createGoal';
 import GoalDetails from './src/components/goalDetail';
 import GoalLandingDetail from './src/components/goalLandingDetail';
 
-// const instructions = Platform.select({
-//   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-//   android:
-//     'Double tap R on your keyboard to reload,\n' +
-//     'Shake or press menu button for dev menu',
-// });
+export const user = {};
 
 class App extends Component {
   static navigationOptions = ({ navigation }) => 
@@ -54,16 +49,24 @@ const RootStack = createStackNavigator({
     },
     CreateGoalPage: {
       screen: CreateGoalPage,
-    },
-    GoalDetails:{
-      screen:GoalDetails,
-      navigationOptions: ({navigation}) => ({
-        headerTitleStyle: {fontSize: 18},
+      navigationOptions: () => ({
+        headerTitleStyle: { fontSize: 18 },
         headerTintColor: '#fff',
         headerStyle: {
           backgroundColor: '#2E2F50',
         },
-        title:"Goal Details",
+        title: 'Create Goal',
+      })
+    },
+    GoalDetails: {
+      screen: GoalDetails,
+      navigationOptions: () => ({
+        headerTitleStyle: { fontSize: 18 },
+        headerTintColor: '#fff',
+        headerStyle: {
+          backgroundColor: '#2E2F50',
+        },
+        title: 'Goal Details',
     })
     }
   },

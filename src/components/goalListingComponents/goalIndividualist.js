@@ -29,7 +29,7 @@ class GoalIndividualist extends React.Component {
                 </CollapseHeader>
                 <CollapseBody>
                     <View>{this.props.children}</View>
-                    <GoalTemplate data={this.props.expData} navigation={this.props.navigation} onPress={this.props.onPress} ></GoalTemplate>
+                    {this.props.expData.map(item=> <GoalTemplate data={item} navigation={this.props.navigation} onPress={this.props.onPress} ></GoalTemplate>)}
                 </CollapseBody>
             </Collapse>
         );
