@@ -8,19 +8,24 @@
   },
   "dependencies": {
     "mongodb": "^3.2.7",
+    "accordion-collapse-react-native": "^0.1.10",
     "body-parser": "^1.18.3",
     "concurrently": "^4.1.0",
     "express": "^4.16.3",
     "mongoose": "^5.2.15",
     "react": "16.8.3",
     "react-native": "0.59.9",
+    "react-native-elements": "^1.1.0",
     "react-native-gesture-handler": "^1.3.0",
+    "react-native-material-textfield": "^0.12.0",
+    "react-native-vector-icons": "^6.5.0",
     "react-navigation": "^3.11.0"
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",
     "@babel/runtime": "^7.4.5",
     "babel-jest": "^24.8.0",
+    "eslint-config-rallycoding": "^3.2.0",
     "jest": "^24.8.0",
     "metro-react-native-babel-preset": "^0.54.1",
     "react-test-renderer": "16.8.3"
