@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 import { Input as TextInput } from 'react-native-elements';
 
 const Input = (props) => {
-    const { value, label, multiline, numberOfLines } = props;
+    const { value, label, multiline, numberOfLines, placeholder } = props;
     const inputContainerStyle = StyleSheet.create({
         input: {
             borderColor: '#000',
@@ -26,6 +26,7 @@ const Input = (props) => {
             multiline={multiline}
             numberOfLines={numberOfLines}
             inputContainerStyle={inputContainerStyle.input}
+            placeholder={placeholder}
         />
     );
 };

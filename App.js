@@ -7,12 +7,13 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, View,Text } from 'react-native';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
+import { StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import GoalListing from './src/components/goalListing';
 import CreateGoalPage from './src/components/createGoal';
 import GoalDetails from './src/components/goalDetail';
+import GoalLandingDetail from './src/components/goalLandingDetail';
 
 // const instructions = Platform.select({
 //   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -74,6 +75,7 @@ const RootStack = createStackNavigator({
 export default createAppContainer(RootStack);
 
 const styles = StyleSheet.create({
+
   // container: {
   //   flex: 1,
   //   justifyContent: 'center',
