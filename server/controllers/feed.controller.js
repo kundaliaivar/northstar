@@ -6,11 +6,11 @@ const FeedModel = require('../models/feedModel');
 
 const create=function(req,res){
     const feed = new FeedModel({
-        goalId: req.params.goalId,
-        feedId: req.params.feedId,
-        userName : req.params.userName,
-        feedBody : req.params.feedBody,
-        createdOn : req.params.createdOn,
+        goalId: req.body.goalId,
+        feedId: req.body.feedId,
+        userName : req.body.userName,
+        feedBody : req.body.feedBody,
+        createdOn : req.body.createdOn,
         stars: 0
     })
     feed.save()
@@ -21,7 +21,8 @@ const create=function(req,res){
 }
 
 const like = function(req, res){
-    FeedModel.findOneAndUpdate(req.params.feedId, req.params.stars, {upsert:true}, function(err, doc){
+    //req.params.stars
+    FeedModel.findOneAndUpdate({feedId:req.params.feedId},{ $inc:{stars:1} }, {upsert:true}, function(err, doc){
         if (err) return res.send(500, { error: err });
         return res.send("true");
     });

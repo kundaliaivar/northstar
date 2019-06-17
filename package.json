@@ -3,14 +3,16 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "start": "node server/server.js",
     "test": "jest"
   },
   "dependencies": {
     "accordion-collapse-react-native": "^0.1.10",
+    "axios": "^0.19.0",
     "body-parser": "^1.18.3",
     "concurrently": "^4.1.0",
     "express": "^4.16.3",
+    "moment": "^2.24.0",
     "mongodb": "^3.2.7",
     "mongoose": "^5.2.15",
     "react": "16.8.3",
