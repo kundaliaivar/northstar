@@ -20,35 +20,11 @@ MongoClient.connect(connectionUrl, { useNewUrlParser: true }, (error, client) =>
     //     }
     //     console.log(result.ops)
     // })
-    db.collection('users').insertMany([
+    db.collection('feeds').insertOne([
         {
             name: 'Ravi',
             password: 'ravi'
-        },
-        {
-            name: 'Ganapati',
-            password: 'ganapati'
-        },
-        {
-            name: 'Abhijeet',
-            password: 'abhijeet'
-        },
-        {
-            name: 'Abhishek',
-            password: 'abhishek'
-        },
-        {
-            name: 'Suprita',
-            password: 'suprita'
-        },
-        {
-            name: 'Shaili',
-            password: 'shaili'
-        },
-        {
-            name: 'Ayush',
-            password: 'ayush'
-        },
+        }
     ], (error, result) => {
         if(error){
             return console.log('unsable to insert users')

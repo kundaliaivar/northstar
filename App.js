@@ -7,7 +7,8 @@
  */
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, Text, View, Button } from 'react-native';
+import { createStackNavigator, createAppContainer } from "react-navigation";
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -16,8 +17,10 @@ const instructions = Platform.select({
     'Shake or press menu button for dev menu',
 });
 
-// type Props = {};
-export default class App extends Component {
+class App extends Component {
+  static navigationOptions = {
+    headerTitle: 'Home',
+  };
   render() {
     return (
       <View style={styles.container}>
@@ -28,6 +31,16 @@ export default class App extends Component {
     );
   }
 }
+
+const AppContainer = createStackNavigator({
+    Home: App
+  },
+  {
+    initialRouteName: "Home"
+  }
+);
+
+export default createAppContainer(AppContainer);
 
 const styles = StyleSheet.create({
   container: {

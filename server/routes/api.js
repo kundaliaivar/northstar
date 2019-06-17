@@ -11,4 +11,5 @@ router.get('/goal/:goalId', goal_controller.goalLandingDetail);
 router.get('/createfeed', feed_controller.create);
 router.get('/likefeed', feed_controller.like);
 router.get('/editfeed', feed_controller.edit);
+router.post('/createGoal', goal_controller.createGoal);
 module.exports = router;
