@@ -6,11 +6,11 @@ const FeedModel = require('../models/feedModel');
 
 const create=function(req,res){
     const feed = new FeedModel({
-        goalId: req.params.goalId,
-        feedId: req.params.feedId,
-        userName : req.params.userName,
-        feedBody : req.params.feedBody,
-        createdOn : req.params.createdOn,
+        goalId: req.body.goalId,
+        feedId: req.body.feedId,
+        userName : req.body.userName,
+        feedBody : req.body.feedBody,
+        createdOn : req.body.createdOn,
         stars: 0
     })
     feed.save()
