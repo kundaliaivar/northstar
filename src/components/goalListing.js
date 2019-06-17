@@ -17,10 +17,10 @@ import GoalDetails from './goalDetail';
 class GoalListing extends Component {
     constructor() {
         super();
-        this.state = { showSoundImg: true };
+        this.state = { collapsed: false };
       }
     renderImage(){
-        if(this.state.showSoundImg){
+        if(!this.state.collapsed){
             return (<Image style={ styles.iconStyle } source={plusIcon}></Image>);
         }else{
             return (<Image style={ styles.iconStyle } source={minusIcon}></Image>);
@@ -33,8 +33,8 @@ class GoalListing extends Component {
     render() {
         return (
             <View>
-            <Collapse>
-              <CollapseHeader style={styles.containerStyle} onPress={ () => this.setState({ showSoundImg: !this.state.showSoundImg }) } >
+            <Collapse isCollapsed={this.state.collapsed} onToggle={(isCollapsed)=>this.setState({collapsed:isCollapsed})}>
+              <CollapseHeader style={styles.containerStyle}>
               <View style={styles.containerContentStyle} >
               <Text>Your Expired Goals</Text>
               {this.renderImage()}
@@ -42,7 +42,7 @@ class GoalListing extends Component {
                   
               </CollapseHeader>
               <CollapseBody>
-             <GoalTemplate data = {expData} onPress = {this.props.onPress} ></GoalTemplate>
+             <GoalTemplate data = {expData} navigation={this.props.navigation} onPress = {this.props.onPress} ></GoalTemplate>
                 </CollapseBody>
             </Collapse>
 
@@ -101,7 +101,7 @@ const expData =[
         isHighImpact : 'no',
         isPublic : 'no',
         isCompleted : 'no',
-        percentage : '30',
+        percentage : 30,
         expDay:161,
         daysRemaining:-100
     },
@@ -116,7 +116,7 @@ const inProgressGoalData =[
         isHighImpact : 'no',
         isPublic : 'no',
         isCompleted : 'no',
-        percentage : '99%',
+        percentage : 99,
         expDay:161
     },
 ]

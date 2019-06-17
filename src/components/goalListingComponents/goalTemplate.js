@@ -14,13 +14,17 @@ class GoalListing extends Component {
     }
     render() {
         return (
-            <TouchableOpacity style = {styles.contaierStyle} onPress = {this.props.onPress}>
-                <Text style  = {styles.taskName}>{this.props.data[0].name}</Text>
+            <TouchableOpacity style = {styles.goalTemplateStyle} onPress = {this.props.onPress}>
+            <View style = {styles.contaierStyle}>
+            <Text style  = {styles.taskName}>{this.props.data[0].name}</Text>
                 <View style  = {styles.statusStyle}>
-                <Text>{this.props.data[0].percentage} % |</Text>
-                <Text>Exp by {this.props.data[0].expDay} days</Text>
+                    <Text>{this.props.data[0].percentage} % |</Text>
+                    <Text>Exp by {this.props.data[0].expDay} days</Text>
                 </View>
-                
+            </View>
+            <View>
+            <ProgressCircle percent={this.props.data[0].percentage} radius={20} borderWidth={8} color={this.setColor(this.props.data[0].daysRemaining)}  shadowColor='#fafafa' bgColor="#fff"></ProgressCircle>
+            </View>
             </TouchableOpacity>
           
         );

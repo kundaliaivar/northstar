@@ -60,7 +60,7 @@ const RootStack = createStackNavigator({
         headerTitleStyle: {fontSize: 18},
         headerTintColor: '#fff',
         headerStyle: {
-          backgroundColor: '#f4511e',
+          backgroundColor: '#2E2F50',
         },
         title:"Goal Details",
     })
