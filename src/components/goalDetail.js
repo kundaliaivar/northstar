@@ -1,8 +1,21 @@
 import React, { Component } from 'react';
-import { Text , View  } from 'react-native';
+import axios from 'axios'
+import { Text , View , Image  } from 'react-native';
+import defaultPhoto from '../../images/defaultPhoto.png'
 
 
 class GoalDetails extends Component {
+    state = {
+        data: []
+      }
+    
+      componentDidMount() {
+        axios.get()
+          .then(res => {
+            const data = res.data;
+            this.setState({ data });
+          })
+      }
     render() {
         return (
             <View style = {styles.GoalDetailsContainer}>
@@ -20,7 +33,19 @@ class GoalDetails extends Component {
               <Text style = {styles.text}>Public</Text>
               <Text style = {styles.headingText}>No</Text>
               <Text style = {styles.headingText}>Created By</Text>
-              <Text style = {styles.text}>Abhijeet kumar</Text>
+                    <View style = {styles.memberInfoStyle}>
+                      <View style = {{width:20,height:20,marginRight:10}}>
+                        <Image style = {{width:"100%",height:"100%"}} source = {defaultPhoto}/>
+                      </View>
+                        <Text>Abhijeet Kumar</Text>
+                    </View>
+                <Text style = {styles.headingText}>Assign To</Text>
+                    <View style = {styles.memberInfoStyle}>
+                      <View style = {{width:20,height:20,marginRight:10}}>
+                        <Image style = {{width:"100%",height:"100%"}} source = {defaultPhoto}/>
+                      </View>
+                        <Text>Abhijeet Kumar</Text>
+                    </View>      
             </View>
         );
     }
@@ -41,6 +66,11 @@ const styles = {
         paddingBottom:7,
         paddingLeft:16,
         paddingRight:16
+    },
+    memberInfoStyle:{
+        flexDirection:'row',
+        alignItems:'center',
+        marginTop:10
     }
 }
 export default GoalDetails
