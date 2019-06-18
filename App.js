@@ -7,12 +7,13 @@
  */
 
 import React, { Component } from 'react';
-import { createStackNavigator, createAppContainer } from 'react-navigation';
 import { StyleSheet, View } from 'react-native';
+import { createSwitchNavigator, createStackNavigator, createAppContainer } from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import GoalListing from './src/components/goalListing';
 import CreateGoalPage from './src/components/createGoal';
 import GoalDetails from './src/components/goalDetail';
+import LoginPage from './src/components/login/login';
 import GoalLandingDetail from './src/components/goalLandingDetail';
 
 export const user = {};
@@ -42,6 +43,10 @@ class App extends Component {
     );
   }
 }
+
+const AuthStack = createStackNavigator({
+      Login: LoginPage
+    });
 
 const RootStack = createStackNavigator({
     Home: {
@@ -86,7 +91,14 @@ const RootStack = createStackNavigator({
   }
 );
 
-export default createAppContainer(RootStack);
+// export default createAppContainer(RootStack);
+export default createAppContainer(createSwitchNavigator({
+    Root: RootStack,
+    Auth: AuthStack
+},
+{
+  initialRouteName: 'Auth',
+}));
 
 const styles = StyleSheet.create({
 
