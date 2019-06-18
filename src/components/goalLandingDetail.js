@@ -1,56 +1,82 @@
-import React from 'react';
-import { Text, View, Image } from 'react-native';
-import { Avatar } from 'react-native-elements';
-import EditIcon from '../../images/edit.png';
-import AddIcon from '../../images/add2x.png';
+import React, { Component } from 'react';
+import { Text, View, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import axios from 'axios';
+import moment from 'moment';
+import EditIcon from '../../images/edit-white.png';
+import FeedSample from '../components/feedSample';
+import { Icon } from 'react-native-elements';
+// import AddIcon from '../../images/add2x.png';
 import MemberInfo from '../components/common/memberInfo';
 
 
-const GoalLandingDetail = () => {
+
+class GoalLandingDetail extends Component {
+    state={ detailData:[], detailData1:[] }
+
+   componentDidMount(){
+        // axios.get(`http://10.10.80.237:8080/api/goal/${ this.props.navigation.state.params.itemId}`)
+        // .then( res =>{
+        //     this.setState({ detailData: res.data });
+        //     console.log('showdetail', this.state.detailData);
+        // }).catch(err => {
+        //     console.log(err);
+        // });
+        
+        // const result = await Promise.all([axios.get(`http://10.10.80.237:8080/api/goal/${ this.props.navigation.state.params.itemId}`),
+        // axios.get(`http://10.10.80.237:8080/api/createfeed`)]);
+        // this.setState({ detailData: result[0].data, detailData1: result[1].data});
+        // console.log('test', result[1]);
+        this.fetchGoalDetail();
+        this.fetchFeedDetail();
+ }
+
+    fetchGoalDetail = () => {
+        axios
+            .get(`http://10.10.80.237:8080/api/goal/${ this.props.navigation.state.params.itemId}`)
+            .then(res => {console.log('res', res); this.setState({ detailData: res.data })})
+            .catch(e => console.log(e));
+    }
+
+    fetchFeedDetail = () => {
+        axios
+            .get(`http://10.10.80.237:8080/api/createfeed`)
+            .then(res => {console.log('res2', res); this.setState({ detailData1: res.data })})
+            .catch(e => console.log(e));
+    }
+    
+    render() {
+        const { navigation, } = this.props;
     return (
         <View style={styles.containerStyle}>
             <View style={styles.headerStyle}>
-                <Text>Test</Text>
+                <Text style={styles.headingColor}>Test</Text>
                 <View style={styles.editSectionStyle}>
-                    <Text style={{ color: 'aqua' }}>View Details</Text>
+                    <Text style={{ color: 'aqua' }} onPress={() => navigation.navigate('GoalDetails')}>View Details</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('CreateGoalPage')}>
                     <Image source={EditIcon} />
+                    </TouchableOpacity>
                 </View>
             </View>
             <View style={styles.progressSection}>
                 <Text>progress bar to be placed</Text>
                 <View >
                     <Text style={styles.completionDateHeader}>Completed By</Text>
-                    <Text style={styles.completionDateContainer}>june 13</Text>
+                    <Text style={styles.completionDateContainer}>{moment.utc(this.state.detailData.dueOn).format('MMM DD')}</Text>
                 </View>
             </View>
-            <View style={styles.addMemberSec}>
-                <Avatar
-                    size='small'
-                    rounded
-                    style={{ height: 30, width: 30 }}
-                    title='MT'
-                    onPress={() => console.log('Works!')}
-                    activeOpacity={0.7}
-                />
-                <Image style={styles.addMemberStyle} source={AddIcon} />
-            </View>
+            {/* <Feeds /> */}
             <View style={styles.upadatePostSec}>
                 <Text>Post an update...</Text>
-                <Image source={EditIcon} />
-            </View>
-            <View>
-                <MemberInfo goalName ='Sherill veez' date='14/06/19, 5:30pm' avatarTitle='SV' />
-            </View>
-            <View style={styles.postDetail}>
-                <Text>This is a post</Text>
-            </View>
-            <View style={styles.commentsSec}>
-                <Text>Like</Text>
-                <Text>Comments</Text>
-            </View>
+                {/* <Image style={styles.addPostStyle} source={AddIcon} /> */}
+                <Icon name='md-add-circle-outline' type='ionicon' color='#00afff' />
+             </View>
+            
+              {this.state.detailData.taskUpdate && this.state.detailData.taskUpdate.length ? this.state.detailData.taskUpdate.map(item => <FeedSample item={item} />) : <Text style={styles.noDataText}>No Feeds</Text>}
+            
         </View>
     );
-};
+   }
+}   
 const styles = {
 
 
@@ -84,6 +110,8 @@ const styles = {
     },
     completionDateContainer: {
         color: '#fff',
+        fontWeight: '400',
+        fontSize: 16,
     },
     completionDateHeader: {
         color: '#fff',
@@ -99,9 +127,6 @@ const styles = {
         flexDirection: 'row',
 
     },
-    addMemberStyle: {
-        transform: [{ rotate: '45deg' }],
-    },
     upadatePostSec: {
         backgroundColor: '#fff',
         marginTop: 10,
@@ -116,39 +141,20 @@ const styles = {
         height: 40,
         alignItems: 'center',
     },
-    postDetail: {
-        backgroundColor: '#fff',
-        borderTop: '1px',
-        marginLeft: 20,
-        marginRight: 20,
-        color: '#000',
-        paddingLeft: 5,
-        paddingRight: 5,
-        paddingTop: 15,
-        paddingBottom: 15,
-        borderTopWidth: 0.5,
-        borderColor: '#d6d7da',
-        flexDirection: 'row',
-        alignItems: 'center',
+    headingColor: {
+        color: '#fff'
     },
-    commentsSec: {
+    noDataText: {
         flexDirection: 'row',
-        color: '#000',
-        justifyContent: 'space-between',
-        paddingTop: 10,
-        paddingLeft: 10,
-        paddingRight: 10,
-        paddingBottom: 10,
-        backgroundColor: '#fff',
-        borderTop: '1px',
-        borderTopWidth: 0.5,
-        borderColor: '#d6d7da',
-        borderBottomLeftRadius: 5,
-        borderBottomRightRadius: 5,
+        justifyContent: 'center',
+        textAlign: 'center',
+        alignItems: 'center',
+        margingTop: 10,
+        width: '89%',
         marginLeft: 20,
-        marginRight: 20,
+        marginRight: 20
     }
 
-};
+ };
 
 export default GoalLandingDetail;

@@ -80,9 +80,13 @@ const RootStack = createStackNavigator({
         headerTitleStyle: { fontSize: 18 },
         headerTintColor: '#fff',
         headerStyle: {
-          backgroundColor: '#2E2F50',
+          backgroundColor: '#424372',
+          shadowOpacity: 0,
+          borderBottomWidth: 0,
+          elevation: 0,
+          shadowOffset: { height: 0, width: 0 }
         },
-        title:"Goal Landing Detail",
+        title: 'Goal Landing Detai',
     })
     }
   },
