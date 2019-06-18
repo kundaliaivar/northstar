@@ -54,10 +54,10 @@ class Feeds extends Component {
                     </View>
                     <View>
                         <Image
-                            style={{width: 50, height: 50}}
-                            source={{uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'}}
+                            style={{ width: 50, height: 50 }}
+                            source={{ uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png' }}
                         />
-                        1 star
+                        <Text>1 star</Text>
                     </View>
                 </View>
             </View>

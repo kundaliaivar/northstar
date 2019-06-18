@@ -28,12 +28,10 @@ class GoalListing extends Component {
             expire.push(item);
             else if(item.percentage<100)
             inprogress.push(item);
-        }
-        this.setState({completedGoalList:complete,inProgressGoalList:inprogress,expireGoalList:expire});
-
-    }).catch(err=>{
+        } this.setState({ completedGoalList: complete, inProgressGoalList: inprogress, expireGoalList: expire });
+    }).catch(err => {
         console.log(err);
-    })
+    });
    }
    
     render() {
@@ -105,4 +103,4 @@ const RootStack = createStackNavigator({
     },
 },
 );
-export default GoalListing
+export default GoalListing;
