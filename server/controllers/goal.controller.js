@@ -20,11 +20,14 @@ const getGoal=function(req,res){
     //      percentage:30
     //     });
     //     goal.save().then(result=>res.send(result)).catch(err=>res.status(400).send(err.message));
-    GoalModel.find()
-    .then(Response=>{
-        res.json(Response);
+    GoalModel.find({"createdFor.userId":req.params.userId})
+    .then(response=>{
+        res.json(response);
     })
-    .catch(err=>res.status(400).send(err.message))
+    .catch(err=>{
+        console.log(err);
+        res.status(400).send(err.message);
+    })
 }
 
 const goalLandingDetail = function(req, res){

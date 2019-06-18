@@ -20,6 +20,9 @@ import LoginPage from './src/components/login/login';
 //     'Double tap R on your keyboard to reload,\n' +
 //     'Shake or press menu button for dev menu',
 // });
+import GoalLandingDetail from './src/components/goalLandingDetail';
+
+export const user = {};
 
 class App extends Component {
   static navigationOptions = ({ navigation }) => 
@@ -41,7 +44,7 @@ class App extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <GoalListing onPress={() => this.props.navigation.navigate('GoalDetails')}></GoalListing>
+        <GoalListing navigation={this.props.navigation} onPress={() => this.props.navigation.navigate('GoalLandingDetail')}></GoalListing>
       </View>
     );
   }
@@ -57,16 +60,35 @@ const RootStack = createStackNavigator({
     },
     CreateGoalPage: {
       screen: CreateGoalPage,
-    },
-    GoalDetails: {
-      screen: GoalDetails,
       navigationOptions: () => ({
-        headerTitleStyle: {fontSize: 18},
+        headerTitleStyle: { fontSize: 18 },
         headerTintColor: '#fff',
         headerStyle: {
           backgroundColor: '#2E2F50',
         },
-        title:"Goal Details",
+        title: 'Create Goal',
+      })
+    },
+    GoalDetails: {
+      screen: GoalDetails,
+      navigationOptions: () => ({
+        headerTitleStyle: { fontSize: 18 },
+        headerTintColor: '#fff',
+        headerStyle: {
+          backgroundColor: '#2E2F50',
+        },
+        title: 'Goal Details',
+    })
+    },
+    GoalLandingDetail: {
+      screen: GoalLandingDetail,
+      navigationOptions: () => ({
+        headerTitleStyle: { fontSize: 18 },
+        headerTintColor: '#fff',
+        headerStyle: {
+          backgroundColor: '#2E2F50',
+        },
+        title:"Goal Landing Detail",
     })
     }
   },
@@ -85,12 +107,14 @@ export default createAppContainer(createSwitchNavigator({
 }));
 
 const styles = StyleSheet.create({
+
   // container: {
   //   flex: 1,
   //   justifyContent: 'center',
   //   alignItems: 'center',
   //   backgroundColor: '#F5FCFF',
   // },
+
   welcome: {
     fontSize: 20,
     textAlign: 'center',
