@@ -63,6 +63,7 @@ class App extends Component {
       if (fcmToken) {
         // user has a device token
         console.log('fcmToken:', fcmToken);
+           //TODO call API to register device
         await AsyncStorage.setItem('fcmToken', fcmToken);
       }
     }
