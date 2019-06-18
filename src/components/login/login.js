@@ -5,20 +5,28 @@
 
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
+import axios from 'axios';
 import Button from '../common/button';
 import Input from '../common/input';
-import axios from 'axios';
+
 
 class LoginPage extends Component {
-
+    constructor(props) {
+        super(props);
+        this.state = {
+            username: '',
+            password: ''
+        };
+    }
     checkAuth = () => {
         axios.post('http://127.0.0.1:8080/api/login', {
-            userName: this.props.username,
-            password: this.props.password
+            userName: this.state.username,
+            password: this.state.password
         })
         .then(res => {
-            console.log(res);
-            this.props.navigation.navigate('Root'); 
+            if (res.data) {
+                this.props.navigation.navigate('Root'); 
+            }  
         })
         .catch(err => {
             console.log(err);
@@ -26,7 +34,6 @@ class LoginPage extends Component {
     };
     
     render() {
-        const { username, password, navigation } = this.props;
         const styles = {
             buttonStyle: {
                 color: '#424372',
@@ -57,7 +64,6 @@ class LoginPage extends Component {
             }
             
         };
-        // eslint-disable-next-line no-undef
         return (
             <View style={styles.center}>
                 <View style={styles.loginWrapper}>
@@ -65,15 +71,16 @@ class LoginPage extends Component {
                     <Input 
                         style={styles.inputBox}
                         // label="Username"
-                        value={username}
+                        value={this.state.username}
                         placeholder="Username"
-                        
+                        onChange={username => this.setState({ username })}
                     />
                     <Input
                         // label="Password"
-                        value={password}
+                        value={this.state.password}
                         password
                         placeholder="Password"
+                        onChange={password => this.setState({ password })}
                     />
                     <Button
                         onPress={this.checkAuth}

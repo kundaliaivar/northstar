@@ -2,13 +2,6 @@ const User = require('../models/userModel');
 
 
 exports.login = function (req, res) {
-
-  var user = new User({
-    userName: 'user1',
-    password: 'abc123'
-  });
-  user.save();
-
   User.find({
       userName: req.body.userName,
       password: req.body.password
@@ -21,5 +14,5 @@ exports.login = function (req, res) {
     })
     .catch(err => {
       res.send(err.message);
-    })
-}
+    });
+};
