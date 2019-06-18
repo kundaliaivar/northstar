@@ -37,7 +37,7 @@ class App extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <GoalListing onPress={() => this.props.navigation.navigate('GoalDetails')}></GoalListing>
+        <GoalListing navigation={this.props.navigation} onPress={() => this.props.navigation.navigate('GoalLandingDetail')}></GoalListing>
       </View>
     );
   }
@@ -68,6 +68,17 @@ const RootStack = createStackNavigator({
         },
         title: 'Goal Details',
     })
+    },
+    GoalLandingDetail: {
+      screen: GoalLandingDetail,
+      navigationOptions: () => ({
+        headerTitleStyle: { fontSize: 18 },
+        headerTintColor: '#fff',
+        headerStyle: {
+          backgroundColor: '#2E2F50',
+        },
+        title:"Goal Landing Detail",
+    })
     }
   },
   {
@@ -85,6 +96,7 @@ const styles = StyleSheet.create({
   //   alignItems: 'center',
   //   backgroundColor: '#F5FCFF',
   // },
+
   welcome: {
     fontSize: 20,
     textAlign: 'center',

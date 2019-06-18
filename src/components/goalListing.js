@@ -14,11 +14,11 @@ import moment from 'moment';
 
 
 class GoalListing extends Component {
-   state={completedGoalList:[],inProgressGoalList:[],expireGoalList:[],userId:'232323'}
+   state={ completedGoalList: [], inProgressGoalList: [], expireGoalList: [], userId: '232323'}
 
    componentDidMount(){
        //10.10.80.196--> system ip
-    axios.get(`http://10.10.80.196:8080/api/getGoals/${this.state.userId}`)
+    axios.get(`http://10.10.80.237:8080/api/getGoals/${this.state.userId}`)
     .then(response=>{
         let complete=[],inprogress=[],expire=[];
         for(let item of response.data){
@@ -30,6 +30,7 @@ class GoalListing extends Component {
             inprogress.push(item);
         }
         this.setState({completedGoalList:complete,inProgressGoalList:inprogress,expireGoalList:expire});
+
     }).catch(err=>{
         console.log(err);
     })
