@@ -13,6 +13,9 @@ const Button = (props) => {
     const buttonStyle = {
         backgroundColor: style.type === 'solid' ? style.color : '#fff',
         height: 50,
+        width: 150,
+        alignSelf: 'center',
+        marginTop: 20
     };
     // Styles for the container
     const containerStyle = StyleSheet.create({
