@@ -7,13 +7,13 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, View,Text } from 'react-native';
-import { createStackNavigator, createAppContainer } from 'react-navigation';
+import { StyleSheet, View } from 'react-native';
+import { createSwitchNavigator, createStackNavigator, createAppContainer } from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import GoalListing from './src/components/goalListing';
 import CreateGoalPage from './src/components/createGoal';
 import GoalDetails from './src/components/goalDetail';
-
+import LoginPage from './src/components/login/login';
 // const instructions = Platform.select({
 //   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
 //   android:
@@ -47,6 +47,10 @@ class App extends Component {
   }
 }
 
+const AuthStack = createStackNavigator({
+      Login: LoginPage
+    });
+
 const RootStack = createStackNavigator({
     Home: {
       screen: App,
@@ -54,9 +58,9 @@ const RootStack = createStackNavigator({
     CreateGoalPage: {
       screen: CreateGoalPage,
     },
-    GoalDetails:{
-      screen:GoalDetails,
-      navigationOptions: ({navigation}) => ({
+    GoalDetails: {
+      screen: GoalDetails,
+      navigationOptions: () => ({
         headerTitleStyle: {fontSize: 18},
         headerTintColor: '#fff',
         headerStyle: {
@@ -71,7 +75,14 @@ const RootStack = createStackNavigator({
   }
 );
 
-export default createAppContainer(RootStack);
+// export default createAppContainer(RootStack);
+export default createAppContainer(createSwitchNavigator({
+    Root: RootStack,
+    Auth: AuthStack
+},
+{
+  initialRouteName: 'Auth',
+}));
 
 const styles = StyleSheet.create({
   // container: {

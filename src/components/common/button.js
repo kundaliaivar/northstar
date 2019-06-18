@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { Button as ReactButton } from 'react-native-elements';
 
 const Button = (props) => {
-    const { title, style } = props;
+    const { title, style, onPress } = props;
     // Styles for the Title text
     const titleStyle = {
         color: style.type === 'clear' ? style.color : '#fff',
@@ -29,6 +29,7 @@ const Button = (props) => {
                 titleStyle={titleStyle}
                 buttonStyle={buttonStyle}
                 type={style.type}
+                onPress={onPress}
             />
         </View>
     );
