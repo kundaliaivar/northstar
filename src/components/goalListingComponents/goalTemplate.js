@@ -12,6 +12,14 @@ class GoalListing extends Component {
         else if(item.percentage<100)
         return "purple";
     }
+    setContent(item){
+        if(item.percentage==100)
+        return `Completed ${moment(item.dueOn)}`;
+        // else if(item.percentage<100 && moment(item.dueOn).isBefore(moment()))
+        // return `| Expired by ${ moment().diff(moment(item.dueOn),'days') moment(item.dueOn).subtract(moment(),'d') } days`;
+        else if(item.percentage<100 )
+        return `| ${moment(item.dueOn).subtract(moment(),'d')} days Left`;
+    }
     render() {
 
             if(this.props.data.length<1)
@@ -22,12 +30,12 @@ class GoalListing extends Component {
             <View style = {styles.contaierStyle}>
             <Text style  = {styles.taskName}>{this.props.data.name}</Text>
                 <View style  = {styles.statusStyle}>
-                    <Text>{this.props.data.percentage} % |</Text>
-                    <Text>Exp by {this.props.data.expDay} days</Text>
+                    <Text>{this.props.data.percentage} %</Text>
+                    <Text>{this.setContent(this.props.data)}</Text>
                 </View>
             </View>
             <View>
-            <ProgressCircle percent={this.props.data.percentage} radius={20} borderWidth={8} color={this.setColor(this.props.data)}  shadowColor='#fafafa' bgColor="#fff"></ProgressCircle>
+            <ProgressCircle percent={this.props.data.percentage} radius={20} borderWidth={8} color={this.setColor(this.props.data)}  shadowColor='#fafafa'></ProgressCircle>
             </View>
             </TouchableOpacity>
         );
