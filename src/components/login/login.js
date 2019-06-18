@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, TextInput } from 'react-native';
 import axios from 'axios';
 import Button from '../common/button';
 import Input from '../common/input';
@@ -15,6 +15,7 @@ class LoginPage extends Component {
         super(props);
         this.state = {
             username: '',
+            isValidText: true,
             password: ''
         };
     }
@@ -32,6 +33,25 @@ class LoginPage extends Component {
             console.log(err);
         });
     };
+
+    validate(text, type) {
+        // const unameReg = /^[A-Za-z0-9.-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+        const unameReg = /^[A-Za-z0-9]+$/;
+        if (type === 'username') {
+            console.warn('yes type is username');
+            if (unameReg.test(text)) {
+                console.log('valid username:', text);
+                this.setState({ isValidText: true });
+                this.setState({ username: text });
+            } else {
+                this.setState({ isValidText: false });
+                console.log('Invalid username');
+            }
+        } else if (type === 'password' && text !== '') {
+            console.log('pwd:', text);
+            this.setState({ password: text });
+        }
+    }
     
     render() {
         const styles = {
@@ -59,8 +79,25 @@ class LoginPage extends Component {
                 textAlign: 'center'
             },
             inputBox: {
-                borderBottomWidth: 1,
-                borderColor: '#000' 
+                height: 35,
+                borderWidth: 1,
+                borderBottomColor: '#424372',
+                borderTopColor: '#eee',
+                borderLeftColor: '#eee',
+                borderRightColor: '#eee',
+                width: '90%',
+                alignSelf: 'center',
+                margin: 20,
+                lineHeight: 30
+            },
+            inputText: {
+                fontSize: 16,
+                padding: 5,
+                color: '#424372'
+            },
+            error: {
+                borderWidth: 1,
+                borderColor: 'red'
             }
             
         };
@@ -68,20 +105,22 @@ class LoginPage extends Component {
             <View style={styles.center}>
                 <View style={styles.loginWrapper}>
                     <Text style={styles.header}>Login</Text>
-                    <Input 
-                        style={styles.inputBox}
-                        // label="Username"
-                        value={this.state.username}
-                        placeholder="Username"
-                        onChange={username => this.setState({ username })}
-                    />
-                    <Input
-                        // label="Password"
-                        value={this.state.password}
-                        password
-                        placeholder="Password"
-                        onChange={password => this.setState({ password })}
-                    />
+                    <View style={styles.inputBox}>
+                        <TextInput 
+                            style={[styles.inputText, !this.state.isValidText ? styles.error : null]}
+                            placeholder="Username"
+                            onChangeText={(username) => this.validate(username, 'username')}
+                        />
+                    </View>
+                    
+                    <View style={styles.inputBox}>
+                        <TextInput 
+                            style={styles.inputText}
+                            placeholder="Password"
+                            secureTextEntry
+                            onChangeText={(password) => this.validate(password, 'password')}
+                        />
+                    </View>
                     <Button
                         onPress={this.checkAuth}
                         title='Login'
