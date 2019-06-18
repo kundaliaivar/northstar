@@ -10,12 +10,13 @@ import Input from "./common/input";
 import Assignee from "./createGoalComponents/Assignee";
 import { DatePickerDialog } from "react-native-datepicker-dialog";
 import Calender from "../../images/calender.png";
+import AddPerson from "../../images/addPerson.png"
 import moment from "moment";
 
 class CreateGoalPage extends Component {
   constructor(props) {
     super(props);
-    this.state = { DateText: "", DateHolder: null };
+    this.state = { DateText: "", DateHolder: null , assignToMySelf:true };
   }
 
   DatePickerMainFunctionCall = () => {
@@ -39,6 +40,16 @@ class CreateGoalPage extends Component {
       DateText: moment(date).format("DD-MMM-YYYY")
     });
   };
+  assignGoal() {
+    if (this.state.assignToMySelf) {
+        return (<Assignee fnPressButton={this.changeStateValue.bind(this)}/>);
+    } else {
+        return (<Image style={styles.AddPerson} source={AddPerson}></Image>);
+    }
+}
+changeStateValue(){
+    this.setState({assignToMySelf: false})
+}
   render() {
     const { name, description } = this.props;
     const saveButtonStyle = {
@@ -77,8 +88,10 @@ class CreateGoalPage extends Component {
         </View>
 
         {/* Assign To */}
+
         <Text style={styles.assignToStyle}>Assign To</Text>
-        <Assignee />
+        {this.assignGoal()}
+
         <Button title="Save" style={saveButtonStyle} />
         <Button title="Delete" style={deleteButtonStyle} />
         <DatePickerDialog
@@ -116,8 +129,14 @@ const styles = {
   },
   datePickerBoxContainer: {
     marginTop: 5,
-    marginBottom: 10
+    marginBottom: 10,
+    width:'98%'
   },
+  AddPerson:{
+      height:50,
+      width:50,
+      marginLeft:10
+  }
 
 };
 
