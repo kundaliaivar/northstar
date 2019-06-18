@@ -7,12 +7,13 @@
  */
 
 import React, { Component } from 'react';
-import { createStackNavigator, createAppContainer } from 'react-navigation';
 import { StyleSheet, View } from 'react-native';
+import { createSwitchNavigator, createStackNavigator, createAppContainer } from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import GoalListing from './src/components/goalListing';
 import CreateGoalPage from './src/components/createGoal';
 import GoalDetails from './src/components/goalDetail';
+import LoginPage from './src/components/login/login';
 import GoalLandingDetail from './src/components/goalLandingDetail';
 
 export const user = {};
@@ -37,11 +38,15 @@ class App extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <GoalListing navigation={this.props.navigation} onPress={() => this.props.navigation.navigate('GoalDetails')}></GoalListing>
+        <GoalListing navigation={this.props.navigation} onPress={() => this.props.navigation.navigate('GoalLandingDetail')}></GoalListing>
       </View>
     );
   }
 }
+
+const AuthStack = createStackNavigator({
+      Login: LoginPage
+    });
 
 const RootStack = createStackNavigator({
     Home: {
@@ -68,6 +73,17 @@ const RootStack = createStackNavigator({
         },
         title: 'Goal Details',
     })
+    },
+    GoalLandingDetail: {
+      screen: GoalLandingDetail,
+      navigationOptions: () => ({
+        headerTitleStyle: { fontSize: 18 },
+        headerTintColor: '#fff',
+        headerStyle: {
+          backgroundColor: '#2E2F50',
+        },
+        title:"Goal Landing Detail",
+    })
     }
   },
   {
@@ -75,7 +91,14 @@ const RootStack = createStackNavigator({
   }
 );
 
-export default createAppContainer(RootStack);
+// export default createAppContainer(RootStack);
+export default createAppContainer(createSwitchNavigator({
+    Root: RootStack,
+    Auth: AuthStack
+},
+{
+  initialRouteName: 'Auth',
+}));
 
 const styles = StyleSheet.create({
 
@@ -85,6 +108,7 @@ const styles = StyleSheet.create({
   //   alignItems: 'center',
   //   backgroundColor: '#F5FCFF',
   // },
+
   welcome: {
     fontSize: 20,
     textAlign: 'center',

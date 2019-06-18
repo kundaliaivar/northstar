@@ -21,7 +21,8 @@ const create=function(req,res){
 }
 
 const like = function(req, res){
-    FeedModel.findOneAndUpdate(req.params.feedId, req.params.stars, {upsert:true}, function(err, doc){
+    //req.params.stars
+    FeedModel.findOneAndUpdate({feedId:req.params.feedId},{ $inc:{stars:1} }, {upsert:true}, function(err, doc){
         if (err) return res.send(500, { error: err });
         return res.send("true");
     });

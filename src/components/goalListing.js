@@ -14,7 +14,7 @@ import moment from 'moment';
 
 
 class GoalListing extends Component {
-   state={completedGoalList:[],inProgressGoalList:[],expireGoalList:[],userId:'232323'}
+   state={ completedGoalList: [], inProgressGoalList: [], expireGoalList: [], userId: '232323'}
 
    componentDidMount(){
        //10.10.80.196--> system ip
@@ -30,6 +30,7 @@ class GoalListing extends Component {
             inprogress.push(item);
         }
         this.setState({completedGoalList:complete,inProgressGoalList:inprogress,expireGoalList:expire});
+
     }).catch(err=>{
         console.log(err);
     })
