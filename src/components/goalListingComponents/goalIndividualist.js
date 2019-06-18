@@ -18,21 +18,26 @@ class GoalIndividualist extends React.Component {
     }
 
     render() {
-        return (
-            <Collapse isCollapsed={this.state.collapsed} onToggle={(isCollapsed) => this.setState({ collapsed: isCollapsed })}>
-                <CollapseHeader style={styles.containerStyle}>
-                    <View style={styles.containerContentStyle} >
-                        <Text>{this.props.title}</Text>
-                        {this.renderImage()}
-                    </View>
-
-                </CollapseHeader>
-                <CollapseBody>
-                    <View>{this.props.children}</View>
-                    {this.props.expData.map(item=> <GoalTemplate data={item} navigation={this.props.navigation} onPress={this.props.onPress} ></GoalTemplate>)}
-                </CollapseBody>
-            </Collapse>
-        );
+        if(this.props.expData.length > 0){
+            return (
+                <Collapse isCollapsed={this.state.collapsed} onToggle={(isCollapsed) => this.setState({ collapsed: isCollapsed })}>
+                    <CollapseHeader style={styles.containerStyle}>
+                        <View style={styles.containerContentStyle} >
+                            <Text>{this.props.title}</Text>
+                            {this.renderImage()}
+                        </View>
+    
+                    </CollapseHeader>
+                    <CollapseBody>
+                        <View>{this.props.children}</View>
+                        {this.props.expData.map(item=> <GoalTemplate data={item} navigation={this.props.navigation} onPress={this.props.onPress} ></GoalTemplate>)}
+                    </CollapseBody>
+                </Collapse>
+            );
+        }else{
+            return null;
+        }
+        
     }
     
 }
