@@ -23,7 +23,7 @@ class LoginPage extends Component {
         };
     }
     checkAuth = () => {
-        axios.post('http://192.168.0.3:8080/api/login', {
+        axios.post('http://10.10.80.237:8080/api/login', {
             userName: this.state.username,
             password: this.state.password
         })
@@ -35,7 +35,6 @@ class LoginPage extends Component {
         })
         .catch(err => {
             console.log(err);
-            this.props.navigation.navigate('Root');
         });
     };
 
