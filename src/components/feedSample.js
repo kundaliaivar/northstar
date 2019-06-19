@@ -1,6 +1,8 @@
 import React from 'react';
-import { View, Text} from 'react-native';
+import { View, Text } from 'react-native';
+import moment from 'moment';
 import MemberInfo from './common/memberInfo';
+
 
 
 const FeedSample = (props) => {
@@ -11,10 +13,14 @@ const FeedSample = (props) => {
     return (
         <View> 
             <View>
-                <MemberInfo goalName={item.createdBy.userName} date='14/06/19, 5:30pm' avatarTitle='SV' />
+                <MemberInfo 
+                 goalName={item.userName} 
+                 date={moment.utc(item.createdOn).format('L,HH:mm a')} 
+                 avatarTitle='SV' 
+                />
             </View>
             <View style={styles.postDetail}>
-                <Text>{item.description}</Text>
+                <Text>{item.feedBody}</Text>
             </View>
             <View style={styles.commentsSec}>
                 <Text>Like</Text>
