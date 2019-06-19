@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
@@ -7,19 +8,18 @@
  */
 
 import React, { Component } from 'react';
-import { createStackNavigator, createAppContainer } from 'react-navigation';
-import { StyleSheet, View, AsyncStorage, Alert } from 'react-native';
 import { createSwitchNavigator, createStackNavigator, createAppContainer } from 'react-navigation';
+import { StyleSheet, View, AsyncStorage, Alert } from 'react-native';
+import firebase from 'react-native-firebase';
+import axios from 'axios';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import GoalListing from './src/components/goalListing';
 import CreateGoalPage from './src/components/createGoal';
 import GoalDetails from './src/components/goalDetail';
 import LoginPage from './src/components/login/login';
 import GoalLandingDetail from './src/components/goalLandingDetail';
-import firebase from 'react-native-firebase';
-import axios from 'axios';
 
-export const user = {userName:'ayush'};
+export const user = { userName: 'ayush' };
 
 class App extends Component {
   static navigationOptions = ({ navigation }) =>
@@ -66,17 +66,17 @@ class App extends Component {
       if (fcmToken) {
         // user has a device token
         console.log('fcmToken:', fcmToken);
-        axios.post('http://192.168.1.4:8080/api/registerdevice',{userName:user.userName,deviceId:fcmToken})
-        .then(Response=>console.log(Response.data))
-        .catch(err=>console.log(err));
+        axios.post('http://192.168.1.4:8080/api/registerdevice', { userName: user.userName, deviceId: fcmToken })
+        .then(Response => console.log(Response.data))
+        .catch(err => console.log(err));
            //TODO call API to register device
         await AsyncStorage.setItem('fcmToken', fcmToken);
       }
     }
     
-    axios.post('http://192.168.1.4:8080/api/registerdevice',{userName:user.userName,deviceId:fcmToken})
-        .then(Response=>console.log(Response))
-        .catch(err=>console.log(err));
+    axios.post('http://192.168.1.4:8080/api/registerdevice', { userName: user.userName, deviceId: fcmToken })
+        .then(Response => console.log(Response))
+        .catch(err => console.log(err));
     console.log('fcmToken:', fcmToken);
   }
 
@@ -116,11 +116,11 @@ class App extends Component {
 
       firebase.notifications()
         .displayNotification(localNotification)
-        .catch(err => console.error("our local notification err", err));
+        .catch(err => console.error('our local notification err', err));
     });
 
     const channel = new firebase.notifications.Android.Channel('fcm_FirebaseNotifiction_default_channel', 'Demo app name', firebase.notifications.Android.Importance.High)
-      .setDescription('Demo app description')
+      .setDescription('Demo app description');
     //  .setSound('sampleaudio.wav');
     firebase.notifications().android.createChannel(channel);
 
@@ -130,7 +130,7 @@ class App extends Component {
     this.notificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
       const { title, body } = notificationOpen.notification;
       console.log('onNotificationOpened:');
-      Alert.alert(title, body)
+      Alert.alert(title, body);
     });
 
     /*
@@ -140,21 +140,23 @@ class App extends Component {
     if (notificationOpen) {
       const { title, body } = notificationOpen.notification;
       console.log('getInitialNotification:');
-      Alert.alert(title, body)
+      Alert.alert(title, body);
     }
     /*
     * Triggered for data only payload in foreground
     * */
     this.messageListener = firebase.messaging().onMessage((message) => {
       //process data message
-      console.log("JSON.stringify:", JSON.stringify(message));
+      console.log('JSON.stringify:', JSON.stringify(message));
     });
   }
 
   render() {
     return (
+      // eslint-disable-next-line react/jsx-no-comment-textnodes
       <View style={styles.container}>
-        <GoalListing navigation={this.props.navigation} onPress={() => this.props.navigation.navigate('GoalLandingDetail')}></GoalListing>
+        // eslint-disable-next-line max-len
+        <GoalListing navigation={this.props.navigation} onPress={() => this.props.navigation.navigate('GoalLandingDetail')} />
       </View>
     );
   }
@@ -178,22 +180,21 @@ const RootStack = createStackNavigator({
       },
       title: 'Create Goal',
     })
-    },
-    GoalLandingDetail: {
-      screen: GoalLandingDetail,
-      navigationOptions: () => ({
-        headerTitleStyle: { fontSize: 18 },
-        headerTintColor: '#fff',
-        headerStyle: {
-          backgroundColor: '#424372',
-          shadowOpacity: 0,
-          borderBottomWidth: 0,
-          elevation: 0,
-          shadowOffset: { height: 0, width: 0 }
-        },
-        title: 'Goal Landing Detai',
+  },
+  GoalLandingDetail: {
+    screen: GoalLandingDetail,
+    navigationOptions: () => ({
+      headerTitleStyle: { fontSize: 18 },
+      headerTintColor: '#fff',
+      headerStyle: {
+        backgroundColor: '#424372',
+        shadowOpacity: 0,
+        borderBottomWidth: 0,
+        elevation: 0,
+        shadowOffset: { height: 0, width: 0 }
+      },
+      title: 'Goal Landing Detai',
     })
-    }
   },
   GoalDetails: {
     screen: GoalDetails,

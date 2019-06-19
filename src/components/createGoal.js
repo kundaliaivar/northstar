@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Image, AsyncStorage } from 'react-native';
 import moment from 'moment';
 import axios from 'axios';
 import Button from './common/button';
@@ -65,7 +65,7 @@ class CreateGoalPage extends Component {
 
   createGoal = () => {
     console.log('inside creategoal');
-    console.log(this.state);
+    console.log(AsyncStorage.getItem('userId'));
     
     //      description: '...', 
     //      createdBy:{userId:'11232',userName:'ravi'},

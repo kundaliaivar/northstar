@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from 'react';
-import { View, Text, TextInput } from 'react-native';
+import { View, Text, TextInput, AsyncStorage } from 'react-native';
 import axios from 'axios';
 import Button from '../common/button';
 import Input from '../common/input';
@@ -26,6 +26,7 @@ class LoginPage extends Component {
         })
         .then(res => {
             if (res.data) {
+                AsyncStorage.setItem('userId', this.state.username);
                 this.props.navigation.navigate('Root'); 
             }  
         })
