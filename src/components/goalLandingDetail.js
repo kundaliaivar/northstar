@@ -11,7 +11,7 @@ import MemberInfo from '../components/common/memberInfo';
 
 
 class GoalLandingDetail extends Component {
-    state={ detailData:[], detailData1:[] }
+    state={ detailData:[], feedDetail:[] }
 
    componentDidMount(){
         // axios.get(`http://10.10.80.237:8080/api/goal/${ this.props.navigation.state.params.itemId}`)
@@ -21,11 +21,6 @@ class GoalLandingDetail extends Component {
         // }).catch(err => {
         //     console.log(err);
         // });
-        
-        // const result = await Promise.all([axios.get(`http://10.10.80.237:8080/api/goal/${ this.props.navigation.state.params.itemId}`),
-        // axios.get(`http://10.10.80.237:8080/api/createfeed`)]);
-        // this.setState({ detailData: result[0].data, detailData1: result[1].data});
-        // console.log('test', result[1]);
         this.fetchGoalDetail();
         this.fetchFeedDetail();
  }
@@ -39,8 +34,8 @@ class GoalLandingDetail extends Component {
 
     fetchFeedDetail = () => {
         axios
-            .get(`http://10.10.80.237:8080/api/createfeed`)
-            .then(res => {console.log('res2', res); this.setState({ detailData1: res.data })})
+            .get(`http://10.10.80.237:8080/api/feed/${ this.props.navigation.state.params.itemId}`)
+            .then(res => {console.log('res2', res); this.setState({ feedDetail: res.data })})
             .catch(e => console.log(e));
     }
     
@@ -51,8 +46,8 @@ class GoalLandingDetail extends Component {
             <View style={styles.headerStyle}>
                 <Text style={styles.headingColor}>Test</Text>
                 <View style={styles.editSectionStyle}>
-                    <Text style={{ color: 'aqua' }} onPress={() => navigation.navigate('GoalDetails')}>View Details</Text>
-                    <TouchableOpacity onPress={() => navigation.navigate('CreateGoalPage')}>
+                    <Text style={{ color: 'aqua' }} onPress={() => navigation.navigate('GoalDetails', { itemId: this.state.detailData._id })}>View Details</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('CreateGoalPage', { itemId: this.state.detailData._id, goalDetails: this.state.detailData, edit: 'true' })}>
                     <Image source={EditIcon} />
                     </TouchableOpacity>
                 </View>
@@ -61,17 +56,15 @@ class GoalLandingDetail extends Component {
                 <Text>progress bar to be placed</Text>
                 <View >
                     <Text style={styles.completionDateHeader}>Completed By</Text>
-                    <Text style={styles.completionDateContainer}>{moment.utc(this.state.detailData.dueOn).format('MMM DD')}</Text>
+                    <Text style={styles.completionDateContainer}>{this.state.detailData && moment.utc(this.state.detailData.dueOn).format('MMM DD')}</Text>
                 </View>
             </View>
-            {/* <Feeds /> */}
             <View style={styles.upadatePostSec}>
                 <Text>Post an update...</Text>
                 {/* <Image style={styles.addPostStyle} source={AddIcon} /> */}
                 <Icon name='md-add-circle-outline' type='ionicon' color='#00afff' />
-             </View>
-            
-              {this.state.detailData.taskUpdate && this.state.detailData.taskUpdate.length ? this.state.detailData.taskUpdate.map(item => <FeedSample item={item} />) : <Text style={styles.noDataText}>No Feeds</Text>}
+             </View>  
+        {(this.state.feedDetail.length) ? this.state.feedDetail.map(item => <FeedSample item={item} />) : <Text style={styles.noDataText}>No Feeds</Text>}
             
         </View>
     );
@@ -152,7 +145,8 @@ const styles = {
         margingTop: 10,
         width: '89%',
         marginLeft: 20,
-        marginRight: 20
+        marginRight: 20,
+        marginTop: 20
     }
 
  };

@@ -7,7 +7,6 @@
  */
 
 import React, { Component } from 'react';
-import { createStackNavigator, createAppContainer } from 'react-navigation';
 import { StyleSheet, View, AsyncStorage, Alert } from 'react-native';
 import { createSwitchNavigator, createStackNavigator, createAppContainer } from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -193,8 +192,7 @@ const RootStack = createStackNavigator({
         },
         title: 'Goal Landing Detai',
     })
-    }
-  },
+    },
   GoalDetails: {
     screen: GoalDetails,
     navigationOptions: () => ({
