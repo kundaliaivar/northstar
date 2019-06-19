@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text , View , Image  } from 'react-native';
+import { Text, View, Image } from 'react-native';
 import defaultPhoto from '../../images/defaultPhoto.png';
 import axios from 'axios';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -51,6 +51,7 @@ class GoalDetails extends Component {
                       </View>
                       {this.state.data.createdBy && <Text>{ this.state.data.createdBy.userName}</Text>}
                     </View>      
+
             </View>
         </ScrollView>
         );

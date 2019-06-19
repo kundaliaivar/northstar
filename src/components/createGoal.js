@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Image, AsyncStorage } from 'react-native';
 import moment from 'moment';
 import axios from 'axios';
 import Button from './common/button';
@@ -79,7 +79,7 @@ class CreateGoalPage extends Component {
 
   createGoal = () => {
     console.log('inside creategoal');
-    console.log(this.state);
+    console.log(AsyncStorage.getItem('userId'));
     
     //      description: '...', 
     //      createdBy:{userId:'11232',userName:'ravi'},
@@ -100,8 +100,6 @@ class CreateGoalPage extends Component {
       isHighImpact: false,
       isPublic: false,
       dueOn: '2019-06-20T04:18:21.931Z',
-      lastUpdateOn: '2019-06-12T04:18:21.931Z',
-      createdOn: '2019-06-11T04:18:21.931Z',
       percentage: 0,
       isCompleted: false
     })
@@ -138,7 +136,7 @@ class CreateGoalPage extends Component {
           label="Description"
           multiline
           numberOfLines={4}
-          value={this.props.description}
+          value={this.state.description}
           onChange={text => this.setState({ description: text })}
         />
         {/* NOTE: Add the DatePicker and ProgressBar component */}

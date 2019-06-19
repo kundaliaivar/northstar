@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Image } from 'react-native';
+import { Text, View, Image, AsyncStorage } from 'react-native';
 import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion-collapse-react-native';
 import GoalTemplate from './goalListingComponents/goalTemplate';
 import plusIcon from '../../images/add.png';
@@ -14,12 +14,14 @@ import moment from 'moment';
 
 
 class GoalListing extends Component {
-   state={ completedGoalList: [], inProgressGoalList: [], expireGoalList: [], userId: 'user1' }
+   state={ completedGoalList: [], inProgressGoalList: [], expireGoalList: [], userId: AsyncStorage.getItem('userId') }
 
-   componentDidMount(){
+   componentWillUpdate(){
+    //    console.log(this.state.userId);
        //10.10.80.196--> system ip
     axios.get(`http://127.0.0.1:8080/api/getGoals/user1`)
     .then(response=>{
+        console.log('goal list:', response);
         let complete = [], inprogress = [], expire = [];
         for(let item of response.data){
             if(item.percentage==100) {
