@@ -17,14 +17,26 @@ import moment from "moment";
 class CreateGoalPage extends Component {
   constructor(props) {
     super(props);
-    this.state = { DateText: "", DateHolder: null , assignToMySelf:true };
+    this.state = {
+      name: '',
+      description: '',
+      DateText: "", 
+      DateHolder: null , assignToMySelf:true };
   }
 
-  // componentDidMount(){
-  //   if(edit === true){
+  componentDidMount() {
+    const { navigation } = this.props;
+    const goalDetails = navigation.getParam('goalDetails', {}); 
+    const edit = navigation.getParam('edit', false); 
+    if(edit){
+      this.setState({
+        name: goalDetails.name,
+        description: goalDetails.description,
+        DateText: goalDetails.dueOn
 
-  //   }
-  // }
+      });
+    }
+  }
 
   DatePickerMainFunctionCall = () => {
     let DateHolder = this.state.DateHolder;
@@ -58,11 +70,11 @@ changeStateValue(){
     this.setState({assignToMySelf: false})
 }
   render() {
-    const { name, description, navigation } = this.props;
+    const { name, description } = this.state;
    
-    const goalDetails = navigation.getParam(goalDetails, navigation.state.params.itemId); 
-    const edit = navigation.getParam(edit, navigation.state.params.edit); 
-    console.log('-->', navigation.state.params.edit);
+    // const goalDetails = navigation.getParam(goalDetails, navigation.state.params.itemId); 
+    // const edit = navigation.getParam(edit, navigation.state.params.edit); 
+    // console.log('-->', navigation.state.params.edit);
     const saveButtonStyle = {
       color: "#424372",
       type: "solid"
