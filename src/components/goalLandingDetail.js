@@ -27,14 +27,15 @@ class GoalLandingDetail extends Component {
 
     fetchGoalDetail = () => {
         axios
-            .get(`http://10.10.80.237:8080/api/goal/${ this.props.navigation.state.params.itemId}`)
+            .get(`http://10.10.80.237:8080/api/goal/5d00cb3c66c7c21504673a9b
+            `)
             .then(res => {console.log('res', res); this.setState({ detailData: res.data })})
             .catch(e => console.log(e));
     }
 
     fetchFeedDetail = () => {
         axios
-            .get(`http://10.10.80.237:8080/api/feed/${ this.props.navigation.state.params.itemId}`)
+            .get(`http://10.10.80.237:8080/api/feed/5d00cb3c66c7c21504673a9b`)
             .then(res => {console.log('res2', res); this.setState({ feedDetail: res.data })})
             .catch(e => console.log(e));
     }

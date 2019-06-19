@@ -21,6 +21,7 @@ import HighImpactIcon from '../../images/highImpact.png';
 // import console = require('console');
 
 
+
 class CreateGoalPage extends Component {
   constructor(props) {
     super(props);
@@ -45,6 +46,20 @@ class CreateGoalPage extends Component {
         console.log(err);
     });
     }
+
+  
+  onDatePickedFunction = date => {
+    this.setState({
+      dobDate: date,
+      DateText: moment(date).format('DD-MMM-YYYY')
+    });
+  };
+
+  // componentDidMount(){
+  //   if(edit === true){
+
+  //   }
+  // }
 
   DatePickerMainFunctionCall = () => {
     let DateHolder = this.state.DateHolder;
@@ -169,7 +184,11 @@ class CreateGoalPage extends Component {
     });
   }
   render() {
-    // const { name, description } = this.state;
+    const { name, description, navigation } = this.props;
+   
+    const goalDetails = navigation.getParam(goalDetails, navigation.state.params.itemId); 
+    const edit = navigation.getParam(edit, navigation.state.params.edit); 
+    console.log('-->', navigation.state.params.edit);
     const saveButtonStyle = {
       color: '#424372',
       type: 'solid'

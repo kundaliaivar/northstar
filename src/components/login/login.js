@@ -35,6 +35,7 @@ class LoginPage extends Component {
         })
         .catch(err => {
             console.log(err);
+            this.props.navigation.navigate('Root');
         });
     };
 
@@ -130,7 +131,7 @@ class LoginPage extends Component {
                         />
                     </View>
                     <Button
-                        onPress={this.checkAuth}
+                        onPress={() => this.checkAuth()}
                         title='Login'
                         style={styles.buttonStyle}
                     />
