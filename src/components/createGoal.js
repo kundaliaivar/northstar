@@ -156,8 +156,6 @@ class CreateGoalPage extends Component {
       isHighImpact: false,
       isPublic: false,
       dueOn: '2019-06-20T04:18:21.931Z',
-      lastUpdateOn: '2019-06-12T04:18:21.931Z',
-      createdOn: '2019-06-11T04:18:21.931Z',
       percentage: 0,
       isCompleted: false
     })
