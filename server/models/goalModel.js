@@ -13,8 +13,8 @@ let GoalSchema = new Schema({
     lastUpdateOn : {type : String},
     createdOn : {type : String, required: true},
     isCompleted : {type : Boolean},
-    percentage : {type : Number},
-    taskUpdate : [{ id: String, required: true, taskId: String, description: String, createdBy: { type: Object, required: true }, lastUpdatedOn: String, createdOn: String, ratingCount: String }]
+    percentage : {type : Number}
+    
 });
 
 module.exports = mongoose.model('Goals', GoalSchema);

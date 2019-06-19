@@ -13,11 +13,18 @@ import Calender from "../../images/calender.png";
 import AddPerson from "../../images/addPerson.png"
 import moment from "moment";
 
+
 class CreateGoalPage extends Component {
   constructor(props) {
     super(props);
     this.state = { DateText: "", DateHolder: null , assignToMySelf:true };
   }
+
+  // componentDidMount(){
+  //   if(edit === true){
+
+  //   }
+  // }
 
   DatePickerMainFunctionCall = () => {
     let DateHolder = this.state.DateHolder;
@@ -51,7 +58,11 @@ changeStateValue(){
     this.setState({assignToMySelf: false})
 }
   render() {
-    const { name, description } = this.props;
+    const { name, description, navigation } = this.props;
+   
+    const goalDetails = navigation.getParam(goalDetails, navigation.state.params.itemId); 
+    const edit = navigation.getParam(edit, navigation.state.params.edit); 
+    console.log('-->', navigation.state.params.edit);
     const saveButtonStyle = {
       color: "#424372",
       type: "solid"
