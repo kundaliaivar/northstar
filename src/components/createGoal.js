@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, Image, AsyncStorage } from 'react-native';
+import { ScrollView, View, Text, TouchableOpacity, Image, AsyncStorage } from 'react-native';
 import moment from 'moment';
 import axios from 'axios';
 import Button from './common/button';
@@ -14,6 +14,7 @@ import { DatePickerDialog } from "react-native-datepicker-dialog";
 import Calender from '../../images/calender.png';
 import AddPerson from '../../images/addPerson.png';
 // import console = require('console');
+
 
 class CreateGoalPage extends Component {
   constructor(props) {
@@ -25,7 +26,10 @@ class CreateGoalPage extends Component {
       goalName: '',
       DateHolder: null,
       assignToMySelf: true,
-      value: 0
+      value: 0,
+      autosuggest :false,
+      addPerson:true,
+      selection:''
     };
   }
 
@@ -106,7 +110,16 @@ class CreateGoalPage extends Component {
       }
     });
   }
-
+  assignGoal() {
+    if (this.state.assignToMySelf) {
+      return <Assignee fnPressButton={this.changeStateValue.bind(this)} />;
+    } else {
+    return (<TouchableOpacity onPress={() => this.setState({autosuggest:true , addPerson:false})}>{this.state.addPerson && <Image style={styles.AddPerson} source={AddPerson} />}</TouchableOpacity>);
+    }
+  }
+  changeStateValue() {
+    this.setState({ assignToMySelf: false });
+  }
   render() {
     // const { name, description } = this.state;
     const saveButtonStyle = {
@@ -118,7 +131,8 @@ class CreateGoalPage extends Component {
       type: 'clear'
     };
     return (
-      <View style={styles.containerStyle}>
+        <View style = {{flexGrow:1}}>
+      <ScrollView style={styles.containerStyle}>
         {/* Goal Name */}
         <Input 
           label="Goal Name" 
@@ -148,18 +162,43 @@ class CreateGoalPage extends Component {
             </TouchableOpacity>
           </View>
         </View>
+        <View style={styles.datePickerBoxContainer}>
+          <Text style={{marginLeft:10}}>Progress</Text>
+          <RangeSlider
+            style={{ width: 350, height:60 }}
+            min={0}
+            rangeEnabled={false}
+            max={100}
+            thumbBorderWidth={12}
+            lineWidth={15}
+            step={1}
+            labelBorderWidth={1}
+            labelBorderRadius={1}
+            selectionColor="#B46BAB"
+            blankColor="#fafafa"
+            onValueChanged={(low, high, fromUser) => {
+              this.setState({ rangeLow: low, rangeHigh: high });
+            }}
+          />
+        </View>
 
         {/* Assign To */}
 
         <Text style={styles.assignToStyle}>Assign To</Text>
         {this.assignGoal()}
-
+        { this.state.autosuggest &&
+        <AutoSuggest style = {{width:20,height:50 ,backgroundColor:'blue'}} placeholder="Select member to Assign!" onChangeText={(selection) => console.log()} onItemPress={(selection) => console.log("selection")} value={this.state.selection}
+      terms={['Apple', 'Banana', 'Orange', 'Strawberry', 'Lemon', 'Cantaloupe', 'Peach', 'Mandarin', 'Date', 'Kiwi']}
+    />
+    }
+        
         <Button title="Save" style={saveButtonStyle} onPress={this.createGoal} />
         <Button title="Delete" style={deleteButtonStyle} />
         <DatePickerDialog
           ref="DatePickerDialog"
           onDatePicked={this.onDatePickedFunction.bind(this)}
         />
+      </ScrollView>
       </View>
     );
   }
@@ -167,11 +206,12 @@ class CreateGoalPage extends Component {
 
 const styles = {
   containerStyle: {
-    padding: 10
+    padding: 10,
+    flexGrow: 1,
+    height:'10%'
   },
   assignToStyle: {
     marginLeft: 10,
-    marginTop: 5,
     marginBottom: 10
   },
   datePickerBox: {
@@ -199,7 +239,6 @@ const styles = {
       width: 50,
       marginLeft: 10
   }
-
 };
 
 export default CreateGoalPage;
