@@ -38,17 +38,13 @@ class LoginPage extends Component {
         // const unameReg = /^[A-Za-z0-9.-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
         const unameReg = /^[A-Za-z0-9]+$/;
         if (type === 'username') {
-            console.warn('yes type is username');
             if (unameReg.test(text)) {
-                console.log('valid username:', text);
                 this.setState({ isValidText: true });
                 this.setState({ username: text });
             } else {
                 this.setState({ isValidText: false });
-                console.log('Invalid username');
             }
         } else if (type === 'password' && text !== '') {
-            console.log('pwd:', text);
             this.setState({ password: text });
         }
     }

@@ -14,20 +14,21 @@ import moment from 'moment';
 
 
 class GoalListing extends Component {
-   state={ completedGoalList: [], inProgressGoalList: [], expireGoalList: [], userId: '232323'}
+   state={ completedGoalList: [], inProgressGoalList: [], expireGoalList: [], userId: 'user1' }
 
    componentDidMount(){
        //10.10.80.196--> system ip
-    axios.get(`http://10.10.80.230:8080/api/getGoals/${this.state.userId}`)
+    axios.get(`http://127.0.0.1:8080/api/getGoals/user1`)
     .then(response=>{
-        let complete=[],inprogress=[],expire=[];
+        let complete = [], inprogress = [], expire = [];
         for(let item of response.data){
-            if(item.percentage==100)
-            complete.push(item);
-            else if(item.percentage<100 && moment(item.dueOn).isBefore(moment()) )
-            expire.push(item);
-            else if(item.percentage<100)
-            inprogress.push(item);
+            if(item.percentage==100) {
+                complete.push(item);
+            } else if (item.percentage<100 && moment(item.dueOn).isBefore(moment())) {
+                expire.push(item);
+            } else if(item.percentage<100){
+                inprogress.push(item);
+            }
         } this.setState({ completedGoalList: complete, inProgressGoalList: inprogress, expireGoalList: expire });
     }).catch(err => {
         console.log(err);

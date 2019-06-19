@@ -40,16 +40,7 @@ const goalLandingDetail = function(req, res){
 
 const createGoal = function (req, res) {
     const reqBody = req.body;
-    const newGoal = new GoalModel({
-        name: reqBody.name,
-        description: reqBody.description,
-        createdBy: reqBody.createdBy,
-        createdFor: reqBody.createdFor,
-        taskType: reqBody.taskType,
-        isHighImpact: reqBody.isHighImpact,
-        isPublic: reqBody.isPublic,
-        dueOn: reqBody.dueOn,
-        createdOn: new Date() });
+    const newGoal = new GoalModel(reqBody);
     
     newGoal.save()
     .then(Response => {
