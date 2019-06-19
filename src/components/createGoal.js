@@ -20,8 +20,6 @@ import HighImpactIcon from '../../images/highImpact.png';
 
 // import console = require('console');
 
-
-
 class CreateGoalPage extends Component {
   constructor(props) {
     super(props);
@@ -34,7 +32,10 @@ class CreateGoalPage extends Component {
       selection: '',
       showHighImpactIcon: false,
       isHighImpact: false,
-      userList: []
+      userList: [],
+      name: '',
+      description: '',
+      goalName: '',
     };
   }
   componentWillMount() {
@@ -55,11 +56,17 @@ class CreateGoalPage extends Component {
     });
   };
 
-  // componentDidMount(){
-  //   if(edit === true){
+  changeStateValue() {
+    this.setState({ assignToMySelf: false });
+  }
 
-  //   }
-  // }
+  assignGoal() {
+    if (this.state.assignToMySelf) {
+        return (<Assignee fnPressButton={this.changeStateValue.bind(this)} />);
+    } else {
+        return (<Image style={styles.AddPerson} source={AddPerson}></Image>);
+    }
+  }
 
   DatePickerMainFunctionCall = () => {
     let DateHolder = this.state.DateHolder;
@@ -149,40 +156,33 @@ class CreateGoalPage extends Component {
   }
 
   createGoal = () => {
-    console.log('inside creategoal');
-    console.log(AsyncStorage.getItem('userId'));
-    
-    //      description: '...', 
-    //      createdBy:{userId:'11232',userName:'ravi'},
-    //      createdFor:{userId:'232323',userName:'john'},
-    //      taskType:'CC',
-    //      isHighImpact:false,
-    //      isPublic:true,
-    //      dueOn:'2019-06-20T04:18:21.931Z',
-    //      lastUpdateOn:'2019-06-12T04:18:21.931Z',
-    //      createdOn:'2019-06-11T04:18:21.931Z',
-    //      isCompleted:false,
-    axios.post('http://127.0.0.1:8080/api/createGoal', {
-      name: this.state.goalName,
-      description: this.state.description,
-      createdBy: { userId: 'user1', userName: 'user1' },
-      createdFor: { userId: 'user1', userName: 'user1' },
-      taskType: 'Project Goals',
-      isHighImpact: false,
-      isPublic: false,
-      dueOn: '2019-06-20T04:18:21.931Z',
-      percentage: 0,
-      isCompleted: false
-    })
-    .then(res => {
-      console.log(res);
-      // console.log(this.props);
-      this.props.navigation.navigate('Home'); 
-    })
-    .catch(err => {
-      console.log(err);
+    AsyncStorage.getItem('userId')
+    .then(id => {
+      if (id) {
+        axios.post('http://127.0.0.1:8080/api/createGoal', {
+          name: this.state.goalName,
+          description: this.state.description,
+          createdBy: { userId: id, userName: id },
+          createdFor: { userId: id, userName: id },
+          taskType: 'Project Goals',
+          isHighImpact: false,
+          isPublic: false,
+          dueOn: '2019-06-20T04:18:21.931Z',
+          percentage: 0,
+          isCompleted: false
+        })
+        .then(res => {
+          console.log(res);
+          // console.log(this.props);
+          this.props.navigation.navigate('Home'); 
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      }
     });
   }
+
   render() {
     const { name, description, navigation } = this.props;
    
