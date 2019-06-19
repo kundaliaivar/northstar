@@ -10,7 +10,7 @@ import Input from "./common/input";
 import Assignee from "./createGoalComponents/Assignee";
 import { DatePickerDialog } from "react-native-datepicker-dialog";
 import RangeSlider from "rn-range-slider";
-import AutoSuggest from "react-native-autosuggest";
+import { Dropdown } from 'react-native-material-dropdown';
 import Calender from "../../images/calender.png";
 import AddPerson from "../../images/addPerson.png";
 import moment from "moment";
@@ -28,9 +28,19 @@ class CreateGoalPage extends Component {
       addPerson: true,
       selection: "",
       showHighImpactIcon: false,
-      isHighImpact: false
+      isHighImpact: false,
+      userList:[]
     };
   }
+  componentWillMount(){
+    axios.get(`http://10.10.80.230:8080/api/users`)
+    .then(response=>{
+        this.setState({userList:response.data});
+    })
+    .catch(err=>{
+        console.log(err);
+    })
+    }
 
   DatePickerMainFunctionCall = () => {
     let DateHolder = this.state.DateHolder;
@@ -129,8 +139,9 @@ class CreateGoalPage extends Component {
       type: 'clear'
     };
     return (
-      <View style={{ flexGrow: 1 }}>
-        <ScrollView style={styles.containerStyle}>
+  
+        <ScrollView>
+         <View > 
           {/* Goal Name */}
           <Input label="Goal Name" value={name} />
           {/* Goal Description */}
@@ -182,22 +193,13 @@ class CreateGoalPage extends Component {
           <Text style={styles.assignToStyle}>Assign To</Text>
           {this.assignGoal()}
           {this.state.autosuggest && (
-            <AutoSuggest
-              style={{ width: 20, height: 50, backgroundColor: "blue" }}
-              placeholder="Select member to Assign!"
-              onChangeText={selection => console.log()}
-              onItemPress={selection => console.log("selection")}
-              value={this.state.selection}
-              terms={[
-                "Abhijeet",
-                "Abhishek",
-                "Ayush",
-                "Ganapati",
-                "ravi",
-                "Shaili",
-                "Suprita"
-              ]}
+              <View style={{marginLeft:10 , marginRight:10}}>
+                <Dropdown
+                label='Select Member to Assign!'
+                data={this.state.userList}
             />
+              </View>
+           
           )}
           <View style={styles.iconContainerStyle}>
             <Text>Mark as High Impact</Text>
@@ -210,8 +212,9 @@ class CreateGoalPage extends Component {
             ref="DatePickerDialog"
             onDatePicked={this.onDatePickedFunction.bind(this)}
           />
+          </View>
         </ScrollView>
-      </View>
+    
     );
   }
 }
@@ -220,7 +223,7 @@ const styles = {
   containerStyle: {
     padding: 10,
     flexGrow: 1,
-    height: "10%"
+    height: 10
   },
   assignToStyle: {
     marginLeft: 10,
