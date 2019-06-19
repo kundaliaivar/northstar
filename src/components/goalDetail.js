@@ -51,7 +51,6 @@ class GoalDetails extends Component {
                       </View>
                       {this.state.data.createdBy && <Text>{ this.state.data.createdBy.userName}</Text>}
                     </View>      
-
             </View>
         </ScrollView>
         );
