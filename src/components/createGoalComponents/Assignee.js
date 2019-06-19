@@ -4,7 +4,8 @@ import { Avatar } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { user } from '../../../App'; 
 
-const Assignee = () => {
+const Assignee = (props) => {
+    const onPress = () => props.fnPressButton()
     if (!user.name) {
         // NOTE: remove later
         user.name = 'Abhishek P';
@@ -20,6 +21,10 @@ const Assignee = () => {
         }
         return initials;
     };
+    changeParentState = () =>  {
+        this.props.changeState;
+      }
+
     return (
         <View style={styles.containerStyles}>
             <Avatar
@@ -39,7 +44,7 @@ const Assignee = () => {
                 name='close'
                 size={32}
                 color='#fe3365'
-                onPress={() => {}}
+                onPress={onPress}
             />
         </View>
     );
