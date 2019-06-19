@@ -15,8 +15,9 @@ import CreateGoalPage from './src/components/createGoal';
 import GoalDetails from './src/components/goalDetail';
 import GoalLandingDetail from './src/components/goalLandingDetail';
 import firebase from 'react-native-firebase';
+import axios from 'axios';
 
-export const user = {};
+export const user = {userName:'ayush'};
 
 class App extends Component {
   static navigationOptions = ({ navigation }) =>
@@ -63,10 +64,17 @@ class App extends Component {
       if (fcmToken) {
         // user has a device token
         console.log('fcmToken:', fcmToken);
+        axios.post('http://192.168.1.4:8080/api/registerdevice',{userName:user.userName,deviceId:fcmToken})
+        .then(Response=>console.log(Response.data))
+        .catch(err=>console.log(err));
            //TODO call API to register device
         await AsyncStorage.setItem('fcmToken', fcmToken);
       }
     }
+    
+    axios.post('http://192.168.1.4:8080/api/registerdevice',{userName:user.userName,deviceId:fcmToken})
+        .then(Response=>console.log(Response))
+        .catch(err=>console.log(err));
     console.log('fcmToken:', fcmToken);
   }
 
