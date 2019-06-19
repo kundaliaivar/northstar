@@ -29,8 +29,7 @@ class LoginPage extends Component {
         })
         .then(res => {
             if (res.data) {
-                // eslint-disable-next-line no-underscore-dangle
-                this._storeData();
+                AsyncStorage.setItem('userId', this.state.username);
                 this.props.navigation.navigate('Root'); 
             }  
         })

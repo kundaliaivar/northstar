@@ -3,43 +3,47 @@
  * Use this Page to create or edit Goals
  */
 
-import React, { Component } from "react";
-import { ScrollView, View, Text, TouchableOpacity, Image } from "react-native";
-import Button from "./common/button";
-import Input from "./common/input";
-import Assignee from "./createGoalComponents/Assignee";
-import { DatePickerDialog } from "react-native-datepicker-dialog";
-import RangeSlider from "rn-range-slider";
+import React, { Component } from 'react';
+import { View, ScrollView, Text, TouchableOpacity, Image, AsyncStorage } from 'react-native';
+import moment from 'moment';
+import axios from 'axios';
+import Button from './common/button';
+import Input from './common/input';
+import Assignee from './createGoalComponents/Assignee';
+import { DatePickerDialog } from 'react-native-datepicker-dialog';
+import RangeSlider from 'rn-range-slider';
 import { Dropdown } from 'react-native-material-dropdown';
-import Calender from "../../images/calender.png";
-import AddPerson from "../../images/addPerson.png";
-import moment from "moment";
-import FilledIcon from "../../images/filled.png";
-import HighImpactIcon from "../../images/highImpact.png";
+import Calender from '../../images/calender.png';
+import AddPerson from '../../images/addPerson.png';
+import FilledIcon from '../../images/filled.png';
+import HighImpactIcon from '../../images/highImpact.png';
+
+// import console = require('console');
+
 
 class CreateGoalPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      DateText: "",
+      DateText: '',
       DateHolder: null,
       assignToMySelf: true,
       autosuggest: false,
       addPerson: true,
-      selection: "",
+      selection: '',
       showHighImpactIcon: false,
       isHighImpact: false,
-      userList:[]
+      userList: []
     };
   }
-  componentWillMount(){
-    axios.get(`http://10.10.80.230:8080/api/users`)
-    .then(response=>{
-        this.setState({userList:response.data});
+  componentWillMount() {
+    axios.get('http://10.10.80.230:8080/api/users')
+    .then(response => {
+        this.setState({ userList: response.data });
     })
-    .catch(err=>{
+    .catch(err => {
         console.log(err);
-    })
+    });
     }
 
   DatePickerMainFunctionCall = () => {
@@ -88,7 +92,7 @@ class CreateGoalPage extends Component {
   assignGoal() {
     if (this.state.assignToMySelf) {
       return <Assignee fnPressButton={this.changeStateValue.bind(this)} />;
-    } else {
+    } 
       return (
         <TouchableOpacity
           onPress={() => this.setState({ autosuggest: true, addPerson: false })}
@@ -98,7 +102,7 @@ class CreateGoalPage extends Component {
           )}
         </TouchableOpacity>
       );
-    }
+    
   }
   showHighImpactIcon() {
     if (this.state.showHighImpactIcon) {
@@ -113,7 +117,7 @@ class CreateGoalPage extends Component {
           )}
         </TouchableOpacity>
       );
-    } else {
+    } 
       return (
         <TouchableOpacity
           onPress={() =>
@@ -123,10 +127,48 @@ class CreateGoalPage extends Component {
           <Image style={styles.highImpactStyle} source={HighImpactIcon} />
         </TouchableOpacity>
       );
-    }
+    
   }
   changeStateValue() {
     this.setState({ assignToMySelf: false });
+  }
+
+  createGoal = () => {
+    console.log('inside creategoal');
+    console.log(AsyncStorage.getItem('userId'));
+    
+    //      description: '...', 
+    //      createdBy:{userId:'11232',userName:'ravi'},
+    //      createdFor:{userId:'232323',userName:'john'},
+    //      taskType:'CC',
+    //      isHighImpact:false,
+    //      isPublic:true,
+    //      dueOn:'2019-06-20T04:18:21.931Z',
+    //      lastUpdateOn:'2019-06-12T04:18:21.931Z',
+    //      createdOn:'2019-06-11T04:18:21.931Z',
+    //      isCompleted:false,
+    axios.post('http://127.0.0.1:8080/api/createGoal', {
+      name: this.state.goalName,
+      description: this.state.description,
+      createdBy: { userId: 'user1', userName: 'user1' },
+      createdFor: { userId: 'user1', userName: 'user1' },
+      taskType: 'Project Goals',
+      isHighImpact: false,
+      isPublic: false,
+      dueOn: '2019-06-20T04:18:21.931Z',
+      lastUpdateOn: '2019-06-12T04:18:21.931Z',
+      createdOn: '2019-06-11T04:18:21.931Z',
+      percentage: 0,
+      isCompleted: false
+    })
+    .then(res => {
+      console.log(res);
+      // console.log(this.props);
+      this.props.navigation.navigate('Home'); 
+    })
+    .catch(err => {
+      console.log(err);
+    });
   }
   render() {
     // const { name, description } = this.state;
@@ -193,11 +235,11 @@ class CreateGoalPage extends Component {
           <Text style={styles.assignToStyle}>Assign To</Text>
           {this.assignGoal()}
           {this.state.autosuggest && (
-              <View style={{marginLeft:10 , marginRight:10}}>
+              <View style={{ marginLeft: 10, marginRight: 10 }}>
                 <Dropdown
                 label='Select Member to Assign!'
                 data={this.state.userList}
-            />
+                />
               </View>
            
           )}
@@ -239,11 +281,11 @@ const styles = {
     justifyContent: 'space-between'
   },
   iconContainerStyle: {
-    flexDirection: "row",
+    flexDirection: 'row',
     flexGrow: 1,
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
     margin: 10,
-    alignItems:"center"
+    alignItems: 'center'
   },
 
   datePickerText: {
@@ -254,7 +296,7 @@ const styles = {
   datePickerBoxContainer: {
     marginTop: 5,
     marginBottom: 10,
-    width: "98%"
+    width: '98%'
   },
   AddPerson: {
     height: 50,
