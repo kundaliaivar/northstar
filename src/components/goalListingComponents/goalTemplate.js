@@ -22,7 +22,7 @@ class GoalListing extends Component {
     // }
     render() {
           
-        const { navigation,  }=this.props;
+        const { navigation}=this.props;
 
             if(this.props.data.length < 1)
             return(<View></View>);

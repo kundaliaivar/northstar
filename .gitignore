@@ -59,3 +59,4 @@ buck-out/
 MyPlayground.playground/
 yarn.lock
 package-lock.json
+ios/northstarPoc.xcodeproj/*
