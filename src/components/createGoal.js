@@ -10,16 +10,26 @@ import Input from "./common/input";
 import Assignee from "./createGoalComponents/Assignee";
 import { DatePickerDialog } from "react-native-datepicker-dialog";
 import RangeSlider from "rn-range-slider";
-import AutoSuggest from 'react-native-autosuggest';
+import AutoSuggest from "react-native-autosuggest";
 import Calender from "../../images/calender.png";
 import AddPerson from "../../images/addPerson.png";
 import moment from "moment";
-
+import FilledIcon from "../../images/filled.png";
+import HighImpactIcon from "../../images/highImpact.png";
 
 class CreateGoalPage extends Component {
   constructor(props) {
     super(props);
-    this.state = { DateText: "", DateHolder: null, assignToMySelf: true ,autosuggest :false , addPerson:true , selection:'' };
+    this.state = {
+      DateText: "",
+      DateHolder: null,
+      assignToMySelf: true,
+      autosuggest: false,
+      addPerson: true,
+      selection: "",
+      showHighImpactIcon: false,
+      isHighImpact: false
+    };
   }
 
   DatePickerMainFunctionCall = () => {
@@ -69,7 +79,40 @@ class CreateGoalPage extends Component {
     if (this.state.assignToMySelf) {
       return <Assignee fnPressButton={this.changeStateValue.bind(this)} />;
     } else {
-    return (<TouchableOpacity onPress={() => this.setState({autosuggest:true , addPerson:false})}>{this.state.addPerson && <Image style={styles.AddPerson} source={AddPerson} />}</TouchableOpacity>);
+      return (
+        <TouchableOpacity
+          onPress={() => this.setState({ autosuggest: true, addPerson: false })}
+        >
+          {this.state.addPerson && (
+            <Image style={styles.AddPerson} source={AddPerson} />
+          )}
+        </TouchableOpacity>
+      );
+    }
+  }
+  showHighImpactIcon() {
+    if (this.state.showHighImpactIcon) {
+      return (
+        <TouchableOpacity
+          onPress={() =>
+            this.setState({ showHighImpactIcon: false, isHighImpact: true })
+          }
+        >
+          {this.state.showHighImpactIcon && (
+            <Image style={styles.highImpactStyle} source={FilledIcon} />
+          )}
+        </TouchableOpacity>
+      );
+    } else {
+      return (
+        <TouchableOpacity
+          onPress={() =>
+            this.setState({ showHighImpactIcon: true, isHighImpact: false })
+          }
+        >
+          <Image style={styles.highImpactStyle} source={HighImpactIcon} />
+        </TouchableOpacity>
+      );
     }
   }
   changeStateValue() {
@@ -86,74 +129,88 @@ class CreateGoalPage extends Component {
       type: 'clear'
     };
     return (
-        <View style = {{flexGrow:1}}>
-      <ScrollView style={styles.containerStyle}>
-        {/* Goal Name */}
-        <Input 
-          label="Goal Name" 
-          value={this.state.goalName} 
-          onChange={text => this.setState({ goalName: text })} 
-        />
-        {/* Goal Description */}
-        <Input
-          label="Description"
-          multiline
-          numberOfLines={4}
-          value={this.state.description}
-          onChange={text => this.setState({ description: text })}
-        />
-        {/* NOTE: Add the DatePicker and ProgressBar component */}
-        <View style={{ marginTop: 10, marginLeft: 10 }}>
-          <Text>Select Date</Text>
-          <View>
-            <TouchableOpacity
-              onPress={this.DatePickerMainFunctionCall.bind(this)}
-              style={styles.datePickerBoxContainer}
-            >
-              <View style={styles.datePickerBox}>
-                <Text style={styles.datePickerText}>{this.state.DateText}</Text>
-                <Image style={styles.calenderStyle} source={Calender} />
-              </View>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={styles.datePickerBoxContainer}>
-          <Text style={{marginLeft:10}}>Progress</Text>
-          <RangeSlider
-            style={{ width: 350, height:60 }}
-            min={0}
-            rangeEnabled={false}
-            max={100}
-            thumbBorderWidth={12}
-            lineWidth={15}
-            step={1}
-            labelBorderWidth={1}
-            labelBorderRadius={1}
-            selectionColor="#B46BAB"
-            blankColor="#fafafa"
-            onValueChanged={(low, high, fromUser) => {
-              this.setState({ rangeLow: low, rangeHigh: high });
-            }}
+      <View style={{ flexGrow: 1 }}>
+        <ScrollView style={styles.containerStyle}>
+          {/* Goal Name */}
+          <Input label="Goal Name" value={name} />
+          {/* Goal Description */}
+          <Input
+            label="Description"
+            multiline
+            numberOfLines={4}
+            value={description}
           />
-        </View>
+          {/* NOTE: Add the DatePicker and ProgressBar component */}
+          <View style={{ marginTop: 10, marginLeft: 10 }}>
+            <Text>Select Date</Text>
+            <View>
+              <TouchableOpacity
+                onPress={this.DatePickerMainFunctionCall.bind(this)}
+                style={styles.datePickerBoxContainer}
+              >
+                <View style={styles.datePickerBox}>
+                  <Text style={styles.datePickerText}>
+                    {this.state.DateText}
+                  </Text>
+                  <Image style={styles.calenderStyle} source={Calender} />
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View style={styles.datePickerBoxContainer}>
+            <Text style={{ marginLeft: 10 }}>Progress</Text>
+            <RangeSlider
+              style={{ width: 350, height: 60 }}
+              min={0}
+              rangeEnabled={false}
+              max={100}
+              thumbBorderWidth={12}
+              lineWidth={15}
+              step={1}
+              labelBorderWidth={1}
+              labelBorderRadius={1}
+              selectionColor="#B46BAB"
+              blankColor="#fafafa"
+              onValueChanged={(low, high, fromUser) => {
+                this.setState({ rangeLow: low, rangeHigh: high });
+              }}
+            />
+          </View>
 
-        {/* Assign To */}
+          {/* Assign To */}
 
-        <Text style={styles.assignToStyle}>Assign To</Text>
-        {this.assignGoal()}
-        { this.state.autosuggest &&
-        <AutoSuggest style = {{width:20,height:50 ,backgroundColor:'blue'}} placeholder="Select member to Assign!" onChangeText={(selection) => console.log()} onItemPress={(selection) => console.log("selection")} value={this.state.selection}
-      terms={['Apple', 'Banana', 'Orange', 'Strawberry', 'Lemon', 'Cantaloupe', 'Peach', 'Mandarin', 'Date', 'Kiwi']}
-    />
-    }
-        
-        <Button title="Save" style={saveButtonStyle} />
-        <Button title="Delete" style={deleteButtonStyle} />
-        <DatePickerDialog
-          ref="DatePickerDialog"
-          onDatePicked={this.onDatePickedFunction.bind(this)}
-        />
-      </ScrollView>
+          <Text style={styles.assignToStyle}>Assign To</Text>
+          {this.assignGoal()}
+          {this.state.autosuggest && (
+            <AutoSuggest
+              style={{ width: 20, height: 50, backgroundColor: "blue" }}
+              placeholder="Select member to Assign!"
+              onChangeText={selection => console.log()}
+              onItemPress={selection => console.log("selection")}
+              value={this.state.selection}
+              terms={[
+                "Abhijeet",
+                "Abhishek",
+                "Ayush",
+                "Ganapati",
+                "ravi",
+                "Shaili",
+                "Suprita"
+              ]}
+            />
+          )}
+          <View style={styles.iconContainerStyle}>
+            <Text>Mark as High Impact</Text>
+            {this.showHighImpactIcon()}
+          </View>
+
+          <Button title="Save" style={saveButtonStyle} />
+          <Button title="Delete" style={deleteButtonStyle} />
+          <DatePickerDialog
+            ref="DatePickerDialog"
+            onDatePicked={this.onDatePickedFunction.bind(this)}
+          />
+        </ScrollView>
       </View>
     );
   }
@@ -163,7 +220,7 @@ const styles = {
   containerStyle: {
     padding: 10,
     flexGrow: 1,
-    height:'10%'
+    height: "10%"
   },
   assignToStyle: {
     marginLeft: 10,
@@ -177,6 +234,13 @@ const styles = {
     height: 38,
     flexDirection: 'row',
     justifyContent: 'space-between'
+  },
+  iconContainerStyle: {
+    flexDirection: "row",
+    flexGrow: 1,
+    justifyContent: "space-between",
+    margin: 10,
+    alignItems:"center"
   },
 
   datePickerText: {
@@ -193,6 +257,10 @@ const styles = {
     height: 50,
     width: 50,
     marginLeft: 10
+  },
+  highImpactStyle: {
+    height: 35,
+    width: 35
   }
 };
 
