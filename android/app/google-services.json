@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "262590419473",
+    "firebase_url": "https://northstarpoc.firebaseio.com",
+    "project_id": "northstarpoc",
+    "storage_bucket": "northstarpoc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:262590419473:android:14fdbbc2515c9940",
+        "android_client_info": {
+          "package_name": "com.northstarpoc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "262590419473-ip168e22jvaqts5s7li0n1dooi5e9nqv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0DAsfb1Ls_4LyfCLfBlAeh20nilEmmfI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "262590419473-ip168e22jvaqts5s7li0n1dooi5e9nqv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "262590419473-bubo18geu0draqpitbanaepd64dnv3pt.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.northstarPoc"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
