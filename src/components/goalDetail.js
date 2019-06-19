@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text , View , Image  } from 'react-native';
+import { Text, View, Image } from 'react-native';
 import defaultPhoto from '../../images/defaultPhoto.png';
 import axios from 'axios';
 
@@ -19,38 +19,25 @@ class GoalDetails extends Component {
     })
     }
     render() {
-      data = this.state.data;
+      const data = this.state.data;
     
         return (
-            <View style = {styles.GoalDetailsContainer}>
-              <Text style = {styles.headingText}>Goal Name</Text>
-              <Text style = {styles.text}>{data.name}</Text>
-              <Text style = {styles.headingText}>Goal Description</Text>
-              <Text style = {styles.text}>{data.description}</Text>
-              <Text style = {styles.headingText}>Complete By</Text>
-              <Text style = {styles.text}>06/10/2019</Text>
-              <Text style = {styles.headingText}>Goal Type</Text>
-              <Text style = {styles.text}>Project Goals</Text>
-              <Text style = {styles.headingText}>Progress</Text>
-              <Text style = {styles.text}>{data.percentage}%</Text>
-              <Text style = {styles.headingText}>High Impact</Text>
-              <Text style = {styles.text}>{data.isHighImpact}</Text>
-              <Text style = {styles.text}>Public</Text>
-              <Text style = {styles.text}>{data.isPublic}</Text>
-              {/* <Text style = {styles.headingText}>Created By</Text>
-                    <View style = {styles.memberInfoStyle}>
-                      <View style = {{width:20,height:20,marginRight:10}}>
-                        <Image style = {{width:"100%",height:"100%"}} source = {defaultPhoto}/>
-                      </View>
-                        <Text>{data.createdBy.use}</Text>
-                    </View>
-                <Text style = {styles.headingText}>Assign To</Text>
-                    <View style = {styles.memberInfoStyle}>
-                      <View style = {{width:20,height:20,marginRight:10}}>
-                        <Image style = {{width:"100%",height:"100%"}} source = {defaultPhoto}/>
-                      </View>
-                      <Text>{data.createdBy.userName}</Text>
-                    </View>       */}
+            <View style={styles.GoalDetailsContainer}>
+              <Text style={styles.headingText}>Goal Name</Text>
+              <Text style={styles.text}>{data.name}</Text>
+              <Text style={styles.headingText}>Goal Description</Text>
+              <Text style={styles.text}>{data.description}</Text>
+              <Text style={styles.headingText}>Complete By</Text>
+              <Text style={styles.text}>06/10/2019</Text>
+              <Text style={styles.headingText}>Goal Type</Text>
+              <Text style={styles.text}>Project Goals</Text>
+              <Text style={styles.headingText}>Progress</Text>
+              <Text style={styles.text}>{data.percentage}%</Text>
+              <Text style={styles.headingText}>High Impact</Text>
+              <Text style={styles.text}>{data.isHighImpact}</Text>
+              <Text style={styles.text}>Public</Text>
+              <Text style={styles.text}>{data.isPublic}</Text>
+              
             </View>
         );
     }
