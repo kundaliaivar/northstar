@@ -13,6 +13,9 @@ import Input from '../common/input';
 class LoginPage extends Component {
     constructor(props) {
         super(props);
+        this.checkAuth = this.checkAuth.bind(this);
+        // eslint-disable-next-line no-underscore-dangle
+        this._storeData = this._storeData.bind(this);
         this.state = {
             username: '',
             isValidText: true,
@@ -20,13 +23,14 @@ class LoginPage extends Component {
         };
     }
     checkAuth = () => {
-        axios.post('http://10.10.80.237:8080/api/login', {
+        axios.post('http://192.168.0.3:8080/api/login', {
             userName: this.state.username,
             password: this.state.password
         })
         .then(res => {
             if (res.data) {
-                AsyncStorage.setItem('userId', this.state.username);
+                // eslint-disable-next-line no-underscore-dangle
+                this._storeData();
                 this.props.navigation.navigate('Root'); 
             }  
         })
@@ -34,6 +38,14 @@ class LoginPage extends Component {
             console.log(err);
         });
     };
+
+    _storeData = async () => {
+        try {
+            await AsyncStorage.setItem('userId', this.state.username);
+        } catch (error) {
+          // Error saving data
+        }
+      };
 
     validate(text, type) {
         // const unameReg = /^[A-Za-z0-9.-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
@@ -119,7 +131,7 @@ class LoginPage extends Component {
                         />
                     </View>
                     <Button
-                        onPress={() => this.checkAuth()}
+                        onPress={this.checkAuth}
                         title='Login'
                         style={styles.buttonStyle}
                     />
