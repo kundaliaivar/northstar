@@ -16,16 +16,30 @@ import AddPerson from '../../images/addPerson.png';
 // import console = require('console');
 
 
+
 class CreateGoalPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      DateText: '', 
-      DateHolder: null, 
-      assignToMySelf: true, 
+      name: '',
+      description: '',
+      DateText: "", 
       goalName: '',
-      description: '' 
-    };
+      DateHolder: null , assignToMySelf:true };
+  }
+
+  componentDidMount() {
+    const { navigation } = this.props;
+    const goalDetails = navigation.getParam('goalDetails', {}); 
+    const edit = navigation.getParam('edit', false); 
+    if(edit){
+      this.setState({
+        goalName: goalDetails.name,
+        description: goalDetails.description,
+        DateText: goalDetails.dueOn
+
+      });
+    }
   }
 
   
@@ -99,8 +113,8 @@ class CreateGoalPage extends Component {
     });
   }
   render() {
-    // const { name, description } = this.props;
-    // console.log(this.props);
+    const { name, description } = this.state;
+  
     const saveButtonStyle = {
       color: '#424372',
       type: 'solid'
