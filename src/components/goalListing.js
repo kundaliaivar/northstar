@@ -16,24 +16,26 @@ import moment from 'moment';
 class GoalListing extends Component {
    state={ completedGoalList: [], inProgressGoalList: [], expireGoalList: [], userId: AsyncStorage.getItem('userId') }
 
-   componentWillUpdate(){
-    //    console.log(this.state.userId);
-       //10.10.80.196--> system ip
-    axios.get(`http://10.10.80.237:8080/api/getGoals/${this.state.userId}`)
-    .then(response=>{
-        console.log('goal list:', response);
-        let complete = [], inprogress = [], expire = [];
-        for(let item of response.data){
-            if(item.percentage==100) {
-                complete.push(item);
-            } else if (item.percentage<100 && moment(item.dueOn).isBefore(moment())) {
-                expire.push(item);
-            } else if(item.percentage<100){
-                inprogress.push(item);
-            }
-        } this.setState({ completedGoalList: complete, inProgressGoalList: inprogress, expireGoalList: expire });
-    }).catch(err => {
-        console.log(err);
+   componentWillUpdate() {
+    AsyncStorage.getItem('userId')
+    .then(res => {
+        if (res) {
+            axios.get(`http://10.10.80.237:8080/api/getGoals/${res}`)
+            .then(response=>{
+                let complete = [], inprogress = [], expire = [];
+                for(let item of response.data){
+                    if(item.percentage==100) {
+                        complete.push(item);
+                    } else if (item.percentage<100 && moment(item.dueOn).isBefore(moment())) {
+                        expire.push(item);
+                    } else if(item.percentage<100){
+                        inprogress.push(item);
+                    }
+                } this.setState({ completedGoalList: complete, inProgressGoalList: inprogress, expireGoalList: expire });
+            }).catch(err => {
+                console.log(err);
+            });
+        }
     });
    }
    
