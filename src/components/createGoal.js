@@ -98,7 +98,8 @@ componentDidMount() {
       if (!DateHolder || DateHolder == null) {
         DateHolder = new Date();
         this.setState({
-          DateHolder
+          DateHolder,
+          dateError: ''
         });
       }
   
@@ -308,7 +309,6 @@ componentDidMount() {
                 onChangeText={(value) => this.onChangeHandler(value)}
                 />
               </View>
-           
           )}
           <View style={styles.iconContainerStyle}>
             <Text>Mark as High Impact</Text>
@@ -316,7 +316,9 @@ componentDidMount() {
           </View>
 
         <Button title="Save" style={saveButtonStyle} onPress={this.validate.bind(this)} />
-        <Button title="Delete" style={deleteButtonStyle} />
+        {this.state.edit && (
+          <Button title="Delete" style={deleteButtonStyle} />
+        )}
         <DatePickerDialog
           ref="DatePickerDialog"
           onDatePicked={this.onDatePickedFunction.bind(this)}
