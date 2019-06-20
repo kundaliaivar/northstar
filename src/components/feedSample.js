@@ -3,8 +3,10 @@ import { View, Text, Image, TouchableOpacity } from 'react-native';
 import moment from 'moment';
 import MemberInfo from './common/memberInfo';
 import Like from '../../images/like.png';
-import { Icon } from 'react-native-elements';
+import { Icon, Button } from 'react-native-elements';
 import axios from 'axios';
+import { TextInput } from 'react-native-gesture-handler';
+import { stringLiteral } from '@babel/types';
 
 
 
@@ -13,6 +15,9 @@ const FeedSample = (props) => {
 
    const [liked, setliked] = useState(false);
    const [starsCount, setStarsCount] = useState(0);
+   const [edit, setedit] = useState(false);
+   const [updatedText, setupdatedText] = useState('');
+
 
    const {
        item,
@@ -22,6 +27,7 @@ const FeedSample = (props) => {
    useEffect(() => {
      
     setStarsCount(item.stars.length);
+    setupdatedText(item.feedBody);
 
    }, []);
  
@@ -41,6 +47,30 @@ const FeedSample = (props) => {
     }
    };
 
+   const updateEditedText = () => {
+       const data = {
+           feedBody: updatedText
+       };
+        axios
+            .put(`http://10.10.80.237:8080/api/editfeed/${item._id}`, data)
+            .then(res => {
+                console.log(res.data);
+                setedit(false);
+                // setupdatedText('');
+            })
+            .catch(e => console.log(e));
+   };
+
+   const onEditClose = () => {
+       if (!edit) {
+        setedit(true);
+       }
+    else {
+        setedit(false);
+        // setupdatedText('');
+    }
+   };
+
 
     return (
         <View> 
@@ -48,11 +78,20 @@ const FeedSample = (props) => {
                 <MemberInfo 
                  goalName={item.userName} 
                  date={moment.utc(item.createdOn).format('L,HH:mm a')} 
-                 avatarTitle='SV' 
+                 avatarTitle={item.userName.slice(0, 1).toUpperCase()} 
+                 onAction={() => onEditClose()}
+                 edit={edit}
                 />
             </View>
             <View style={styles.postDetail}>
-                <Text>{item.feedBody}</Text>
+                {edit ? (
+                <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                    <TextInput style={{ width: '85%' }} value={updatedText} onChangeText={text => setupdatedText(text)} />
+                    <Button title="Post" style={{ width: '20%' }} buttonStyle={{ backgroundColor: '#ccc', padding: 5 }} titleStyle={{ color: 'black' }} onPress={updateEditedText} />
+                </View>
+                ) : (
+                <Text>{updatedText}</Text>
+                )}
             </View>
             <View style={styles.commentsSec}>
                 <TouchableOpacity style={styles.likeStyle} onPress={() => updateLike()}>

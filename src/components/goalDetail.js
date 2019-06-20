@@ -42,7 +42,7 @@ class GoalDetails extends Component {
               <Text style={styles.text}>{this.state.data.percentage}%</Text>
               <Text style={styles.headingText}>High Impact</Text>
               {this.showHighImpactValue(this.state.data.isHighImpact)}
-              <Text style={styles.text}>Public</Text>
+              <Text style={styles.headingText}>Public</Text>
               <Text style={styles.text}>False</Text>
               <Text style={styles.headingText}>Created By</Text>
                     <View style={styles.memberInfoStyle}>

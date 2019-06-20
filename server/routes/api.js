@@ -13,7 +13,7 @@ router.get('/getGoals/:userId', goal_controller.getGoal);
 router.get('/goal/:goalId', goal_controller.goalLandingDetail);
 router.post('/createfeed', feed_controller.create);
 router.put('/likefeed/:feedId', feed_controller.like);
-router.get('/editfeed', feed_controller.edit);
+router.put('/editfeed/:feedId', feed_controller.edit);
 router.post('/createGoal', goal_controller.createGoal);
 router.post('/registerdevice', notification_controller.registerDevice);
 router.post('/sendnotification', notification_controller.sendNotification);

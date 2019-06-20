@@ -13,9 +13,16 @@ import MemberInfo from '../components/common/memberInfo';
 
 
 class GoalLandingDetail extends Component {
-    state={ detailData:[], feedDetail:[], updateText: '' }
+    state={ detailData: [], feedDetail: [], updateText: '' }
 
-   componentDidMount(){
+    static navigationOptions = ({ navigation }) => {
+        console.log(navigation.getParam('goalName'))
+        return {
+            title: navigation.getParam('goalName')
+        }
+    }
+
+    componentDidMount() {
         // axios.get(`http://10.10.80.237:8080/api/goal/${ this.props.navigation.state.params.itemId}`)
         // .then( res =>{
         //     this.setState({ detailData: res.data });
@@ -23,21 +30,26 @@ class GoalLandingDetail extends Component {
         // }).catch(err => {
         //     console.log(err);
         // });
+        this.props.navigation.setParams({ goalName: '' });
         this.fetchGoalDetail();
         this.fetchFeedDetail();
- }
+    }
 
     fetchGoalDetail = () => {
         axios
-            .get(`http://10.10.80.237:8080/api/goal/${ this.props.navigation.state.params.itemId}`)
-            .then(res => {console.log('res', res); this.setState({ detailData: res.data })})
+            .get(`http://10.10.80.237:8080/api/goal/${this.props.navigation.state.params.itemId}`)
+            .then(res => {
+                console.log('res', res);
+                this.setState({ detailData: res.data });
+                this.props.navigation.setParams({ goalName: res.data.name.toUpperCase() });
+            })
             .catch(e => console.log(e));
     }
 
     fetchFeedDetail = () => {
         axios
-            .get(`http://10.10.80.237:8080/api/feed/${ this.props.navigation.state.params.itemId}`)
-            .then(res => {console.log('res2', res); this.setState({ feedDetail: res.data })})
+            .get(`http://10.10.80.237:8080/api/feed/${this.props.navigation.state.params.itemId}`)
+            .then(res => { console.log('res2', res); this.setState({ feedDetail: res.data }) })
             .catch(e => console.log(e));
     }
 
@@ -56,45 +68,44 @@ class GoalLandingDetail extends Component {
             })
             .catch(e => console.log('----', e));
     }
-    
+
     render() {
         const { navigation, } = this.props;
-    return (
-        <View style={styles.containerStyle}>
-            <View style={styles.headerStyle}>
-                <Text style={styles.headingColor}>Test</Text>
-                <View style={styles.editSectionStyle}>
-                    <Text style={{ color: 'aqua' }} onPress={() => navigation.navigate('GoalDetails', { itemId: this.state.detailData._id })}>View Details</Text>
-                    <TouchableOpacity onPress={() => navigation.navigate('CreateGoalPage', { itemId: this.state.detailData._id, goalDetails: this.state.detailData, edit: 'true' })}>
-                    <Image source={EditIcon} />
+        return (
+            <View style={styles.containerStyle}>
+                <View style={styles.headerStyle}>
+                    <Text style={styles.headingColor}>Test</Text>
+                    <View style={styles.editSectionStyle}>
+                        <Text style={{ color: 'aqua' }} onPress={() => navigation.navigate('GoalDetails', { itemId: this.state.detailData._id })}>View Details</Text>
+                        <TouchableOpacity onPress={() => navigation.navigate('CreateGoalPage', { itemId: this.state.detailData._id, goalDetails: this.state.detailData, edit: 'true' })}>
+                            <Image source={EditIcon} />
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                <View style={styles.progressSection}>
+                    <View >
+                        <Text style={styles.completionDateHeader}>Completed By</Text>
+                        <Text style={styles.completionDateContainer}>{this.state.detailData && moment.utc(this.state.detailData.dueOn).format('MMM DD')}</Text>
+                    </View>
+                </View>
+                <View style={styles.upadatePostSec}>
+                    {/* <Text>Post an update...</Text> */}
+                    <TextInput value={this.state.updateText} onChangeText={text => this.setState({ updateText: text })} style={styles.inputBox} placeholder='Post an update...' />
+                    <TouchableOpacity onPress={() => this.postAnUpdate()}>
+                        <Icon name='md-add-circle-outline' type='ionicon' color='#00afff' />
                     </TouchableOpacity>
                 </View>
+                <ScrollView>
+                    {(this.state.feedDetail.length) ? this.state.feedDetail.map(item => <FeedSample item={item} />) : <Text style={styles.noDataText}>No Feeds</Text>}
+                </ScrollView>
+
+
             </View>
-            <View style={styles.progressSection}>
-                <Text>progress bar to be placed</Text>
-                <View >
-                    <Text style={styles.completionDateHeader}>Completed By</Text>
-                    <Text style={styles.completionDateContainer}>{this.state.detailData && moment.utc(this.state.detailData.dueOn).format('MMM DD')}</Text>
-                </View>
-            </View>
-            <View style={styles.upadatePostSec}>
-                {/* <Text>Post an update...</Text> */}
-                <TextInput value={this.state.updateText} onChangeText={text => this.setState({ updateText: text })} style={styles.inputBox} placeholder='Post an update...' />
-                <TouchableOpacity onPress={() => this.postAnUpdate()}>
-                    <Icon name='md-add-circle-outline' type='ionicon' color='#00afff' />
-                </TouchableOpacity>
-             </View>
-             <ScrollView>
-                {(this.state.feedDetail.length) ? this.state.feedDetail.map(item => <FeedSample item={item} />) : <Text style={styles.noDataText}>No Feeds</Text>}
-             </ScrollView> 
-        
-            
-        </View>
-    );
-   }
-}   
+        );
+    }
+}
 const styles = {
-      
+
     inputBox: {
         width: '80%',
         padding: 4
@@ -175,6 +186,6 @@ const styles = {
         marginTop: 20
     }
 
- };
+};
 
 export default GoalLandingDetail;

@@ -1,13 +1,16 @@
 import React from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { Avatar } from 'react-native-elements';
 import EditIcon from '../../../images/edit.png';
+import CloseIcon from '../../../images/close.png';
 
 const MemberInfo = (props) => { 
     const {
         goalName,
         date,
-        avatarTitle
+        avatarTitle,
+        onAction,
+        edit
     } = props;
     return (
         <View style={styles.infoContainer}>
@@ -26,7 +29,11 @@ const MemberInfo = (props) => {
             
             </View>
             <View style={{ alignSelf: 'center'}} >
-            <Image source={EditIcon} />
+            {edit ? <TouchableOpacity onPress={() => onAction()}>
+                <Image source={CloseIcon} />
+            </TouchableOpacity> : <TouchableOpacity onPress={() => onAction()}>
+                <Image source={EditIcon} />
+            </TouchableOpacity>}
             </View>
         </View>
     );

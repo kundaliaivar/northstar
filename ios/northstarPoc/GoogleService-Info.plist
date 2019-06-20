@@ -30,7 +30,7 @@
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:262590419473:ios:e05e74488f94b383</string>
-	<key>DATABASE_URL</key>
-	<string>https://northstarpoc.firebaseio.com</string>
+	<!-- <key>DATABASE_URL</key>
+	<string>https://northstarpoc.firebaseio.com</string> -->
 </dict>
 </plist>

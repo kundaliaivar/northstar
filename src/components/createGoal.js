@@ -83,7 +83,7 @@ class CreateGoalPage extends Component {
     AsyncStorage.getItem('userId')
     .then(id => {
       if (id) {
-        axios.post('http://127.0.0.1:8080/api/createGoal', {
+        axios.post('http://10.10.80.237:8080/api/createGoal', {
           name: this.state.goalName,
           description: this.state.description,
           createdBy: { userId: id, userName: id },
