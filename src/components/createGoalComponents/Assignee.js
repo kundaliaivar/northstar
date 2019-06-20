@@ -1,17 +1,19 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, AsyncStorage } from 'react-native';
 import { Avatar } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { user } from '../../../App'; 
 
 const Assignee = (props) => {
-    const onPress = () => props.fnPressButton()
-    if (!user.name) {
-        // NOTE: remove later
-        user.name = 'Abhishek P';
-        user.designation = 'UX Developer';
-        user.location = 'Bellandur';
-    }
+    const onPress = () => props.fnPressButton();
+    AsyncStorage.getItem('userId').then(id => {
+
+        if (!user.name) {
+            // NOTE: remove later
+            user.name = 'Abhishek P';
+            user.designation = 'UX Developer';
+            user.location = 'Bellandur';
+        }
+    });
     const userInitials = () => {
         const names = user.name.split(' ');
         let initials = names[0].substring(0, 1).toUpperCase();
@@ -28,7 +30,7 @@ const Assignee = (props) => {
     return (
         <View style={styles.containerStyles}>
             <Avatar
-                size='large'
+                size='Small'
                 rounded
                 title={userInitials()}
                 onPress={() => console.log('Works!')}
@@ -61,7 +63,7 @@ const styles = {
         marginLeft: 10
     },
     nameStyle: {
-        fontSize: 22,
+        fontSize: 16,
         color: '#000'
     },
     iconStyle: {

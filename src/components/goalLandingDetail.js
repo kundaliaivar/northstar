@@ -5,6 +5,7 @@ import moment from 'moment';
 import EditIcon from '../../images/edit-white.png';
 import FeedSample from '../components/feedSample';
 import { Icon } from 'react-native-elements';
+import RangeSlider from "rn-range-slider";
 // import AddIcon from '../../images/add2x.png';
 import Input from './common/input';
 import MemberInfo from '../components/common/memberInfo';
@@ -40,7 +41,7 @@ class GoalLandingDetail extends Component {
             .get(`http://10.10.80.237:8080/api/goal/${this.props.navigation.state.params.itemId}`)
             .then(res => {
                 console.log('res', res);
-                this.setState({ detailData: res.data });
+                this.setState({ detailData: res.data, initialSliderValue: res.data.percentage });
                 this.props.navigation.setParams({ goalName: res.data.name.toUpperCase() });
             })
             .catch(e => console.log(e));
@@ -69,6 +70,10 @@ class GoalLandingDetail extends Component {
             .catch(e => console.log('----', e));
     }
 
+    updateSlider(data){
+        return (data.percentage);
+    }
+    
     render() {
         const { navigation, } = this.props;
         return (
@@ -83,6 +88,23 @@ class GoalLandingDetail extends Component {
                     </View>
                 </View>
                 <View style={styles.progressSection}>
+                    <RangeSlider
+              style={{ width: 200, height: 60 }}
+              min={0}
+              initialLowValue={this.updateSlider(this.state.detailData)}
+              rangeEnabled={false}
+              thumbBorderWidth={12}
+              lineWidth={15}
+              step={1}
+              labelBorderWidth={1}
+              labelBorderRadius={1}
+              selectionColor="#B46BAB"
+              blankColor="#fafafa"
+              disableRange={true}
+              onValueChanged={(low) => {
+                this.setState({ value: low });
+              }}
+            />
                     <View >
                         <Text style={styles.completionDateHeader}>Completed By</Text>
                         <Text style={styles.completionDateContainer}>{this.state.detailData && moment.utc(this.state.detailData.dueOn).format('MMM DD')}</Text>
@@ -131,6 +153,7 @@ const styles = {
         flexDirection: 'row',
         paddingTop: 10,
         paddingLeft: 20,
+        alignItems: 'center',
         paddingRight: 20,
         paddingBottom: 10,
         backgroundColor: '#424372',

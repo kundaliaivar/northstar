@@ -192,19 +192,8 @@ const RootStack = createStackNavigator({
         shadowOffset: { height: 0, width: 0 }
       },
     })
+    },
   },
-  GoalDetails: {
-    screen: GoalDetails,
-    navigationOptions: () => ({
-      headerTitleStyle: { fontSize: 18 },
-      headerTintColor: '#fff',
-      headerStyle: {
-        backgroundColor: '#2E2F50',
-      },
-      title: 'Goal Details',
-    })
-  }
-},
   {
     initialRouteName: 'Home',
   }

@@ -1,6 +1,11 @@
 rootProject.name = 'northstarPoc'
+<<<<<<< HEAD
 // include ':react-native-firebase'
 // project(':react-native-firebase').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-firebase/android')
+=======
+include ':rn-range-slider'
+project(':rn-range-slider').projectDir = new File(rootProject.projectDir, '../node_modules/rn-range-slider/android')
+>>>>>>> 0182bb3691af38998fde4b85a852472ba52053a0
 include ':react-native-vector-icons'
 project(':react-native-vector-icons').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-vector-icons/android')
 include ':react-native-gesture-handler'
