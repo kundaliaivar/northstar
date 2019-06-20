@@ -23,8 +23,10 @@ class GoalIndividualist extends React.Component {
                 <Collapse isCollapsed={this.state.collapsed} onToggle={(isCollapsed) => this.setState({ collapsed: isCollapsed })}>
                     <CollapseHeader style={styles.containerStyle}>
                         <View style={styles.containerContentStyle} >
+                        <View style = {styles.titleStyle}>
                             <Text>{this.props.title}</Text>
-                            <Text>{this.props.goalCount}</Text>
+                            <Text> ({this.props.goalCount})</Text>
+                        </View>
                             {this.renderImage()}
                         </View>
     
@@ -64,6 +66,9 @@ const styles = {
         flexDirection:'row',
         justifyContent:'space-between',
         width:'100%'
+    },
+    titleStyle:{
+        flexDirection:'row'
     }
 }
 
