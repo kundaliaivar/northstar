@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from "react";
-import { ScrollView, View, Text, TouchableOpacity, Image } from "react-native";
+import { ScrollView, View, Text, TouchableOpacity, Image , AsyncStorage } from "react-native";
 import Button from "./common/button";
 import Input from "./common/input";
 import Assignee from "./createGoalComponents/Assignee";
@@ -41,6 +41,19 @@ class CreateGoalPage extends Component {
       value: 0
     };
   }
+componentDidMount() {
+    const { navigation } = this.props;
+    const goalDetails = navigation.getParam('goalDetails', {}); 
+    const edit = navigation.getParam('edit', false); 
+    if(edit){
+    this.setState({
+    goalName: goalDetails.name,
+    description: goalDetails.description,
+    DateText: goalDetails.dueOn
+
+    });
+    }
+}
   componentWillUpdate(){
     axios.get(`http://10.10.80.230:8080/api/users`)
     .then(response=>{
@@ -77,7 +90,7 @@ class CreateGoalPage extends Component {
   };
   assignGoal() {
     if (this.state.assignToMySelf) {
-      return <Assignee fnPressButton={this.changeStateValue.bind(this)} />;
+      return (<Assignee fnPressButton={this.changeStateValue.bind(this)} />);
     } else {
       return (
         <TouchableOpacity
@@ -122,44 +135,32 @@ class CreateGoalPage extends Component {
     this.setState({ assignToMySelf: false });
   }
 
-  changeStateValue() {
-      this.setState({ assignToMySelf: false });
-  }
-
   createGoal = () => {
-    console.log('inside creategoal');
-    console.log(this.state);
-    
-    //      description: '...', 
-    //      createdBy:{userId:'11232',userName:'ravi'},
-    //      createdFor:{userId:'232323',userName:'john'},
-    //      taskType:'CC',
-    //      isHighImpact:false,
-    //      isPublic:true,
-    //      dueOn:'2019-06-20T04:18:21.931Z',
-    //      lastUpdateOn:'2019-06-12T04:18:21.931Z',
-    //      createdOn:'2019-06-11T04:18:21.931Z',
-    //      isCompleted:false,
-    axios.post('http://10.10.80.230/api/createGoal', {
-      name: this.state.goalName,
-      description: this.state.description,
-      createdBy: { userId: 'user1', userName: 'user1' },
-      createdFor: { userId: this.state.selectedUser, userName: this.state.selectedUser },
-      taskType: 'Project Goals',
-      isHighImpact: this.state.isHighImpact,
-      isPublic: false,
-      dueOn: '2019-06-20T04:18:21.931Z',
-      percentage: this.state.value,
-      isCompleted: false
-    })
-    .then(res => {
-      console.log(res);
-      // console.log(this.props);
-      this.props.navigation.navigate('Home'); 
-    })
-    .catch(err => {
-      console.log(err);
-    });
+          AsyncStorage.getItem('userId')
+          .then(id => {
+          if(id){
+              axios.post('http://10.10.80.230/api/createGoal', {
+                name: this.state.goalName,
+                description: this.state.description,
+                createdBy: { userId: 'user1', userName: 'user1' },
+                createdFor: { userId: this.state.selectedUser, userName: this.state.selectedUser },
+                taskType: 'Project Goals',
+                isHighImpact: this.state.isHighImpact,
+                isPublic: false,
+                dueOn: this.state.DateText,
+                percentage: this.state.value,
+                isCompleted: (this.state.value === 100)
+                })
+                .then(res => {
+                  console.log(res);
+                  // console.log(this.props);
+                  this.props.navigation.navigate('Home'); 
+                })
+                .catch(err => {
+                  console.log(err);
+                });
+        }
+      });
   }
   render() {
     let data = [{
