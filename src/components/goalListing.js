@@ -40,9 +40,9 @@ class GoalListing extends Component {
     render() {
       return (
             <View>
-                <GoalIndividualist title="Your Expired Goals" navigation={this.props.navigation} onPress={this.props.onPress} expData={this.state.expireGoalList}></GoalIndividualist>
-                <GoalIndividualist title="Your Completed Goals" navigation={this.props.navigation} onPress={this.props.onPress} expData={this.state.completedGoalList}></GoalIndividualist>
-                <GoalIndividualist title="Your In progress Goals" navigation={this.props.navigation} onPress={this.props.onPress} expData={this.state.inProgressGoalList}></GoalIndividualist>
+                <GoalIndividualist title="Your Expired Goals" navigation={this.props.navigation} onPress={this.props.onPress} expData={this.state.expireGoalList} goalCount={this.state.expireGoalList.length}></GoalIndividualist>
+                <GoalIndividualist title="Your Completed Goals" navigation={this.props.navigation} onPress={this.props.onPress} expData={this.state.completedGoalList} goalCount={this.state.completedGoalList.length}></GoalIndividualist>
+                <GoalIndividualist title="Your In progress Goals" navigation={this.props.navigation} onPress={this.props.onPress} expData={this.state.inProgressGoalList} goalCount={this.state.inProgressGoalList.length}></GoalIndividualist>
             </View>
         );
     }
