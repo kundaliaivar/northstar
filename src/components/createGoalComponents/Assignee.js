@@ -28,7 +28,7 @@ const Assignee = (props) => {
     return (
         <View style={styles.containerStyles}>
             <Avatar
-                size='large'
+                size='Small'
                 rounded
                 title={userInitials()}
                 onPress={() => console.log('Works!')}
@@ -61,7 +61,7 @@ const styles = {
         marginLeft: 10
     },
     nameStyle: {
-        fontSize: 22,
+        fontSize: 16,
         color: '#000'
     },
     iconStyle: {

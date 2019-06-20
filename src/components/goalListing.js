@@ -16,35 +16,33 @@ import moment from 'moment';
 class GoalListing extends Component {
    state={ completedGoalList: [], inProgressGoalList: [], expireGoalList: [], userId: AsyncStorage.getItem('userId') }
 
-   componentWillUpdate() {
-    AsyncStorage.getItem('userId')
-    .then(res => {
-        if (res) {
-            axios.get(`http://192.168.0.3:8080/api/getGoals/${res}`)
-            .then(response=>{
-                let complete = [], inprogress = [], expire = [];
-                for(let item of response.data){
-                    if(item.percentage==100) {
-                        complete.push(item);
-                    } else if (item.percentage<100 && moment(item.dueOn).isBefore(moment())) {
-                        expire.push(item);
-                    } else if(item.percentage<100){
-                        inprogress.push(item);
-                    }
-                } this.setState({ completedGoalList: complete, inProgressGoalList: inprogress, expireGoalList: expire });
-            }).catch(err => {
-                console.log(err);
-            });
-        }
+   componentWillUpdate(){
+    //    console.log(this.state.userId);
+       //10.10.80.196--> system ip
+    axios.get(`http://10.10.80.237:8080/api/getGoals/${this.state.userId}`)
+    .then(response=>{
+        console.log('goal list:', response);
+        let complete = [], inprogress = [], expire = [];
+        for(let item of response.data){
+            if(item.percentage==100) {
+                complete.push(item);
+            } else if (item.percentage<100 && moment(item.dueOn).isBefore(moment())) {
+                expire.push(item);
+            } else if(item.percentage<100){
+                inprogress.push(item);
+            }
+        } this.setState({ completedGoalList: complete, inProgressGoalList: inprogress, expireGoalList: expire });
+    }).catch(err => {
+        console.log(err);
     });
    }
    
     render() {
       return (
             <View>
-                <GoalIndividualist title="Your Expired Goals" navigation={this.props.navigation} onPress={this.props.onPress} expData={this.state.expireGoalList}></GoalIndividualist>
-                <GoalIndividualist title="Your Completed Goals" navigation={this.props.navigation} onPress={this.props.onPress} expData={this.state.completedGoalList}></GoalIndividualist>
-                <GoalIndividualist title="Your In progress Goals" navigation={this.props.navigation} onPress={this.props.onPress} expData={this.state.inProgressGoalList}></GoalIndividualist>
+                <GoalIndividualist title="Your Expired Goals" navigation={this.props.navigation} onPress={this.props.onPress} expData={this.state.expireGoalList} goalCount={this.state.expireGoalList.length}></GoalIndividualist>
+                <GoalIndividualist title="Your Completed Goals" navigation={this.props.navigation} onPress={this.props.onPress} expData={this.state.completedGoalList} goalCount={this.state.completedGoalList.length}></GoalIndividualist>
+                <GoalIndividualist title="Your In progress Goals" navigation={this.props.navigation} onPress={this.props.onPress} expData={this.state.inProgressGoalList} goalCount={this.state.inProgressGoalList.length}></GoalIndividualist>
             </View>
         );
     }

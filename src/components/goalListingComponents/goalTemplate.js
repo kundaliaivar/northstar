@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import ProgressCircle from 'react-native-progress-circle';
 import moment from 'moment';
+// import FilledIcon from "../../images/filled.png";
+// import HighImpactIcon from "../../images/highImpact.png";
 
 class GoalListing extends Component {
     setColor(item) {
