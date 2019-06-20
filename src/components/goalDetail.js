@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text , View , Image  } from 'react-native';
+import { Text, View, Image } from 'react-native';
 import defaultPhoto from '../../images/defaultPhoto.png';
 import axios from 'axios';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -16,6 +16,13 @@ class GoalDetails extends Component {
         .catch(err => {
         console.log(err);
     })
+    }
+    showHighImpactValue(isHighImpact){
+      if (isHighImpact) {
+      return (<Text style={styles.text}>True</Text>);
+      } else {
+      return (<Text style={styles.text}>False</Text>);
+      }
     }
     render() {
       data=this.state.data;
@@ -34,9 +41,9 @@ class GoalDetails extends Component {
               <Text style={styles.headingText}>Progress</Text>
               <Text style={styles.text}>{this.state.data.percentage}%</Text>
               <Text style={styles.headingText}>High Impact</Text>
-              <Text style={styles.text}>{this.state.data.isHighImpact}</Text>
+              {this.showHighImpactValue(this.state.data.isHighImpact)}
               <Text style={styles.text}>Public</Text>
-              <Text style={styles.text}>{this.state.data.isPublic}</Text>
+              <Text style={styles.text}>False</Text>
               <Text style={styles.headingText}>Created By</Text>
                     <View style={styles.memberInfoStyle}>
                       <View style={{ width: 20, height: 20, marginRight: 10 }}>

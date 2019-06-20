@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 const api = require('./routes/api');
 
 // mongoose.Promise = global.Promise;
-app.use(bodyParser.urlencoded({extende : true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 mongoose.connect(dbConfig.url, {

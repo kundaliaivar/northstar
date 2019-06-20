@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Image } from 'react-native';
+import { Text, View, Image, AsyncStorage } from 'react-native';
 import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion-collapse-react-native';
 import GoalTemplate from './goalListingComponents/goalTemplate';
 import plusIcon from '../../images/add.png';
@@ -14,24 +14,28 @@ import moment from 'moment';
 
 
 class GoalListing extends Component {
-   state={ completedGoalList: [], inProgressGoalList: [], expireGoalList: [], userId: 'user1' }
+   state={ completedGoalList: [], inProgressGoalList: [], expireGoalList: [], userId: AsyncStorage.getItem('userId') }
 
-   componentDidMount(){
-       //10.10.80.196--> system ip
-    axios.get(`http://10.10.80.237:8080/api/getGoals/232323`)
-    .then(response=>{
-        let complete = [], inprogress = [], expire = [];
-        for(let item of response.data){
-            if(item.percentage==100) {
-                complete.push(item);
-            } else if (item.percentage<100 && moment(item.dueOn).isBefore(moment())) {
-                expire.push(item);
-            } else if(item.percentage<100){
-                inprogress.push(item);
-            }
-        } this.setState({ completedGoalList: complete, inProgressGoalList: inprogress, expireGoalList: expire });
-    }).catch(err => {
-        console.log(err);
+   componentWillUpdate() {
+    AsyncStorage.getItem('userId')
+    .then(res => {
+        if (res) {
+            axios.get(`http://192.168.0.3:8080/api/getGoals/${res}`)
+            .then(response=>{
+                let complete = [], inprogress = [], expire = [];
+                for(let item of response.data){
+                    if(item.percentage==100) {
+                        complete.push(item);
+                    } else if (item.percentage<100 && moment(item.dueOn).isBefore(moment())) {
+                        expire.push(item);
+                    } else if(item.percentage<100){
+                        inprogress.push(item);
+                    }
+                } this.setState({ completedGoalList: complete, inProgressGoalList: inprogress, expireGoalList: expire });
+            }).catch(err => {
+                console.log(err);
+            });
+        }
     });
    }
    
