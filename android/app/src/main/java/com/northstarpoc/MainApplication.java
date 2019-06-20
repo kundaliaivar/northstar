@@ -13,8 +13,6 @@ import com.facebook.soloader.SoLoader;
 
 import java.util.Arrays;
 import java.util.List;
-// import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
-// import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -28,17 +26,9 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-<<<<<<< HEAD
-            // new RNFirebasePackage(),
-            new VectorIconsPackage(),
-            new RNGestureHandlerPackage()
-=======
-            new RangeSliderPackage(),
-            new VectorIconsPackage(),
-            new RNGestureHandlerPackage(),
-            // new RNFirebaseMessagingPackage(),
-            // new RNFirebaseNotificationsPackage()
->>>>>>> 0182bb3691af38998fde4b85a852472ba52053a0
+          new VectorIconsPackage(),
+          new RNGestureHandlerPackage(),
+          new RangeSliderPackage()
       );
     }
 
