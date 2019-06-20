@@ -25,6 +25,7 @@ class CreateGoalPage extends Component {
       goalName: '',
       DateHolder: null,
       assignToMySelf: true,
+      value: 0
     };
   }
 
@@ -92,7 +93,7 @@ class CreateGoalPage extends Component {
           isPublic: false,
           dueOn: '2019-06-20T04:18:21.931Z',
           percentage: 0,
-          isCompleted: false
+          isCompleted: (this.state.value === 100)
         })
         .then(res => {
           console.log(res);
