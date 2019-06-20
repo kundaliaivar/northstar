@@ -5,7 +5,7 @@ import { Input as TextInput } from 'react-native-elements';
 // import console = require('console');
 
 const Input = (props) => {
-    const { value, label, multiline, numberOfLines, placeholder, password, onChange } = props;
+    const { value, label, multiline, numberOfLines, placeholder, password, onChange, errorMessage } = props;
     const inputContainerStyle = StyleSheet.create({
         input: {
             borderColor: '#000',
@@ -37,6 +37,7 @@ const Input = (props) => {
                 placeholder={placeholder}
                 secureTextEntry={password}
                 onChangeText={text => onChange(text)}
+                errorMessage={errorMessage}
             />
         </View>
     );

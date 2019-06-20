@@ -8,7 +8,7 @@
  */
 
 import React, { Component } from 'react';
-import { createStackNavigator, createAppContainer, createSwitchNavigator } from 'react-navigation';
+import { createSwitchNavigator, createStackNavigator, createAppContainer } from 'react-navigation';
 import { StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import GoalListing from './src/components/goalListing';
