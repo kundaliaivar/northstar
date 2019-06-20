@@ -60,6 +60,7 @@
 		ED2971652150620600B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED2971642150620600B7C4FE /* JavaScriptCore.framework */; };
 		F2CE307137B8494D9A5EDB0F /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A368C608B4B43D1BE5792EE /* libRNVectorIcons.a */; };
 		F89BB2BCAC8147D6BA32378D /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 22D496EEC0364A14ACADD08A /* Foundation.ttf */; };
+		8A430D87557E473AAB83ADB5 /* libRNRangeSlider.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13850858415F4F69AD66F63B /* libRNRangeSlider.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -425,6 +426,8 @@
 		E51D87CF849643CB97ADC282 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
+		8C977A425E3D40C5A8AD4A9D /* RNRangeSlider.xcodeproj */ = {isa = PBXFileReference; name = "RNRangeSlider.xcodeproj"; path = "../node_modules/rn-range-slider/ios/RNRangeSlider.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		13850858415F4F69AD66F63B /* libRNRangeSlider.a */ = {isa = PBXFileReference; name = "libRNRangeSlider.a"; path = "libRNRangeSlider.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */

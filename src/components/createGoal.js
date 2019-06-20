@@ -25,7 +25,7 @@ class CreateGoalPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      DateText: "",
+      DateText: '',
       DateHolder: null,
       assignToMySelf: true,
       autosuggest: false,
@@ -183,6 +183,11 @@ componentDidMount() {
         value: 'Suprita',
       }, 
     ];
+    const { name, description, navigation } = this.props;
+   
+    const goalDetails = navigation.getParam(goalDetails, navigation.state.params.itemId); 
+    const edit = navigation.getParam(edit, navigation.state.params.edit); 
+    console.log('-->', navigation.state.params.edit);
     const saveButtonStyle = {
       color: '#424372',
       type: 'solid'

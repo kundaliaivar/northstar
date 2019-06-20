@@ -11,7 +11,7 @@ class GoalDetails extends Component {
 
     }
     componentWillMount() {
-        axios.get(`http://127.0.0.1:8080/api/goal/${this.props.navigation.state.params.itemId}`)
+        axios.get(`http://10.10.80.230:8080/api/goal/${this.props.navigation.state.params.itemId}`)
         .then(response => { console.log(response); this.setState({ data: response.data }); })
         .catch(err => {
         console.log(err);
@@ -41,9 +41,9 @@ class GoalDetails extends Component {
               <Text style={styles.headingText}>Progress</Text>
               <Text style={styles.text}>{this.state.data.percentage}%</Text>
               <Text style={styles.headingText}>High Impact</Text>
-              {this.showHighImpactValue(this.state.data.isHighImpact)}
+              <Text style={styles.text}>{this.state.data.isHighImpact}</Text>
               <Text style={styles.text}>Public</Text>
-              <Text style={styles.text}>False</Text>
+              <Text style={styles.text}>{this.state.data.isPublic}</Text>
               <Text style={styles.headingText}>Created By</Text>
                     <View style={styles.memberInfoStyle}>
                       <View style={{ width: 20, height: 20, marginRight: 10 }}>

@@ -24,6 +24,7 @@ class GoalIndividualist extends React.Component {
                     <CollapseHeader style={styles.containerStyle}>
                         <View style={styles.containerContentStyle} >
                             <Text>{this.props.title}</Text>
+                            <Text>{this.props.goalCount}</Text>
                             {this.renderImage()}
                         </View>
     
