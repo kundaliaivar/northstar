@@ -37,7 +37,8 @@ class CreateGoalPage extends Component {
       description:'',
       goalName:'',
       selectedUser:'',
-      rangeHigh:0
+      rangeHigh:0,
+      value: 0
     };
   }
   componentWillUpdate(){
@@ -88,9 +89,6 @@ class CreateGoalPage extends Component {
         </TouchableOpacity>
       );
     }
-  }
-  sliderChange(selectedMaximum){
-      console.log("selectedMaximum",selectedMaximum)
   }
   onChangeHandler = (value) => {
    this.setState({selectedUser:value});
@@ -151,7 +149,7 @@ class CreateGoalPage extends Component {
       isHighImpact: this.state.isHighImpact,
       isPublic: false,
       dueOn: '2019-06-20T04:18:21.931Z',
-      percentage: 0,
+      percentage: this.state.value,
       isCompleted: false
     })
     .then(res => {
