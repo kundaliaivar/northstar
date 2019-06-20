@@ -11,7 +11,7 @@ class GoalDetails extends Component {
 
     }
     componentWillMount() {
-        axios.get(`http://10.10.80.230:8080/api/goal/${this.props.navigation.state.params.itemId}`)
+        axios.get(`http://10.10.80.237:8080/api/goal/${this.props.navigation.state.params.itemId}`)
         .then(response => { console.log(response); this.setState({ data: response.data }); })
         .catch(err => {
         console.log(err);

@@ -18,7 +18,7 @@ class GoalListing extends Component {
 
    componentDidMount(){
        //10.10.80.196--> system ip
-    axios.get(`http://127.0.0.1:8080/api/getGoals/user1`)
+    axios.get(`http://10.10.80.237:8080/api/getGoals/232323`)
     .then(response=>{
         let complete = [], inprogress = [], expire = [];
         for(let item of response.data){

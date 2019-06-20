@@ -1,14 +1,46 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React,{useState, useEffect} from 'react';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import moment from 'moment';
 import MemberInfo from './common/memberInfo';
+import Like from '../../images/like.png';
+import { Icon } from 'react-native-elements';
+import axios from 'axios';
+
 
 
 
 const FeedSample = (props) => {
+
+   const [liked, setliked] = useState(false);
+   const [starsCount, setStarsCount] = useState(0);
+
    const {
        item,
    } = props;
+
+
+   useEffect(() => {
+     
+    setStarsCount(item.stars.length);
+
+   }, []);
+ 
+
+   const updateLike = () => {
+       if (!liked) {
+        axios.put(`http://10.10.80.237:8080/api/likefeed/${item._id}`, {userName: 'shaili'})
+        .then(res => {
+            if (res.data && !item.stars.includes('shaili')) {
+        setliked(true);
+        setStarsCount(starsCount + 1);
+        }
+            console.log(res)})
+        .catch(err => {
+            console.log(err);
+        })
+    }
+   };
+
 
     return (
         <View> 
@@ -23,7 +55,15 @@ const FeedSample = (props) => {
                 <Text>{item.feedBody}</Text>
             </View>
             <View style={styles.commentsSec}>
-                <Text>Like</Text>
+                <TouchableOpacity style={styles.likeStyle} onPress={() => updateLike()}>
+                    <Icon
+                        name={item.stars.includes('shaili') || liked ? 'md-star' : 'md-star-outline'}
+                        type='ionicon'
+                        />
+
+                    <Text>{starsCount}</Text>
+                </TouchableOpacity>
+                
                 <Text>Comments</Text>
             </View>
         </View>
@@ -64,6 +104,12 @@ const styles = {
         marginLeft: 20,
         marginRight: 20,
     },
+    likeStyle: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: 35,
+    }
     
 
 }

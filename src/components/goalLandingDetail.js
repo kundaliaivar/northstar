@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
-import { Text, View, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, View, Image, TouchableOpacity, StyleSheet, ScrollView, TextInput } from 'react-native';
 import axios from 'axios';
 import moment from 'moment';
 import EditIcon from '../../images/edit-white.png';
 import FeedSample from '../components/feedSample';
 import { Icon } from 'react-native-elements';
 // import AddIcon from '../../images/add2x.png';
+import Input from './common/input';
 import MemberInfo from '../components/common/memberInfo';
 
 
 
+
 class GoalLandingDetail extends Component {
-    state={ detailData:[], feedDetail:[] }
+    state={ detailData:[], feedDetail:[], updateText: '' }
 
    componentDidMount(){
         // axios.get(`http://10.10.80.237:8080/api/goal/${ this.props.navigation.state.params.itemId}`)
@@ -38,6 +40,22 @@ class GoalLandingDetail extends Component {
             .then(res => {console.log('res2', res); this.setState({ feedDetail: res.data })})
             .catch(e => console.log(e));
     }
+
+    postAnUpdate = () => {
+        const data = {
+            goalId: this.props.navigation.state.params.itemId,
+            userName: this.state.detailData.createdBy.userName,
+            feedBody: this.state.updateText,
+            createdOn: this.state.feedDetail.createdOn,
+        };
+        axios
+            .post(`http://10.10.80.237:8080/api/createfeed`, data)
+            .then(() => {
+                this.setState({ feedDetail: [] });
+                this.fetchFeedDetail();
+            })
+            .catch(e => console.log('----', e));
+    }
     
     render() {
         const { navigation, } = this.props;
@@ -60,19 +78,27 @@ class GoalLandingDetail extends Component {
                 </View>
             </View>
             <View style={styles.upadatePostSec}>
-                <Text>Post an update...</Text>
-                {/* <Image style={styles.addPostStyle} source={AddIcon} /> */}
-                <Icon name='md-add-circle-outline' type='ionicon' color='#00afff' />
-             </View>  
-        {(this.state.feedDetail.length) ? this.state.feedDetail.map(item => <FeedSample item={item} />) : <Text style={styles.noDataText}>No Feeds</Text>}
+                {/* <Text>Post an update...</Text> */}
+                <TextInput value={this.state.updateText} onChangeText={text => this.setState({ updateText: text })} style={styles.inputBox} placeholder='Post an update...' />
+                <TouchableOpacity onPress={() => this.postAnUpdate()}>
+                    <Icon name='md-add-circle-outline' type='ionicon' color='#00afff' />
+                </TouchableOpacity>
+             </View>
+             <ScrollView>
+                {(this.state.feedDetail.length) ? this.state.feedDetail.map(item => <FeedSample item={item} />) : <Text style={styles.noDataText}>No Feeds</Text>}
+             </ScrollView> 
+        
             
         </View>
     );
    }
 }   
 const styles = {
-
-
+      
+    inputBox: {
+        width: '80%',
+        padding: 4
+    },
     containerStyle: {
         backgroundColor: '#eee',
         height: '100%',

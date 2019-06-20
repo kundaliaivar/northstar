@@ -65,7 +65,7 @@ class App extends Component {
       if (fcmToken) {
         // user has a device token
         console.log('fcmToken:', fcmToken);
-        axios.post('http://192.168.1.4:8080/api/registerdevice',{userName:user.userName,deviceId:fcmToken})
+        axios.post('http://10.10.80.237:8080/api/registerdevice',{userName:user.userName,deviceId:fcmToken})
         .then(Response=>console.log(Response.data))
         .catch(err=>console.log(err));
            //TODO call API to register device
@@ -73,7 +73,7 @@ class App extends Component {
       }
     }
     
-    axios.post('http://192.168.1.4:8080/api/registerdevice',{userName:user.userName,deviceId:fcmToken})
+    axios.post('http://10.10.80.237:8080/api/registerdevice',{userName:user.userName,deviceId:fcmToken})
         .then(Response=>console.log(Response))
         .catch(err=>console.log(err));
     console.log('fcmToken:', fcmToken);

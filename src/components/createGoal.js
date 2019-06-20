@@ -23,9 +23,9 @@ class CreateGoalPage extends Component {
     this.state = {
       name: '',
       description: '',
-      DateText: "", 
-      goalName: '',
-      DateHolder: null , assignToMySelf:true };
+      DateText: '', 
+      DateHolder: null ,
+      assignToMySelf:true };
   }
 
   componentDidMount() {
@@ -138,7 +138,7 @@ class CreateGoalPage extends Component {
           label="Description"
           multiline
           numberOfLines={4}
-          value={this.props.description}
+          value={this.state.description}
           onChange={text => this.setState({ description: text })}
         />
         {/* NOTE: Add the DatePicker and ProgressBar component */}

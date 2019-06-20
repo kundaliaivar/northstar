@@ -5,24 +5,22 @@ const FeedModel = require('../models/feedModel');
 //   }
 
 const create = function (req, res) {
-    const feed = new FeedModel({
-        goalId: req.body.goalId,
-        feedId: req.body.feedId,
-        userName: req.body.userName,
-        feedBody: req.body.feedBody,
-        createdOn: req.body.createdOn,
-        stars: 0
-    });
+    console.log(req.body);
+    const feed = new FeedModel(req.body);
+    console.log('feed:', feed)
     feed.save()
         .then(Response => {
-            res.json(Response);
+            console.log('***', Response);
+            res.send(Response);
         })
         .catch(err => res.status(400).send(err.message))
 }
 
 const like = function (req, res) {
     //req.params.stars
-    FeedModel.findOneAndUpdate({ feedId: req.params.feedId }, { $inc: { stars: 1 } }, { upsert: true }, function (err) {
+    console.log('---*',req)
+    FeedModel.findOneAndUpdate({ _id: req.params.feedId }, { $addToSet: { stars: [req.body.userName] } }, function (err, data) {
+        console.log('--->', data);
         if (err) return res.send(500, { error: err });
         return res.send('true');
     });
@@ -30,12 +28,12 @@ const like = function (req, res) {
 
 const edit = function (req, res) {
     FeedModel.updateOne({
-        feedId: req.params.feedId,
-        feedBody: req.params.feedBody,
-        createdOn: req.params.createdOn,
+        _id: req.params.feedId
+    }, { 
+        feedBody: req.body.feedBody
     })
         .then(Response => {
-            res.json(Response);
+            res.send('Success');
         })
         .catch(err => res.status(400).send(err.message))
 }
