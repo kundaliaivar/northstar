@@ -1,3 +1,4 @@
+/* eslint-disable react/require-extension */
 /**
  * Create Goal Page
  * Use this Page to create or edit Goals
@@ -17,6 +18,8 @@ import Calender from '../../images/calender.png';
 import AddPerson from '../../images/addPerson.png';
 import FilledIcon from '../../images/filled.png';
 import HighImpactIcon from '../../images/highImpact.png';
+
+const dbConfig = require('../../server/configs/database.config.js');
 
 // import console = require('console');
 
@@ -51,14 +54,14 @@ componentDidMount() {
     const edit = navigation.getParam('edit', false); 
     if (edit) {
     this.setState({
-      goalName: goalDetails.name,
+      goalName: goalDetails.goalName,
       description: goalDetails.description,
       DateText: goalDetails.dueOn
     });
     }
 }
   componentWillUpdate() {
-    axios.get('http://10.10.80.230:8080/api/users')
+    axios.get(`${dbConfig.ipAddress}api/users`)
     .then(response => {
         console.log('users:', response.data.data);
         // this.setState({ userList: response.data.data });
@@ -132,7 +135,6 @@ componentDidMount() {
           <Image style={styles.highImpactStyle} source={HighImpactIcon} />
         </TouchableOpacity>
       ); 
-  
 }
   changeStateValue() {
     this.setState({ assignToMySelf: false });
@@ -165,7 +167,7 @@ componentDidMount() {
           AsyncStorage.getItem('userId')
           .then(id => {
           if (id) {
-              axios.post('http://106.51.80.224/api/createGoal', {
+              axios.post(`${dbConfig.ipAddress}api/createGoal`, {
                 name: this.state.goalName,
                 description: this.state.description,
                 createdBy: { userId: 'user1', userName: 'user1' },
@@ -214,7 +216,7 @@ componentDidMount() {
     if (navigation.state.params) {
       goalDetails = navigation.getParam(goalDetails, navigation.state.params.itemId); 
       this.setState({
-        goalName: goalDetails.name,
+        goalName: goalDetails.goalName,
         description: goalDetails.description,
         DateText: moment(goalDetails.dueOnDate).format('DD-MMM-YYYY'),
         edit: true
