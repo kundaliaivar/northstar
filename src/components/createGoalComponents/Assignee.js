@@ -22,13 +22,14 @@ const Assignee = (props) => {
             if (names.length > 1) {
                 initials += names[names.length - 1].substring(0, 1).toUpperCase();
             }
+            user.name = id;
             user.initials = initials;
         });
 
     return (
         <View style={styles.containerStyles}>
             <Avatar
-                size='Small'
+                size='small'
                 rounded
                 title={user.initials}
                 onPress={() => console.log('Works!')}
