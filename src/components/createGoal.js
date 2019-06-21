@@ -49,16 +49,16 @@ class CreateGoalPage extends Component {
     };
   }
 componentDidMount() {
-    const { navigation } = this.props;
-    const goalDetails = navigation.getParam('goalDetails', {}); 
-    const edit = navigation.getParam('edit', false); 
-    if (edit) {
-    this.setState({
-      goalName: goalDetails.goalName,
-      description: goalDetails.description,
-      DateText: goalDetails.dueOn
-    });
-    }
+    // const { navigation } = this.props;
+    // const goalDetails = navigation.getParam('goalDetails', {}); 
+    // const edit = navigation.getParam('edit', false); 
+    // if (edit) {
+    // this.setState({
+    //   goalName: goalDetails.goalName,
+    //   description: goalDetails.description,
+    //   DateText: goalDetails.dueOn
+    // });
+    // }
 }
   componentWillUpdate() {
     axios.get(`${dbConfig.ipAddress}api/users`)
@@ -167,26 +167,38 @@ componentDidMount() {
           AsyncStorage.getItem('userId')
           .then(id => {
           if (id) {
-              axios.post(`${dbConfig.ipAddress}api/createGoal`, {
-                name: this.state.goalName,
-                description: this.state.description,
-                createdBy: { userId: 'user1', userName: 'user1' },
-                createdFor: { userId: this.state.selectedUser, userName: this.state.selectedUser },
-                taskType: 'Project Goals',
-                isHighImpact: this.state.isHighImpact,
-                isPublic: false,
-                dueOn: this.state.DateText,
-                percentage: this.state.value,
-                isCompleted: (this.state.value === 100)
-                })
-                .then(res => {
-                  console.log(res);
-                  // console.log(this.props);
-                  this.props.navigation.navigate('Home'); 
-                })
-                .catch(err => {
-                  console.log(err);
-                });
+            if (this.state.selectedUser === '') {
+              this.state.selectedUser = id;
+            }
+            let url = '';
+            let method = 'POST';
+            const body = {
+              name: this.state.goalName,
+              description: this.state.description,
+              createdBy: { userId: id, userName: id },
+              createdFor: { userId: this.state.selectedUser, userName: this.state.selectedUser },
+              taskType: 'Project Goals',
+              isHighImpact: this.state.isHighImpact,
+              isPublic: false,
+              dueOn: this.state.DateText,
+              percentage: this.state.value,
+              isCompleted: (this.state.value === 100)
+            };
+            if (this.state.edit) {
+              url = `${dbConfig.ipAddress}api/editGoal/${this.state.goalId}`;
+              axios.put(url, body).then(res => {
+                this.props.navigation.navigate('Home'); 
+              }).catch(err => {
+                console.log(err);
+              });
+            } else {
+              url = `${dbConfig.ipAddress}api/createGoal`;
+              axios.post(url, body).then(res => {
+                this.props.navigation.navigate('Home'); 
+              }).catch(err => {
+                console.log(err);
+              });
+            }
         }
       });
   }
@@ -212,15 +224,22 @@ componentDidMount() {
       }, 
     ];
     const { navigation } = this.props;
-    let goalDetails = [];
+    let goalDetails = {};
     if (navigation.state.params) {
-      goalDetails = navigation.getParam(goalDetails, navigation.state.params.itemId); 
-      this.setState({
-        goalName: goalDetails.goalName,
-        description: goalDetails.description,
-        DateText: moment(goalDetails.dueOnDate).format('DD-MMM-YYYY'),
-        edit: true
-      });
+      goalDetails = navigation.getParam('goalDetails', {}); 
+      const dataAlreadyLoaded = goalDetails.name === this.state.goalName;
+      if (!dataAlreadyLoaded) {
+        this.setState({
+          goalId: navigation.state.params.itemId,
+          goalName: goalDetails.name,
+          description: goalDetails.description,
+          DateText: moment(goalDetails.dueOn).format('DD-MMM-YYYY'),
+          value: goalDetails.percentage,
+          isHighImpact: goalDetails.isHighImpact,
+          isCompleted: goalDetails.progress === 100,
+          edit: true
+        });
+      }
     } else if (this.state.edit) {
       this.setState({
         edit: false
@@ -241,7 +260,7 @@ componentDidMount() {
           {/* Goal Name */}
           <Input
             label="Goal Name"
-            value={this.state.goalName}
+            defaultValue={this.state.goalName}
             onChange={text => this.setState({ nameError: '', goalName: text })}
             errorMessage={this.state.nameError}
           />
@@ -250,7 +269,7 @@ componentDidMount() {
             label="Description"
             multiline
             numberOfLines={4}
-            value={this.state.description}
+            defaultValue={this.state.description}
             onChange={text => this.setState({ descriptionError: '', description: text })}
             errorMessage={this.state.descriptionError}
           />
@@ -282,6 +301,7 @@ componentDidMount() {
               <RangeSlider
                 style={{ width: 350, height: 60 }}
                 min={0}
+                selectedMaximum={this.state.value}
                 rangeEnabled={false}
                 thumbBorderWidth={12}
                 lineWidth={15}
