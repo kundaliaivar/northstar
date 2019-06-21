@@ -28,17 +28,12 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-<<<<<<< HEAD
             // new RNFirebasePackage(),
             new VectorIconsPackage(),
-            new RNGestureHandlerPackage()
-=======
-            new RangeSliderPackage(),
-            new VectorIconsPackage(),
             new RNGestureHandlerPackage(),
+            new RangeSliderPackage()
             // new RNFirebaseMessagingPackage(),
             // new RNFirebaseNotificationsPackage()
->>>>>>> 0182bb3691af38998fde4b85a852472ba52053a0
       );
     }
 
