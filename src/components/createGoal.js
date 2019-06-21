@@ -1,22 +1,25 @@
+/* eslint-disable react/require-extension */
 /**
  * Create Goal Page
  * Use this Page to create or edit Goals
  */
 
-import React, { Component } from "react";
-import { ScrollView, View, Text, TouchableOpacity, Image , AsyncStorage } from "react-native";
-import Button from "./common/button";
-import Input from "./common/input";
-import Assignee from "./createGoalComponents/Assignee";
-import { DatePickerDialog } from "react-native-datepicker-dialog";
-import RangeSlider from "rn-range-slider";
+import React, { Component } from 'react';
+import { ScrollView, View, Text, TouchableOpacity, Image, AsyncStorage } from 'react-native';
+import { DatePickerDialog } from 'react-native-datepicker-dialog';
+import RangeSlider from 'rn-range-slider';
 import { Dropdown } from 'react-native-material-dropdown';
-import Calender from "../../images/calender.png";
-import AddPerson from "../../images/addPerson.png";
-import moment from "moment";
-import FilledIcon from "../../images/filled.png";
-import HighImpactIcon from "../../images/highImpact.png";
+import moment from 'moment';
 import axios from 'axios';
+import Button from './common/button';
+import Input from './common/input';
+import Assignee from './createGoalComponents/Assignee';
+import Calender from '../../images/calender.png';
+import AddPerson from '../../images/addPerson.png';
+import FilledIcon from '../../images/filled.png';
+import HighImpactIcon from '../../images/highImpact.png';
+
+const dbConfig = require('../../server/configs/database.config.js');
 
 // import console = require('console');
 
@@ -30,39 +33,42 @@ class CreateGoalPage extends Component {
       assignToMySelf: true,
       autosuggest: false,
       addPerson: true,
-      selection: "",
+      selection: '',
       showHighImpactIcon: false,
       isHighImpact: false,
-      userList:[],
-      description:'',
-      goalName:'',
-      selectedUser:'',
-      rangeHigh:0,
-      value: 0
+      userList: [],
+      description: '',
+      goalName: '',
+      selectedUser: '',
+      rangeHigh: 0,
+      value: 0,
+      nameError: '',
+      descriptionError: '',
+      dateError: '',
+      edit: false,
     };
   }
 componentDidMount() {
     const { navigation } = this.props;
     const goalDetails = navigation.getParam('goalDetails', {}); 
     const edit = navigation.getParam('edit', false); 
-    if(edit){
+    if (edit) {
     this.setState({
-    goalName: goalDetails.name,
-    description: goalDetails.description,
-    DateText: goalDetails.dueOn
-
+      goalName: goalDetails.goalName,
+      description: goalDetails.description,
+      DateText: goalDetails.dueOn
     });
     }
 }
-  componentWillUpdate(){
-    axios.get(`http://10.10.80.230:8080/api/users`)
-    .then(response=>{
-        console.log("users:", response.data.data);
-        this.setState({userList:response.data.data});
+  componentWillUpdate() {
+    axios.get(`${dbConfig.ipAddress}api/users`)
+    .then(response => {
+        console.log('users:', response.data.data);
+        // this.setState({ userList: response.data.data });
     })
-    .catch(err=>{
+    .catch(err => {
         console.log(err);
-    })
+    });
     }
 
   
@@ -73,40 +79,40 @@ componentDidMount() {
     });
   };
 
-  DatePickerMainFunctionCall = () => {
-    let DateHolder = this.state.DateHolder;
-    if (!DateHolder || DateHolder == null) {
-      DateHolder = new Date();
-      this.setState({
-        DateHolder
-      });
-    }
-
-    //To open the dialog
-    this.refs.DatePickerDialog.open({
-      date: DateHolder,
-      minDate: new Date()
-    });
-  };
+  onChangeHandler = (value) => {
+    this.setState({ selectedUser: value });
+  }
   assignGoal() {
-    if (this.state.assignToMySelf) {
+  if (this.state.assignToMySelf) {
       return (<Assignee fnPressButton={this.changeStateValue.bind(this)} />);
-    } else {
-      return (
+    } 
+    return (
         <TouchableOpacity
-          onPress={() => this.setState({ autosuggest: true, addPerson: false })}
+        onPress={() => this.setState({ autosuggest: true, addPerson: false })}
         >
           {this.state.addPerson && (
             <Image style={styles.AddPerson} source={AddPerson} />
-          )}
+            )}
         </TouchableOpacity>
-      );
-    }
+      );   
   }
-  onChangeHandler = (value) => {
-   this.setState({selectedUser:value});
-  }
-  showHighImpactIcon() {
+  DatePickerMainFunctionCall = () => {
+      let DateHolder = this.state.DateHolder;
+      if (!DateHolder || DateHolder == null) {
+        DateHolder = new Date();
+        this.setState({
+          DateHolder,
+          dateError: ''
+        });
+      }
+  
+      //To open the dialog
+      this.refs.DatePickerDialog.open({
+        date: DateHolder,
+        minDate: new Date()
+      });
+    };
+    showHighImpactIcon() {
     if (this.state.showHighImpactIcon) {
       return (
         <TouchableOpacity
@@ -119,7 +125,7 @@ componentDidMount() {
           )}
         </TouchableOpacity>
       );
-    } else {
+    } 
       return (
         <TouchableOpacity
           onPress={() =>
@@ -128,18 +134,40 @@ componentDidMount() {
         >
           <Image style={styles.highImpactStyle} source={HighImpactIcon} />
         </TouchableOpacity>
-      );
-    }
-  }
+      ); 
+}
   changeStateValue() {
     this.setState({ assignToMySelf: false });
+  }
+
+  validate = () => {
+    const { goalName, description, DateText } = this.state;
+    let notValid = false;
+    // Check for empty name
+    if (goalName.trim() === '') {
+      this.setState({ nameError: 'Enter a valid Goal name' });
+      notValid = true;
+    }
+    // Check for empty description
+    if (description.trim() === '') {
+      this.setState({ descriptionError: 'Enter a valid Goal description' });
+      notValid = true;
+    }
+    // Check for empty date
+    if (DateText.trim() === '') {
+      this.setState({ dateError: 'Enter a valid due on date' });
+      notValid = true;
+    }
+    if (!notValid) {
+        this.createGoal();
+    }
   }
 
   createGoal = () => {
           AsyncStorage.getItem('userId')
           .then(id => {
-          if(id){
-              axios.post('http://10.10.80.230/api/createGoal', {
+          if (id) {
+              axios.post(`${dbConfig.ipAddress}api/createGoal`, {
                 name: this.state.goalName,
                 description: this.state.description,
                 createdBy: { userId: 'user1', userName: 'user1' },
@@ -163,7 +191,7 @@ componentDidMount() {
       });
   }
   render() {
-    let data = [{
+    const data = [{
         value: 'Abhijeet',
       }, {
         value: 'Abhishek',
@@ -183,11 +211,21 @@ componentDidMount() {
         value: 'Suprita',
       }, 
     ];
-    const { name, description, navigation } = this.props;
-   
-    const goalDetails = navigation.getParam(goalDetails, navigation.state.params.itemId); 
-    const edit = navigation.getParam(edit, navigation.state.params.edit); 
-    console.log('-->', navigation.state.params.edit);
+    const { navigation } = this.props;
+    let goalDetails = [];
+    if (navigation.state.params) {
+      goalDetails = navigation.getParam(goalDetails, navigation.state.params.itemId); 
+      this.setState({
+        goalName: goalDetails.goalName,
+        description: goalDetails.description,
+        DateText: moment(goalDetails.dueOnDate).format('DD-MMM-YYYY'),
+        edit: true
+      });
+    } else if (this.state.edit) {
+      this.setState({
+        edit: false
+      });
+    }
     const saveButtonStyle = {
       color: '#424372',
       type: 'solid'
@@ -199,17 +237,23 @@ componentDidMount() {
     return (
   
         <ScrollView>
-         <View > 
+          <View > 
           {/* Goal Name */}
-          <Input label="Goal Name" value={this.state.goalName} onChange={text => this.setState({goalName:text})} />
+          <Input
+            label="Goal Name"
+            value={this.state.goalName}
+            onChange={text => this.setState({ nameError: '', goalName: text })}
+            errorMessage={this.state.nameError}
+          />
           {/* Goal Description */}
           <Input
             label="Description"
             multiline
             numberOfLines={4}
-            value={this.state.description} onChange={text => this.setState({description:text})}
+            value={this.state.description}
+            onChange={text => this.setState({ descriptionError: '', description: text })}
+            errorMessage={this.state.descriptionError}
           />
-          {/* NOTE: Add the DatePicker and ProgressBar component */}
           <View style={{ marginTop: 10, marginLeft: 10 }}>
             <Text>Select Date</Text>
             <View>
@@ -223,51 +267,60 @@ componentDidMount() {
                   </Text>
                   <Image style={styles.calenderStyle} source={Calender} />
                 </View>
+                <Text style={styles.datePickerErrorText}>
+                  {this.state.dateError}
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
-          <View style={styles.datePickerBoxContainer}>
-            <Text style={{ marginLeft: 10 }}>Progress</Text>
-            <RangeSlider
-              style={{ width: 350, height: 60 }}
-              min={0}
-              rangeEnabled={false}
-              thumbBorderWidth={12}
-              lineWidth={15}
-              step={1}
-              labelBorderWidth={1}
-              labelBorderRadius={1}
-              selectionColor="#B46BAB"
-              blankColor="#fafafa"
-              disableRange={true}
-              onValueChanged={(low) => {
-                this.setState({ value: low });
-              }}
-            />
-          
-          </View>
+
+          {/* Slider */}
+
+          {this.state.edit && (
+            <View style={styles.datePickerBoxContainer}>
+              <Text style={{ marginLeft: 10 }}>Progress</Text>
+              <RangeSlider
+                style={{ width: 350, height: 60 }}
+                min={0}
+                rangeEnabled={false}
+                thumbBorderWidth={12}
+                lineWidth={15}
+                step={1}
+                labelBorderWidth={1}
+                labelBorderRadius={1}
+                selectionColor="#B46BAB"
+                blankColor="#fafafa"
+                disableRange
+                onValueChanged={(low) => {
+                  this.setState({ value: low });
+                }}
+              />
+            
+            </View>
+          )}
 
           {/* Assign To */}
 
           <Text style={styles.assignToStyle}>Assign To</Text>
           {this.assignGoal()}
           {this.state.autosuggest && (
-              <View style={{marginLeft:10 , marginRight:10}}>
+              <View style={{ marginLeft: 10, marginRight: 10 }}>
                 <Dropdown
                 label='Select Member to Assign!'
                 data={data}
                 onChangeText={(value) => this.onChangeHandler(value)}
-            />
+                />
               </View>
-           
           )}
           <View style={styles.iconContainerStyle}>
             <Text>Mark as High Impact</Text>
             {this.showHighImpactIcon()}
           </View>
 
-        <Button title="Save" style={saveButtonStyle} onPress={this.createGoal} />
-        <Button title="Delete" style={deleteButtonStyle} />
+        <Button title="Save" style={saveButtonStyle} onPress={this.validate.bind(this)} />
+        {this.state.edit && (
+          <Button title="Delete" style={deleteButtonStyle} />
+        )}
         <DatePickerDialog
           ref="DatePickerDialog"
           onDatePicked={this.onDatePickedFunction.bind(this)}
@@ -299,11 +352,11 @@ const styles = {
     justifyContent: 'space-between'
   },
   iconContainerStyle: {
-    flexDirection: "row",
+    flexDirection: 'row',
     flexGrow: 1,
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
     margin: 10,
-    alignItems:"center"
+    alignItems: 'center'
   },
 
   datePickerText: {
@@ -311,10 +364,15 @@ const styles = {
     borderWidth: 0,
     color: '#000'
   },
+  datePickerErrorText: {
+    fontSize: 14,
+    borderWidth: 0,
+    color: '#f00'
+  },
   datePickerBoxContainer: {
     marginTop: 5,
     marginBottom: 10,
-    width: "98%"
+    width: '98%'
   },
   AddPerson: {
     height: 50,
