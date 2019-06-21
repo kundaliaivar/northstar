@@ -58,7 +58,9 @@ const editGoal = (req, res) => {
         name: reqBody.name,
         description: reqBody.description,
         ishighImpact: reqBody.ishighImpact,
-        dueOn: reqBody.dueOn
+        dueOn: reqBody.dueOn,
+        percentage: reqBody.percentage,
+        isCompleted: reqBody.isCompleted
     })
     .then(response => {
         console.log(response);
