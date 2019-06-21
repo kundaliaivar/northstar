@@ -10,6 +10,8 @@ import GoalIndividualist from './goalListingComponents/goalIndividualist';
 import axios from 'axios';
 import moment from 'moment';
 
+const dbConfig = require('../../server/configs/database.config');
+
 // import GoalHeader from './goalListingComponents/goalHeader';
 
 
@@ -20,7 +22,7 @@ class GoalListing extends Component {
     AsyncStorage.getItem('userId')
     .then(res => {
         if (res) {
-            axios.get(`http://10.10.80.237:8080/api/getGoals/${res}`)
+            axios.get(`${dbConfig.ipAddress}api/getGoals/${res}`)
             .then(response=>{
                 let complete = [], inprogress = [], expire = [];
                 for(let item of response.data){

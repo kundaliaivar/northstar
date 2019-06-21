@@ -22,17 +22,17 @@ class GoalListing extends Component {
             return(<View></View>);
 
         return (
-            <TouchableOpacity style={styles.goalTemplateStyle} onPress={() => navigation.navigate('GoalLandingDetail', { itemId: this.props.data._id })} >
-            <View style = {styles.contaierStyle}>
-            <Text style  = {styles.taskName}>{this.props.data.name}</Text>
-                <View style  = {styles.statusStyle}>
-                    <Text>{this.props.data.percentage} % |</Text>
-                    <Text>Exp by {this.props.data.expDay} days</Text>
+            <TouchableOpacity style={styles.goalTemplateStyle} onPress={() => navigation.navigate('GoalLandingDetail', { itemId: this.props.data._id })}>
+                <View style={styles.contaierStyle}>
+                    <Text style={styles.taskName}>{this.props.data.name}</Text>
+                    <View style={styles.statusStyle}>
+                        <Text>{this.props.data.percentage} % |</Text>
+                        <Text>Exp by {this.props.data.expDay} days</Text>
+                    </View>
                 </View>
-            </View>
-            <View>
-            <ProgressCircle percent={this.props.data.percentage} radius={20} borderWidth={8} color={this.setColor(this.props.data)}  shadowColor='#fafafa' bgColor="#fff"></ProgressCircle>
-            </View>
+                <View>
+                    <ProgressCircle percent={this.props.data.percentage} radius={20} borderWidth={8} color={this.setColor(this.props.data)} shadowColor='#fafafa' bgColor="#fff"></ProgressCircle>
+                </View>
             </TouchableOpacity>
         );
     }

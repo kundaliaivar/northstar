@@ -10,6 +10,8 @@ import RangeSlider from "rn-range-slider";
 import Input from './common/input';
 import MemberInfo from '../components/common/memberInfo';
 
+const dbConfig = require('../../server/configs/database.config.js');
+
 
 
 
@@ -38,7 +40,7 @@ class GoalLandingDetail extends Component {
 
     fetchGoalDetail = () => {
         axios
-            .get(`http://10.10.80.237:8080/api/goal/${this.props.navigation.state.params.itemId}`)
+            .get(`${dbConfig.ipAddress}api/goal/${this.props.navigation.state.params.itemId}`)
             .then(res => {
                 console.log('res', res);
                 this.setState({ detailData: res.data, initialSliderValue: res.data.percentage });
@@ -49,7 +51,7 @@ class GoalLandingDetail extends Component {
 
     fetchFeedDetail = () => {
         axios
-            .get(`http://10.10.80.237:8080/api/feed/${this.props.navigation.state.params.itemId}`)
+            .get(`${dbConfig.ipAddress}api/feed/${this.props.navigation.state.params.itemId}`)
             .then(res => { console.log('res2', res); this.setState({ feedDetail: res.data }) })
             .catch(e => console.log(e));
     }
@@ -62,7 +64,7 @@ class GoalLandingDetail extends Component {
             createdOn: this.state.feedDetail.createdOn,
         };
         axios
-            .post(`http://10.10.80.237:8080/api/createfeed`, data)
+            .post(`${dbConfig.ipAddress}api/createfeed`, data)
             .then(() => {
                 this.setState({ feedDetail: [] });
                 this.fetchFeedDetail();
