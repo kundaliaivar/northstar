@@ -171,31 +171,34 @@ componentDidMount() {
               this.state.selectedUser = id;
             }
             let url = '';
+            let method = 'POST';
+            const body = {
+              name: this.state.goalName,
+              description: this.state.description,
+              createdBy: { userId: id, userName: id },
+              createdFor: { userId: this.state.selectedUser, userName: this.state.selectedUser },
+              taskType: 'Project Goals',
+              isHighImpact: this.state.isHighImpact,
+              isPublic: false,
+              dueOn: this.state.DateText,
+              percentage: this.state.value,
+              isCompleted: (this.state.value === 100)
+            };
             if (this.state.edit) {
               url = `${dbConfig.ipAddress}api/editGoal/${this.state.goalId}`;
+              axios.put(url, body).then(res => {
+                this.props.navigation.navigate('Home'); 
+              }).catch(err => {
+                console.log(err);
+              });
             } else {
               url = `${dbConfig.ipAddress}api/createGoal`;
+              axios.post(url, body).then(res => {
+                this.props.navigation.navigate('Home'); 
+              }).catch(err => {
+                console.log(err);
+              });
             }
-              axios.post(url, {
-                name: this.state.goalName,
-                description: this.state.description,
-                createdBy: { userId: id, userName: id },
-                createdFor: { userId: this.state.selectedUser, userName: this.state.selectedUser },
-                taskType: 'Project Goals',
-                isHighImpact: this.state.isHighImpact,
-                isPublic: false,
-                dueOn: this.state.DateText,
-                percentage: this.state.value,
-                isCompleted: (this.state.value === 100)
-                })
-                .then(res => {
-                  console.log(res);
-                  // console.log(this.props);
-                  this.props.navigation.navigate('Home'); 
-                })
-                .catch(err => {
-                  console.log(err);
-                });
         }
       });
   }
