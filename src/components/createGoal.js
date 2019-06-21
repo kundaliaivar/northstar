@@ -49,16 +49,16 @@ class CreateGoalPage extends Component {
     };
   }
 componentDidMount() {
-    const { navigation } = this.props;
-    const goalDetails = navigation.getParam('goalDetails', {}); 
-    const edit = navigation.getParam('edit', false); 
-    if (edit) {
-    this.setState({
-      goalName: goalDetails.goalName,
-      description: goalDetails.description,
-      DateText: goalDetails.dueOn
-    });
-    }
+    // const { navigation } = this.props;
+    // const goalDetails = navigation.getParam('goalDetails', {}); 
+    // const edit = navigation.getParam('edit', false); 
+    // if (edit) {
+    // this.setState({
+    //   goalName: goalDetails.goalName,
+    //   description: goalDetails.description,
+    //   DateText: goalDetails.dueOn
+    // });
+    // }
 }
   componentWillUpdate() {
     axios.get(`${dbConfig.ipAddress}api/users`)
@@ -212,15 +212,18 @@ componentDidMount() {
       }, 
     ];
     const { navigation } = this.props;
-    let goalDetails = [];
+    let goalDetails = {};
     if (navigation.state.params) {
-      goalDetails = navigation.getParam(goalDetails, navigation.state.params.itemId); 
-      this.setState({
-        goalName: goalDetails.goalName,
-        description: goalDetails.description,
-        DateText: moment(goalDetails.dueOnDate).format('DD-MMM-YYYY'),
-        edit: true
-      });
+      goalDetails = navigation.getParam('goalDetails', {}); 
+      const dataAlreadyLoaded = goalDetails.name === this.state.goalName;
+      if (!dataAlreadyLoaded) {
+        this.setState({
+          goalName: goalDetails.name,
+          description: goalDetails.description,
+          DateText: moment(goalDetails.dueOn).format('DD-MMM-YYYY'),
+          edit: true
+        });
+      }
     } else if (this.state.edit) {
       this.setState({
         edit: false
