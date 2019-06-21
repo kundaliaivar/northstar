@@ -15,6 +15,7 @@ router.post('/createfeed', feed_controller.create);
 router.put('/likefeed/:feedId', feed_controller.like);
 router.put('/editfeed/:feedId', feed_controller.edit);
 router.post('/createGoal', goal_controller.createGoal);
+router.put('/updateGoal/:goalId', goal_controller.editGoal);
 router.post('/registerdevice', notification_controller.registerDevice);
 router.post('/sendnotification', notification_controller.sendNotification);
 router.get('/feed/:goalId', feed_controller.listFeed);

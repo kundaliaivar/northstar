@@ -22,7 +22,7 @@ class GoalListing extends Component {
             return(<View></View>);
 
         return (
-            <TouchableOpacity style = {styles.goalTemplateStyle} onPress = {this.props.onPress}>
+            <TouchableOpacity style={styles.goalTemplateStyle} onPress={() => navigation.navigate('GoalLandingDetail', { itemId: this.props.data._id })} >
             <View style = {styles.contaierStyle}>
             <Text style  = {styles.taskName}>{this.props.data.name}</Text>
                 <View style  = {styles.statusStyle}>

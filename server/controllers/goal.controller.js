@@ -49,5 +49,25 @@ const createGoal = function (req, res) {
     .catch(err => res.status(400).send(err.message));
 };
 
+const editGoal = (req, res) => {
+    const reqBody = req.body;
+    console.log(req.params.goalId);
+    GoalModel.updateOne({
+        _id: req.params.goalId
+    }, { 
+        name: reqBody.name,
+        description: reqBody.description,
+        ishighImpact: reqBody.ishighImpact,
+        dueOn: reqBody.dueOn
+    })
+    .then(response => {
+        console.log(response);
+        res.send(response);
+    })
+    .catch(error => {
+        console.log(error);
+    });
+};
 
-module.exports = { getGoal, goalLandingDetail, createGoal };
+
+module.exports = { getGoal, goalLandingDetail, createGoal, editGoal };
