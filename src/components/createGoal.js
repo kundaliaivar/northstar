@@ -167,10 +167,19 @@ componentDidMount() {
           AsyncStorage.getItem('userId')
           .then(id => {
           if (id) {
-              axios.post(`${dbConfig.ipAddress}api/createGoal`, {
+            if (this.state.selectedUser === '') {
+              this.state.selectedUser = id;
+            }
+            let url = '';
+            if (this.state.edit) {
+              url = `${dbConfig.ipAddress}api/editGoal/${this.state.goalId}`;
+            } else {
+              url = `${dbConfig.ipAddress}api/createGoal`;
+            }
+              axios.post(url, {
                 name: this.state.goalName,
                 description: this.state.description,
-                createdBy: { userId: 'user1', userName: 'user1' },
+                createdBy: { userId: id, userName: id },
                 createdFor: { userId: this.state.selectedUser, userName: this.state.selectedUser },
                 taskType: 'Project Goals',
                 isHighImpact: this.state.isHighImpact,
@@ -218,9 +227,13 @@ componentDidMount() {
       const dataAlreadyLoaded = goalDetails.name === this.state.goalName;
       if (!dataAlreadyLoaded) {
         this.setState({
+          goalId: navigation.state.params.itemId,
           goalName: goalDetails.name,
           description: goalDetails.description,
           DateText: moment(goalDetails.dueOn).format('DD-MMM-YYYY'),
+          value: goalDetails.percentage,
+          isHighImpact: goalDetails.isHighImpact,
+          isCompleted: goalDetails.progress === 100,
           edit: true
         });
       }
@@ -244,7 +257,7 @@ componentDidMount() {
           {/* Goal Name */}
           <Input
             label="Goal Name"
-            value={this.state.goalName}
+            defaultValue={this.state.goalName}
             onChange={text => this.setState({ nameError: '', goalName: text })}
             errorMessage={this.state.nameError}
           />
@@ -253,7 +266,7 @@ componentDidMount() {
             label="Description"
             multiline
             numberOfLines={4}
-            value={this.state.description}
+            defaultValue={this.state.description}
             onChange={text => this.setState({ descriptionError: '', description: text })}
             errorMessage={this.state.descriptionError}
           />
@@ -285,6 +298,7 @@ componentDidMount() {
               <RangeSlider
                 style={{ width: 350, height: 60 }}
                 min={0}
+                selectedMaximum={this.state.value}
                 rangeEnabled={false}
                 thumbBorderWidth={12}
                 lineWidth={15}
