@@ -7,7 +7,8 @@ import React, { Component } from 'react';
 import { View, Text, TextInput, AsyncStorage } from 'react-native';
 import axios from 'axios';
 import Button from '../common/button';
-import Input from '../common/input';
+
+const dbConfig = require('../../../server/configs/database.config');
 
 
 class LoginPage extends Component {
@@ -23,7 +24,7 @@ class LoginPage extends Component {
         };
     }
     checkAuth = () => {
-        axios.post('http://192.168.0.3:8080/api/login', {
+        axios.post(`${dbConfig.ipAddress}api/login`, {
             userName: this.state.username,
             password: this.state.password
         })

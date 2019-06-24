@@ -101,7 +101,7 @@ componentDidMount() {
   }
   assignGoal() {
     if (this.state.assignToMySelf) {
-      return (<Assignee currentUser={this.state.currentUser} fnPressButton={this.changeStateValue.bind(this)} />);
+      return (<Assignee fnPressButton={this.changeStateValue.bind(this)} />);
     } 
     return (
         <TouchableOpacity

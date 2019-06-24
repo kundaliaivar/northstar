@@ -5,41 +5,26 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const Assignee = (props) => {
     const onPress = () => props.fnPressButton();
-    AsyncStorage.getItem('userId').then(id => {
-
-        if (!user.name) {
-            // NOTE: remove later
-            user.name = 'Abhishek P';
-            user.designation = 'UX Developer';
-            user.location = 'Bellandur';
-        }
-    });
-    const userInitials = () => {
-        const names = user.name.split(' ');
-        let initials = names[0].substring(0, 1).toUpperCase();
-        
-        if (names.length > 1) {
-            initials += names[names.length - 1].substring(0, 1).toUpperCase();
-        }
-        return initials;
-    };
-    changeParentState = () =>  {
-        this.props.changeState;
-      }
+    // Default value
+        AsyncStorage.getItem('userId').then(id => {
+            if (!id) {
+                return;
+            }
+           let user = id;
+           
+        });
 
     return (
         <View style={styles.containerStyles}>
             <Avatar
-                size='Small'
+                size='small'
                 rounded
-                title={userInitials()}
+                title={user.initials}
                 onPress={() => console.log('Works!')}
                 activeOpacity={0.7}
             />
             <View style={styles.nameContainer}>
-                <Text style={styles.nameStyle}>{user.name}</Text>
-                <Text style={styles.smallText}>{user.designation}</Text>
-                <Text style={styles.smallText}>{user.location}</Text>
+                <Text style={styles.nameStyle}>{user}</Text>
             </View>
             <Icon
                 style={styles.iconStyle}

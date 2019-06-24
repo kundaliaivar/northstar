@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
-import { Text, View, Image, AsyncStorage } from 'react-native';
-import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion-collapse-react-native';
-import GoalTemplate from './goalListingComponents/goalTemplate';
-import plusIcon from '../../images/add.png';
-import minusIcon from '../../images/remove.png';
-import { createStackNavigator, createAppContainer } from 'react-navigation';
+import {  AsyncStorage , ScrollView } from 'react-native';
+import { createStackNavigator } from 'react-navigation';
 import GoalDetails from './goalDetail';
 import GoalIndividualist from './goalListingComponents/goalIndividualist';
 import axios from 'axios';
 import moment from 'moment';
+
+
+const dbConfig = require('../../server/configs/database.config');
 
 // import GoalHeader from './goalListingComponents/goalHeader';
 
@@ -16,34 +15,36 @@ import moment from 'moment';
 class GoalListing extends Component {
    state={ completedGoalList: [], inProgressGoalList: [], expireGoalList: [], userId: AsyncStorage.getItem('userId') }
 
-   componentWillUpdate(){
-    //    console.log(this.state.userId);
-       //10.10.80.196--> system ip
-    axios.get(`http://10.10.80.237:8080/api/getGoals/${this.state.userId}`)
-    .then(response=>{
-        console.log('goal list:', response);
-        let complete = [], inprogress = [], expire = [];
-        for(let item of response.data){
-            if(item.percentage==100) {
-                complete.push(item);
-            } else if (item.percentage<100 && moment(item.dueOn).isBefore(moment())) {
-                expire.push(item);
-            } else if(item.percentage<100){
-                inprogress.push(item);
-            }
-        } this.setState({ completedGoalList: complete, inProgressGoalList: inprogress, expireGoalList: expire });
-    }).catch(err => {
-        console.log(err);
+   componentWillUpdate() {
+    AsyncStorage.getItem('userId')
+    .then(res => {
+        if (res) {
+            axios.get(`${dbConfig.ipAddress}api/getGoals/${res}`)
+            .then(response=>{
+                let complete = [], inprogress = [], expire = [];
+                for(let item of response.data){
+                    if(item.percentage==100) {
+                        complete.push(item);
+                    } else if (item.percentage<100 && moment(item.dueOn).isBefore(moment())) {
+                        expire.push(item);
+                    } else if(item.percentage<100){
+                        inprogress.push(item);
+                    }
+                } this.setState({ completedGoalList: complete, inProgressGoalList: inprogress, expireGoalList: expire });
+            }).catch(err => {
+                console.log(err);
+            });
+        }
     });
    }
    
     render() {
       return (
-            <View>
+            <ScrollView>
                 <GoalIndividualist title="Your Expired Goals" navigation={this.props.navigation} onPress={this.props.onPress} expData={this.state.expireGoalList} goalCount={this.state.expireGoalList.length}></GoalIndividualist>
                 <GoalIndividualist title="Your Completed Goals" navigation={this.props.navigation} onPress={this.props.onPress} expData={this.state.completedGoalList} goalCount={this.state.completedGoalList.length}></GoalIndividualist>
                 <GoalIndividualist title="Your In progress Goals" navigation={this.props.navigation} onPress={this.props.onPress} expData={this.state.inProgressGoalList} goalCount={this.state.inProgressGoalList.length}></GoalIndividualist>
-            </View>
+            </ScrollView>
         );
     }
 }
