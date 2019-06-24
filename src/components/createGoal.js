@@ -73,11 +73,11 @@ componentDidMount() {
       });   
     }
 
-    AsyncStorage.getItem('userId')
-    .then(user => {
-      console.log('user:', user);
-      this.setState({ currentUser: user })
-    });
+    // AsyncStorage.getItem('userId')
+    // .then(user => {
+    //   console.log('user:', user);
+    //   this.setState({ currentUser: user })
+    // });
 
     axios.get(`/users`)
     .then(response => {
