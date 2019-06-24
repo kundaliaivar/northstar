@@ -8,15 +8,17 @@
  */
 
 import React, { Component } from 'react';
-import { createSwitchNavigator, createStackNavigator, createAppContainer } from 'react-navigation';
-import { StyleSheet, View } from 'react-native';
+import { createSwitchNavigator, createStackNavigator, createAppContainer} from 'react-navigation';
+import { StyleSheet, View,AsyncStorage } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import GoalListing from './src/components/goalListing';
 import CreateGoalPage from './src/components/createGoal';
 import GoalDetails from './src/components/goalDetail';
 import LoginPage from './src/components/login/login';
 import GoalLandingDetail from './src/components/goalLandingDetail';
+
 import './src/components/utlis/utlis';
+import {checkPermission,createNotificationListeners} from './notification.service';
 export const user = { userName: 'ayush' };
 
 class App extends Component {
@@ -32,10 +34,19 @@ class App extends Component {
       />
     )
   });
+  
   componentWillMount() {
     const { setParams } = this.props.navigation;
     setParams({ websiteURL: this.props.websiteURL });
+    checkPermission();
+    createNotificationListeners();
   }
+  
+  componentWillUnmount() {
+    this.notificationListener;
+    this.notificationOpenedListener;
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -43,6 +54,7 @@ class App extends Component {
       </View>
     );
   }
+
 }
 
 const AuthStack = createStackNavigator({
