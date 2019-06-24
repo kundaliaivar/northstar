@@ -11,7 +11,7 @@ class GoalDetails extends Component {
 
     }
     componentDidMount() {
-        axios.get(`${dbConfig.ipAddress}api/goal/${this.props.navigation.state.params.itemId}`)
+        axios.get(`/goal/${this.props.navigation.state.params.itemId}`)
         .then(
           response => { this.setState({ data: response.data }); }
           )

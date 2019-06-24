@@ -60,9 +60,15 @@ componentDidMount() {
     const edit = navigation.getParam('edit', false); 
     if (edit) {
       this.setState({
-        goalName: goalDetails.goalName,
+        goalName: goalDetails.name,
         description: goalDetails.description,
         DateText: goalDetails.dueOn,
+        edit: true,
+        goalId: navigation.state.params.itemId,
+        DateText: moment.utc(goalDetails.dueOn).format('MM-DD-YYYY'),
+        value: goalDetails.percentage,
+        isHighImpact: goalDetails.isHighImpact,
+        isCompleted: (goalDetails.percentage === 100),
         sliderValue: goalDetails.percentage
       });   
     }
@@ -73,7 +79,7 @@ componentDidMount() {
     //   this.setState({ currentUser: user })
     // });
 
-    axios.get(`${dbConfig.ipAddress}api/users`)
+    axios.get(`/users`)
     .then(response => {
       const changeStructure = response.data.data.map((str) => ({ value: str }));
       this.setState({ userList: changeStructure });
@@ -178,7 +184,7 @@ componentDidMount() {
   //       AsyncStorage.getItem('userId')
   //       .then(id => {
   //       if (id) {
-  //           axios.post(`${dbConfig.ipAddress}api/createGoal`, {
+  //           axios.post(`/createGoal`, {
   //             name: this.state.goalName,
   //             description: this.state.description,
   //             createdBy: { userId: 'user1', userName: 'user1' },
@@ -224,14 +230,14 @@ componentDidMount() {
         isCompleted: (this.state.value === 100)
       };
       if (this.state.edit) {
-        url = `${dbConfig.ipAddress}api/editGoal/${this.state.goalId}`;
+        url = `/editGoal/${this.state.goalId}`;
         axios.put(url, body).then(res => {
           this.props.navigation.navigate('Home'); 
         }).catch(err => {
           console.log(err);
         });
       } else {
-        url = `${dbConfig.ipAddress}api/createGoal`;
+        url = `/createGoal`;
         axios.post(url, body).then(res => {
           this.props.navigation.navigate('Home'); 
         }).catch(err => {
@@ -241,43 +247,51 @@ componentDidMount() {
   }
 });
 }
-  render() {
-    const { navigation } = this.props;
-    let goalDetails = {};
-    if (navigation.state.params) {
-      goalDetails = navigation.getParam('goalDetails', {});
-      console.log('goalDetails.dueOn', goalDetails);
-      const dataAlreadyLoaded = goalDetails.name === this.state.goalName;
-      if (!dataAlreadyLoaded) {
-        this.setState({
-          goalId: navigation.state.params.itemId,
-          goalName: goalDetails.name,
-          description: goalDetails.description,
-          DateText: moment.utc(goalDetails.dueOn).format('MM-DD-YYYY'),
-          value: goalDetails.percentage,
-          isHighImpact: goalDetails.isHighImpact,
-          isCompleted: (goalDetails.percentage === 100),
-          edit: true,
-          sliderValue: goalDetails.percentage
-        });
-        if (goalDetails.isHighImpact) {
-          this.setState({ showHighImpactIcon: true });
-        }
-      }
-      AsyncStorage.getItem('userId')
-      .then(user => {
-        console.log('user: ', user);
+  deleteGoal(goalId){
+    url = `/deleteGoal/${this.state.goalId}`;
+    axios.delete(url)
+      .then(res => {
+        this.props.navigation.navigate('Home'); 
       })
-      .catch(er => {
-        console.log(er);
-      });
-    } else if (this.state.edit) {
-      this.setState({
-        edit: false
-      });
-    }
+    .catch(err => {
+        console.log(err);
+    });
+}
+  render() {
+    // const { navigation } = this.props;
+    // let goalDetails = {};
+    // if (navigation.state.params) {
+    //   goalDetails = navigation.getParam('goalDetails', {});
+    //   console.log('goalDetails.dueOn', goalDetails);
+    //   const dataAlreadyLoaded = goalDetails.name === this.state.goalName;
+    //   if (!dataAlreadyLoaded) {
+    //     this.setState({
+    //       goalId: navigation.state.params.itemId,
+    //       goalName: goalDetails.name,
+    //       description: goalDetails.description,
+    //       DateText: moment.utc(goalDetails.dueOn).format('MM-DD-YYYY'),
+    //       value: goalDetails.percentage,
+    //       isHighImpact: goalDetails.isHighImpact,
+    //       isCompleted: (goalDetails.percentage === 100),
+    //       edit: true,
+    //       sliderValue: goalDetails.percentage
+    //     });
+    //     if (goalDetails.isHighImpact) {
+    //       this.setState({ showHighImpactIcon: true });
+    //     }
+    //   }
+    // } 
+    // else if (this.state.edit) {
+    //   this.setState({
+    //     edit: false
+    //   });
+    // }
     const saveButtonStyle = {
       color: '#424372',
+      type: 'solid'
+    };
+    const deleteButtonStyle = {
+      color: '#d11a2a',
       type: 'solid'
     };
     return (
@@ -288,6 +302,7 @@ componentDidMount() {
           <Input
             label="Goal Name"
             defaultValue={this.state.goalName}
+            value={this.state.goalName}
             onChange={text => this.setState({ nameError: '', goalName: text })}
             errorMessage={this.state.nameError}
           />
@@ -367,9 +382,9 @@ componentDidMount() {
           </View>
 
         <Button title="Save" style={saveButtonStyle} onPress={this.validate.bind(this)} />
-        {/* {this.state.edit && (
-          <Button title="Delete" style={deleteButtonStyle} />
-        )} */}
+        {this.state.edit && (
+          <Button title="Delete" style={deleteButtonStyle} onPress={() => this.deleteGoal(this.state.goalId)} />
+        )}
         <DatePickerDialog
           ref="DatePickerDialog"
           onDatePicked={this.onDatePickedFunction.bind(this)}

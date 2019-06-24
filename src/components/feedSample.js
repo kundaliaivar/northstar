@@ -7,6 +7,7 @@ import { Icon, Button } from 'react-native-elements';
 import axios from 'axios';
 import { TextInput } from 'react-native-gesture-handler';
 import { stringLiteral } from '@babel/types';
+const dbConfig = require('../../server/configs/database.config');
 
 
 
@@ -34,7 +35,7 @@ const FeedSample = (props) => {
 
    const updateLike = () => {
        if (!liked) {
-        axios.put(`http://10.10.80.237:8080/api/likefeed/${item._id}`, {userName: 'shaili'})
+        axios.put(`/likefeed/${item._id}`, {userName: 'shaili'})
         .then(res => {
             if (res.data && !item.stars.includes('shaili')) {
         setliked(true);
@@ -52,7 +53,7 @@ const FeedSample = (props) => {
            feedBody: updatedText
        };
         axios
-            .put(`http://10.10.80.237:8080/api/editfeed/${item._id}`, data)
+            .put(`/editfeed/${item._id}`, data)
             .then(res => {
                 console.log(res.data);
                 setedit(false);

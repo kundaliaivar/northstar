@@ -46,8 +46,6 @@ const [currentUser, setCurrentUser] = useState();
             />
             <View style={styles.nameContainer}>
                 <Text style={styles.nameStyle}>{currentUser}</Text>
-                {/* <Text style={styles.smallText}>{user.designation}</Text>
-                <Text style={styles.smallText}>{user.location}</Text> */}
             </View>
             <Icon
                 style={styles.iconStyle}

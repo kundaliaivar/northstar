@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
-import { Text, View, Image, AsyncStorage } from 'react-native';
-import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion-collapse-react-native';
-import GoalTemplate from './goalListingComponents/goalTemplate';
-import plusIcon from '../../images/add.png';
-import minusIcon from '../../images/remove.png';
-import { createStackNavigator, createAppContainer } from 'react-navigation';
+import {  AsyncStorage , ScrollView } from 'react-native';
+import { createStackNavigator } from 'react-navigation';
 import GoalDetails from './goalDetail';
 import GoalIndividualist from './goalListingComponents/goalIndividualist';
 import axios from 'axios';
 import moment from 'moment';
+
 
 const dbConfig = require('../../server/configs/database.config');
 
@@ -22,7 +19,7 @@ class GoalListing extends Component {
     AsyncStorage.getItem('userId')
     .then(res => {
         if (res) {
-            axios.get(`${dbConfig.ipAddress}api/getGoals/${res}`)
+            axios.get(`/getGoals/${res}`)
             .then(response=>{
                 let complete = [], inprogress = [], expire = [];
                 for(let item of response.data){
@@ -43,11 +40,11 @@ class GoalListing extends Component {
    
     render() {
       return (
-            <View>
+            <ScrollView>
                 <GoalIndividualist title="Your Expired Goals" navigation={this.props.navigation} onPress={this.props.onPress} expData={this.state.expireGoalList} goalCount={this.state.expireGoalList.length}></GoalIndividualist>
                 <GoalIndividualist title="Your Completed Goals" navigation={this.props.navigation} onPress={this.props.onPress} expData={this.state.completedGoalList} goalCount={this.state.completedGoalList.length}></GoalIndividualist>
                 <GoalIndividualist title="Your In progress Goals" navigation={this.props.navigation} onPress={this.props.onPress} expData={this.state.inProgressGoalList} goalCount={this.state.inProgressGoalList.length}></GoalIndividualist>
-            </View>
+            </ScrollView>
         );
     }
 }
