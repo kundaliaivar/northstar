@@ -30,7 +30,7 @@ public class MainApplication extends Application implements ReactApplication {
           new MainReactPackage(),
             new RangeSliderPackage(),
             new VectorIconsPackage(),
-            new RNGestureHandlerPackage(),
+            new RNGestureHandlerPackage()
             // new RNFirebaseMessagingPackage(),
             // new RNFirebaseNotificationsPackage()
       );

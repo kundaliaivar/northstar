@@ -36,7 +36,7 @@ class GoalLandingDetail extends Component {
         AsyncStorage.getItem('userId')
         .then(id => {
             if (id) {
-                axios.put(`${dbConfig.ipAddress}api/editGoal/${this.state.detailData._id}`, {
+                axios.put(`/editGoal/${this.state.detailData._id}`, {
                     name: this.state.detailData.name,
                     description: this.state.detailData.description,
                     isHighImpact: this.state.detailData.isHighImpact,
@@ -58,7 +58,7 @@ class GoalLandingDetail extends Component {
 
     fetchGoalDetail = () => {
         axios
-            .get(`${dbConfig.ipAddress}api/goal/${this.props.navigation.state.params.itemId}`)
+            .get(`/goal/${this.props.navigation.state.params.itemId}`)
             .then(res => {
                 console.log('res', res);
                 this.setState({ detailData: res.data, initialSliderValue: res.data.percentage });
@@ -70,7 +70,7 @@ class GoalLandingDetail extends Component {
 
     fetchFeedDetail = () => {
         axios
-            .get(`${dbConfig.ipAddress}api/feed/${this.props.navigation.state.params.itemId}`)
+            .get(`/feed/${this.props.navigation.state.params.itemId}`)
             .then(res => { console.log('res2', res); this.setState({ feedDetail: res.data }) })
             .catch(e => console.log(e));
     }
@@ -83,7 +83,7 @@ class GoalLandingDetail extends Component {
             createdOn: this.state.feedDetail.createdOn,
         };
         axios
-            .post(`${dbConfig.ipAddress}api/createfeed`, data)
+            .post(`/createfeed`, data)
             .then(() => {
                 this.setState({ feedDetail: [] });
                 this.fetchFeedDetail();

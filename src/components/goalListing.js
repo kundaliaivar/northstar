@@ -19,7 +19,7 @@ class GoalListing extends Component {
     AsyncStorage.getItem('userId')
     .then(res => {
         if (res) {
-            axios.get(`${dbConfig.ipAddress}api/getGoals/${res}`)
+            axios.get(`/getGoals/${res}`)
             .then(response=>{
                 let complete = [], inprogress = [], expire = [];
                 for(let item of response.data){
