@@ -117,6 +117,8 @@ class LoginPage extends Component {
                     <Text style={styles.header}>Login</Text>
                     <View style={styles.inputBox}>
                         <TextInput 
+                           onSubmitEditing = {this.checkAuth}
+                            onKeyDown = {this._handleEnterKey}
                             style={[styles.inputText, !this.state.isValidText ? styles.error : null]}
                             placeholder="Username"
                             onChangeText={(username) => this.validate(username, 'username')}
@@ -125,16 +127,19 @@ class LoginPage extends Component {
                     
                     <View style={styles.inputBox}>
                         <TextInput 
+                            onSubmitEditing = {this.checkAuth}
                             style={styles.inputText}
                             placeholder="Password"
                             secureTextEntry
                             onChangeText={(password) => this.validate(password, 'password')}
                         />
                     </View>
-                    <Button
+                    <Button type="submit"
                         onPress={this.checkAuth}
+                        onKeyPress={this._handleEnterKey}
                         title='Login'
                         style={styles.buttonStyle}
+                        
                     />
                 </View>
             </View>

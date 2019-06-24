@@ -99,9 +99,9 @@ componentDidMount() {
   onChangeHandler = (value) => {
     this.setState({ selectedUser: value });
   }
-  assignGoal() {
+  assignGoal = () => {
     if (this.state.assignToMySelf) {
-      return (<Assignee fnPressButton={this.changeStateValue.bind(this)} />);
+      return (<Assignee currentUser={this.state.currentUser} fnPressButton={this.changeStateValue.bind(this)} />);
     } 
     return (
         <TouchableOpacity
@@ -366,7 +366,7 @@ componentDidMount() {
           {/* Assign To */}
 
           <Text style={styles.assignToStyle}>Assign To</Text>
-          {this.assignGoal()}
+          <Text>{this.state.currentUser !== '' ? this.assignGoal : ''}</Text>
           {this.state.autosuggest && (
               <View style={{ marginLeft: 10, marginRight: 10 }}>
                 <Dropdown

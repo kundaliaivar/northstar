@@ -16,9 +16,12 @@ class GoalListing extends Component {
         }
       }
     setContent(item) {
+        let today = moment();
+        let dueOn = item.dueOn;
+        let daysRemaining = today.diff(dueOn, 'days') ;
         if (item.percentage === 100){
             return (<Text style={{ color: this.setColor(item)}}> Completed on {moment.utc(item.dueOn).format('MMM DD')}</Text>);
-        } else if (item.percentage < 100) {
+        } else if (item.percentage < 100 && daysRemaining > 0 ) {
             return (<Text style={{ color: this.setColor(item) }}> Expired On {moment.utc(item.dueOn).format('MMM DD')}</Text>);
         } else {
             return (<Text style={{ color: this.setColor(item) }}> Complete By {moment.utc(item.dueOn).format('MMM DD')}</Text>);
