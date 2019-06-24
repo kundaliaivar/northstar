@@ -51,24 +51,24 @@ const createGoal = (req, res) => {
 
 const editGoal = (req, res) => {
     const reqBody = req.body;
-    const newGoal = new GoalModel(reqBody);
-    
-    newGoal.updateOne({
+    console.log(req.params.goalId);
+    GoalModel.updateOne({
         _id: req.params.goalId
     }, { 
         name: reqBody.name,
         description: reqBody.description,
-        createdBy: reqBody.createdBy,
-        createdFor: reqBody.createdFor,
         isHighImpact: reqBody.isHighImpact,
-        isPublic: reqBody.isPublic,
-        lastUpdateOn: Date.now,
-        isCompleted: reqBody.isCompleted,
+        dueOn: reqBody.dueOn,
         percentage: reqBody.percentage,
-    }).then(() => {
-        res.send('Success');
+        isCompleted: reqBody.isCompleted
     })
-    .catch(err => res.status(400).send(err.message));
+    .then(response => {
+        console.log(response);
+        res.send(response);
+    })
+    .catch(error => {
+        console.log(error);
+    });
 };
 
 

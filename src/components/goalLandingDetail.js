@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Image, TouchableOpacity, StyleSheet, ScrollView, TextInput } from 'react-native';
+import { Text, View, Image, TouchableOpacity, ScrollView, TextInput, AsyncStorage } from 'react-native';
 import axios from 'axios';
 import moment from 'moment';
 import EditIcon from '../../images/edit-white.png';
@@ -26,16 +26,34 @@ class GoalLandingDetail extends Component {
     }
 
     componentDidMount() {
-        // axios.get(`http://10.10.80.237:8080/api/goal/${ this.props.navigation.state.params.itemId}`)
-        // .then( res =>{
-        //     this.setState({ detailData: res.data });
-        //     console.log('showdetail', this.state.detailData);
-        // }).catch(err => {
-        //     console.log(err);
-        // });
         this.props.navigation.setParams({ goalName: '' });
         this.fetchGoalDetail();
         this.fetchFeedDetail();
+    }
+
+    editGoal = (sliderValue) => {
+        console.log('inside edit goal');
+        AsyncStorage.getItem('userId')
+        .then(id => {
+            if (id) {
+                axios.put(`${dbConfig.ipAddress}api/editGoal/${this.state.detailData._id}`, {
+                    name: this.state.detailData.name,
+                    description: this.state.detailData.description,
+                    isHighImpact: this.state.detailData.isHighImpact,
+                    dueOn: this.state.detailData.dueOn,
+                    percentage: sliderValue,
+                    isCompleted: (sliderValue === 100)
+                })
+                .then(res => {
+                    console.log(res);
+                    // console.log(this.props);
+                    // this.props.navigation.navigate('Home'); 
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+            }
+        });
     }
 
     fetchGoalDetail = () => {
@@ -44,6 +62,7 @@ class GoalLandingDetail extends Component {
             .then(res => {
                 console.log('res', res);
                 this.setState({ detailData: res.data, initialSliderValue: res.data.percentage });
+                this.refs._rangeSlider.setLowValue(this.state.detailData.percentage);
                 this.props.navigation.setParams({ goalName: res.data.name.toUpperCase() });
             })
             .catch(e => console.log(e));
@@ -84,29 +103,29 @@ class GoalLandingDetail extends Component {
                     <Text style={styles.headingColor}>Test</Text>
                     <View style={styles.editSectionStyle}>
                         <Text style={{ color: 'aqua' }} onPress={() => navigation.navigate('GoalDetails', { itemId: this.state.detailData._id })}>View Details</Text>
-                        <TouchableOpacity onPress={() => navigation.navigate('CreateGoalPage', { itemId: this.state.detailData._id, goalDetails: this.state.detailData, edit: 'true' })}>
+                        <TouchableOpacity onPress={() => navigation.navigate('CreateGoalPage', { itemId: this.state.detailData._id, goalDetails: this.state.detailData, edit: 'true',title:'Edit Goal' })}>
                             <Image source={EditIcon} />
                         </TouchableOpacity>
                     </View>
                 </View>
                 <View style={styles.progressSection}>
-                    <RangeSlider
-              style={{ width: 200, height: 60 }}
-              min={0}
-              initialLowValue={this.updateSlider(this.state.detailData)}
-              rangeEnabled={false}
-              thumbBorderWidth={12}
-              lineWidth={15}
-              step={1}
-              labelBorderWidth={1}
-              labelBorderRadius={1}
-              selectionColor="#B46BAB"
-              blankColor="#fafafa"
-              disableRange={true}
-              onValueChanged={(low) => {
-                this.setState({ value: low });
-              }}
-            />
+                    <RangeSlider 
+                        ref="_rangeSlider"
+                        style={{ width: 200, height: 60 }}
+                        min={0}
+                        rangeEnabled={false}
+                        thumbBorderWidth={12}
+                        lineWidth={15}
+                        step={1}
+                        labelBorderWidth={1}
+                        labelBorderRadius={1}
+                        selectionColor="#B46BAB"
+                        blankColor="#fafafa"
+                        disableRange
+                        onValueChanged={(low) => {
+                            this.editGoal(low);
+                        }}
+                    />
                     <View >
                         <Text style={styles.completionDateHeader}>Completed By</Text>
                         <Text style={styles.completionDateContainer}>{this.state.detailData && moment.utc(this.state.detailData.dueOn).format('MMM DD')}</Text>
