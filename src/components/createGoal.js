@@ -25,6 +25,10 @@ const dbConfig = require('../../server/configs/database.config.js');
 
 
 class CreateGoalPage extends Component {
+  static navigationOptions = ({ navigation }) => ({
+      title: navigation.getParam('title', 'Create Goal'),
+    });
+
   constructor(props) {
     super(props);
     this.state = {
@@ -47,6 +51,7 @@ class CreateGoalPage extends Component {
       dateError: '',
       sliderValue: 0,
       edit: false,
+      currentUser: ''
     };
   }
 componentDidMount() {
@@ -61,6 +66,13 @@ componentDidMount() {
         sliderValue: goalDetails.percentage
       });   
     }
+
+    AsyncStorage.getItem('userId')
+    .then(user => {
+      console.log('user:', user);
+      this.setState({ currentUser: user })
+    });
+
     axios.get(`${dbConfig.ipAddress}api/users`)
     .then(response => {
       const changeStructure = response.data.data.map((str) => ({ value: str }));
@@ -70,7 +82,7 @@ componentDidMount() {
       console.log(err);
     });
   }
-  
+
   onDatePickedFunction = date => {
     this.setState({
       dobDate: date,
@@ -82,8 +94,8 @@ componentDidMount() {
     this.setState({ selectedUser: value });
   }
   assignGoal() {
-  if (this.state.assignToMySelf) {
-      return (<Assignee fnPressButton={this.changeStateValue.bind(this)} />);
+    if (this.state.assignToMySelf) {
+      return (<Assignee currentUser={this.state.currentUser} fnPressButton={this.changeStateValue.bind(this)} />);
     } 
     return (
         <TouchableOpacity
@@ -116,7 +128,7 @@ componentDidMount() {
       return (
         <TouchableOpacity
           onPress={() =>
-            this.setState({ showHighImpactIcon: false, isHighImpact: true })
+            this.setState({ showHighImpactIcon: false, isHighImpact: false })
           }
         >
           {this.state.showHighImpactIcon && (
@@ -128,7 +140,7 @@ componentDidMount() {
       return (
         <TouchableOpacity
           onPress={() =>
-            this.setState({ showHighImpactIcon: true, isHighImpact: false })
+            this.setState({ showHighImpactIcon: true, isHighImpact: true })
           }
         >
           <Image style={styles.highImpactStyle} source={HighImpactIcon} />
@@ -198,7 +210,7 @@ componentDidMount() {
         this.state.selectedUser = id;
       }
       let url = '';
-      let method = 'POST';
+      const method = 'POST';
       const body = {
         name: this.state.goalName,
         description: this.state.description,
@@ -248,7 +260,17 @@ componentDidMount() {
           edit: true,
           sliderValue: goalDetails.percentage
         });
+        if (goalDetails.isHighImpact) {
+          this.setState({ showHighImpactIcon: true });
+        }
       }
+      AsyncStorage.getItem('userId')
+      .then(user => {
+        console.log('user: ', user);
+      })
+      .catch(er => {
+        console.log(er);
+      });
     } else if (this.state.edit) {
       this.setState({
         edit: false
@@ -257,10 +279,6 @@ componentDidMount() {
     const saveButtonStyle = {
       color: '#424372',
       type: 'solid'
-    };
-    const deleteButtonStyle = {
-      color: '#424372',
-      type: 'clear'
     };
     return (
   
@@ -348,9 +366,9 @@ componentDidMount() {
           </View>
 
         <Button title="Save" style={saveButtonStyle} onPress={this.validate.bind(this)} />
-        {this.state.edit && (
+        {/* {this.state.edit && (
           <Button title="Delete" style={deleteButtonStyle} />
-        )}
+        )} */}
         <DatePickerDialog
           ref="DatePickerDialog"
           onDatePicked={this.onDatePickedFunction.bind(this)}

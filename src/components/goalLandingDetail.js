@@ -103,7 +103,7 @@ class GoalLandingDetail extends Component {
                     <Text style={styles.headingColor}>Test</Text>
                     <View style={styles.editSectionStyle}>
                         <Text style={{ color: 'aqua' }} onPress={() => navigation.navigate('GoalDetails', { itemId: this.state.detailData._id })}>View Details</Text>
-                        <TouchableOpacity onPress={() => navigation.navigate('CreateGoalPage', { itemId: this.state.detailData._id, goalDetails: this.state.detailData, edit: 'true' })}>
+                        <TouchableOpacity onPress={() => navigation.navigate('CreateGoalPage', { itemId: this.state.detailData._id, goalDetails: this.state.detailData, edit: 'true',title:'Edit Goal' })}>
                             <Image source={EditIcon} />
                         </TouchableOpacity>
                     </View>

@@ -4,30 +4,30 @@ import defaultPhoto from '../../images/defaultPhoto.png';
 import axios from 'axios';
 import { ScrollView } from 'react-native-gesture-handler';
 
-
+const dbConfig = require('../../server/configs/database.config');
 class GoalDetails extends Component {
     state = {
         data: [],
 
     }
-    componentWillMount() {
-        axios.get(`http://10.10.80.237:8080/api/goal/${this.props.navigation.state.params.itemId}`)
-        .then(response => { console.log(response); this.setState({ data: response.data }); })
-        .catch(err => {
-        console.log(err);
-    })
+    componentDidMount() {
+        axios.get(`${dbConfig.ipAddress}api/goal/${this.props.navigation.state.params.itemId}`)
+        .then(
+          response => { this.setState({ data: response.data }); }
+          )
+        .catch(
+          err => { console.log(err);
+    });
     }
-    showHighImpactValue(isHighImpact){
+    showHighImpactValue(isHighImpact) {
       if (isHighImpact) {
-      return (<Text style={styles.text}>True</Text>);
+      return (<Text style={styles.text}>True</Text>); 
       } else {
       return (<Text style={styles.text}>False</Text>);
       }
     }
     render() {
-      data=this.state.data;
-    
-        return (
+      return (
             <ScrollView>
             <View style={styles.GoalDetailsContainer}>
               <Text style={styles.headingText}>Goal Name</Text>
@@ -35,7 +35,7 @@ class GoalDetails extends Component {
               <Text style={styles.headingText}>Goal Description</Text>
               <Text style={styles.text}>{this.state.data.description}</Text>
               <Text style={styles.headingText}>Complete By</Text>
-              <Text style={styles.text}>06/10/2019</Text>
+              <Text style={styles.text}>{this.state.data.dueOn}</Text>
               <Text style={styles.headingText}>Goal Type</Text>
               <Text style={styles.text}>Project Goals</Text>
               <Text style={styles.headingText}>Progress</Text>
@@ -74,16 +74,16 @@ const styles = {
         fontSize: 16,
         color: '#000000',
     },
-    GoalDetailsContainer:{
-        paddingTop:7,
-        paddingBottom:7,
-        paddingLeft:16,
-        paddingRight:16
+    GoalDetailsContainer: {
+        paddingTop: 7,
+        paddingBottom: 7,
+        paddingLeft: 16,
+        paddingRight: 16
     },
-    memberInfoStyle:{
-        flexDirection:'row',
-        alignItems:'center',
-        marginTop:10
+    memberInfoStyle: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 10
     }
 }
-export default GoalDetails
+export default GoalDetails;
