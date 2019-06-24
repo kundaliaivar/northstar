@@ -287,7 +287,7 @@ componentDidMount() {
           {/* Goal Name */}
           <Input
             label="Goal Name"
-            value={this.state.goalName}
+            defaultValue={this.state.goalName}
             onChange={text => this.setState({ nameError: '', goalName: text })}
             errorMessage={this.state.nameError}
           />
@@ -296,7 +296,7 @@ componentDidMount() {
             label="Description"
             multiline
             numberOfLines={4}
-            value={this.state.description}
+            defaultValue={this.state.description}
             onChange={text => this.setState({ descriptionError: '', description: text })}
             errorMessage={this.state.descriptionError}
           />
@@ -329,6 +329,7 @@ componentDidMount() {
                 ref="_rangeSlider1"
                 style={{ width: 350, height: 60 }}
                 min={0}
+                selectedMaximum={this.state.value}
                 rangeEnabled={false}
                 thumbBorderWidth={12}
                 lineWidth={15}
