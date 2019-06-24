@@ -73,13 +73,13 @@ componentDidMount() {
       });   
     }
 
-    AsyncStorage.getItem('userId')
-    .then(user => {
-      console.log('user:', user);
-      this.setState({ currentUser: user })
-    });
+    // AsyncStorage.getItem('userId')
+    // .then(user => {
+    //   console.log('user:', user);
+    //   this.setState({ currentUser: user })
+    // });
 
-    axios.get(`${dbConfig.ipAddress}api/users`)
+    axios.get(`/users`)
     .then(response => {
       const changeStructure = response.data.data.map((str) => ({ value: str }));
       this.setState({ userList: changeStructure });
@@ -184,7 +184,7 @@ componentDidMount() {
   //       AsyncStorage.getItem('userId')
   //       .then(id => {
   //       if (id) {
-  //           axios.post(`${dbConfig.ipAddress}api/createGoal`, {
+  //           axios.post(`/createGoal`, {
   //             name: this.state.goalName,
   //             description: this.state.description,
   //             createdBy: { userId: 'user1', userName: 'user1' },
@@ -230,14 +230,14 @@ componentDidMount() {
         isCompleted: (this.state.value === 100)
       };
       if (this.state.edit) {
-        url = `${dbConfig.ipAddress}api/editGoal/${this.state.goalId}`;
+        url = `/editGoal/${this.state.goalId}`;
         axios.put(url, body).then(res => {
           this.props.navigation.navigate('Home'); 
         }).catch(err => {
           console.log(err);
         });
       } else {
-        url = `${dbConfig.ipAddress}api/createGoal`;
+        url = `/createGoal`;
         axios.post(url, body).then(res => {
           this.props.navigation.navigate('Home'); 
         }).catch(err => {
@@ -248,7 +248,7 @@ componentDidMount() {
 });
 }
   deleteGoal(goalId){
-    url = `${dbConfig.ipAddress}api/deleteGoal/${this.state.goalId}`;
+    url = `/deleteGoal/${this.state.goalId}`;
     axios.delete(url)
       .then(res => {
         this.props.navigation.navigate('Home'); 

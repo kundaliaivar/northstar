@@ -24,7 +24,7 @@ class LoginPage extends Component {
         };
     }
     checkAuth = () => {
-        axios.post(`${dbConfig.ipAddress}api/login`, {
+        axios.post(`/login`, {
             userName: this.state.username,
             password: this.state.password
         })

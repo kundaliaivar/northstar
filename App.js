@@ -16,7 +16,7 @@ import CreateGoalPage from './src/components/createGoal';
 import GoalDetails from './src/components/goalDetail';
 import LoginPage from './src/components/login/login';
 import GoalLandingDetail from './src/components/goalLandingDetail';
-
+import './src/components/utlis/utlis';
 export const user = { userName: 'ayush' };
 
 class App extends Component {

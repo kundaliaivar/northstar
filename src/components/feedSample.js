@@ -35,7 +35,7 @@ const FeedSample = (props) => {
 
    const updateLike = () => {
        if (!liked) {
-        axios.put(`${dbConfig.ipAddress}api/likefeed/${item._id}`, {userName: 'shaili'})
+        axios.put(`/likefeed/${item._id}`, {userName: 'shaili'})
         .then(res => {
             if (res.data && !item.stars.includes('shaili')) {
         setliked(true);
@@ -53,7 +53,7 @@ const FeedSample = (props) => {
            feedBody: updatedText
        };
         axios
-            .put(`${dbConfig.ipAddress}api/editfeed/${item._id}`, data)
+            .put(`/editfeed/${item._id}`, data)
             .then(res => {
                 console.log(res.data);
                 setedit(false);
