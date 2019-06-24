@@ -60,3 +60,4 @@ MyPlayground.playground/
 yarn.lock
 package-lock.json
 ios/northstarPoc.xcodeproj/*
+src/components/utlis/utlis.js

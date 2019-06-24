@@ -6,7 +6,8 @@
  * @format
  * @flow
  */
-
+import {checkPermission,createNotificationListeners} from './notification.service';
+import './src/components/utlis/utlis';
 import React, { Component } from 'react';
 import { createSwitchNavigator, createStackNavigator, createAppContainer} from 'react-navigation';
 import { StyleSheet, View,AsyncStorage } from 'react-native';
@@ -16,9 +17,6 @@ import CreateGoalPage from './src/components/createGoal';
 import GoalDetails from './src/components/goalDetail';
 import LoginPage from './src/components/login/login';
 import GoalLandingDetail from './src/components/goalLandingDetail';
-
-import './src/components/utlis/utlis';
-import {checkPermission,createNotificationListeners} from './notification.service';
 export const user = { userName: 'ayush' };
 
 class App extends Component {

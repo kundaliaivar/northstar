@@ -2,11 +2,11 @@ const User = require('../models/userModel');
 
 
 exports.login = function (req, res) {
-  User.find({
+  User.findOne({
       userName: req.body.userName,
       password: req.body.password
     }).then(response => {
-      if (response.length) {
+      if (response) {
         res.send(true);
       } else {
         res.send(false);
