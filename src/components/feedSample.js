@@ -87,7 +87,7 @@ const FeedSample = (props) => {
                 {edit ? (
                 <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
                     <TextInput style={{ width: '85%' }} value={updatedText} onChangeText={text => setupdatedText(text)} />
-                    <Button title="Post" style={{ width: '20%' }} buttonStyle={{ backgroundColor: '#ccc', padding: 5 }} titleStyle={{ color: 'black' }} onPress={updateEditedText} />
+                    <Button title="Post" style={{ width: 50 }} buttonStyle={{ backgroundColor: '#ccc', padding: 5 }} titleStyle={{ color: 'black' }} onPress={updateEditedText} />
                 </View>
                 ) : (
                 <Text>{updatedText}</Text>

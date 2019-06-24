@@ -25,6 +25,10 @@ const dbConfig = require('../../server/configs/database.config.js');
 
 
 class CreateGoalPage extends Component {
+  static navigationOptions = ({ navigation }) => ({
+      title: navigation.getParam('title', 'Create Goal'),
+    });
+
   constructor(props) {
     super(props);
     this.state = {
@@ -45,7 +49,9 @@ class CreateGoalPage extends Component {
       nameError: '',
       descriptionError: '',
       dateError: '',
+      sliderValue: 0,
       edit: false,
+      currentUser: ''
     };
   }
 componentDidMount() {
@@ -53,25 +59,30 @@ componentDidMount() {
     const goalDetails = navigation.getParam('goalDetails', {}); 
     const edit = navigation.getParam('edit', false); 
     if (edit) {
-    this.setState({
-      goalName: goalDetails.name,
-      description: goalDetails.description,
-      DateText: goalDetails.dueOn
-    });
-    }
-}
-  componentWillUpdate() {
-    axios.get(`${dbConfig.ipAddress}api/users`)
-    .then(response => {
-        console.log('users:', response.data.data);
-        // this.setState({ userList: response.data.data });
-    })
-    .catch(err => {
-        console.log(err);
-    });
+      this.setState({
+        goalName: goalDetails.goalName,
+        description: goalDetails.description,
+        DateText: goalDetails.dueOn,
+        sliderValue: goalDetails.percentage
+      });   
     }
 
-  
+    AsyncStorage.getItem('userId')
+    .then(user => {
+      console.log('user:', user);
+      this.setState({ currentUser: user })
+    });
+
+    axios.get(`${dbConfig.ipAddress}api/users`)
+    .then(response => {
+      const changeStructure = response.data.data.map((str) => ({ value: str }));
+      this.setState({ userList: changeStructure });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+  }
+
   onDatePickedFunction = date => {
     this.setState({
       dobDate: date,
@@ -83,8 +94,8 @@ componentDidMount() {
     this.setState({ selectedUser: value });
   }
   assignGoal() {
-  if (this.state.assignToMySelf) {
-      return (<Assignee fnPressButton={this.changeStateValue.bind(this)} />);
+    if (this.state.assignToMySelf) {
+      return (<Assignee currentUser={this.state.currentUser} fnPressButton={this.changeStateValue.bind(this)} />);
     } 
     return (
         <TouchableOpacity
@@ -117,7 +128,7 @@ componentDidMount() {
       return (
         <TouchableOpacity
           onPress={() =>
-            this.setState({ showHighImpactIcon: false, isHighImpact: true })
+            this.setState({ showHighImpactIcon: false, isHighImpact: false })
           }
         >
           {this.state.showHighImpactIcon && (
@@ -129,7 +140,7 @@ componentDidMount() {
       return (
         <TouchableOpacity
           onPress={() =>
-            this.setState({ showHighImpactIcon: true, isHighImpact: false })
+            this.setState({ showHighImpactIcon: true, isHighImpact: true })
           }
         >
           <Image style={styles.highImpactStyle} source={HighImpactIcon} />
@@ -163,63 +174,102 @@ componentDidMount() {
     }
   }
 
+  // createGoal = () => {
+  //       AsyncStorage.getItem('userId')
+  //       .then(id => {
+  //       if (id) {
+  //           axios.post(`${dbConfig.ipAddress}api/createGoal`, {
+  //             name: this.state.goalName,
+  //             description: this.state.description,
+  //             createdBy: { userId: 'user1', userName: 'user1' },
+  //             createdFor: { userId: this.state.selectedUser, userName: this.state.selectedUser },
+  //             taskType: 'Project Goals',
+  //             isHighImpact: this.state.isHighImpact,
+  //             isPublic: false,
+  //             dueOn: this.state.DateText,
+  //             percentage: this.state.value,
+  //             isCompleted: (this.state.value === 100)
+  //             })
+  //             .then(res => {
+  //               console.log(res);
+  //               // console.log(this.props);
+  //               this.props.navigation.navigate('Home'); 
+  //             })
+  //             .catch(err => {
+  //               console.log(err);
+  //             });
+  //     }
+  //   });
+  // }
+
   createGoal = () => {
-          AsyncStorage.getItem('userId')
-          .then(id => {
-          if (id) {
-              axios.post(`${dbConfig.ipAddress}api/createGoal`, {
-                name: this.state.goalName,
-                description: this.state.description,
-                createdBy: { userId: 'user1', userName: 'user1' },
-                createdFor: { userId: this.state.selectedUser, userName: this.state.selectedUser },
-                taskType: 'Project Goals',
-                isHighImpact: this.state.isHighImpact,
-                isPublic: false,
-                dueOn: this.state.DateText,
-                percentage: this.state.value,
-                isCompleted: (this.state.value === 100)
-                })
-                .then(res => {
-                  console.log(res);
-                  // console.log(this.props);
-                  this.props.navigation.navigate('Home'); 
-                })
-                .catch(err => {
-                  console.log(err);
-                });
-        }
-      });
+    AsyncStorage.getItem('userId')
+    .then(id => {
+    if (id) {
+      if (this.state.selectedUser === '') {
+        this.state.selectedUser = id;
+      }
+      let url = '';
+      const method = 'POST';
+      const body = {
+        name: this.state.goalName,
+        description: this.state.description,
+        createdBy: { userId: id, userName: id },
+        createdFor: { userId: this.state.selectedUser, userName: this.state.selectedUser },
+        taskType: 'Project Goals',
+        isHighImpact: this.state.isHighImpact,
+        isPublic: false,
+        dueOn: this.state.DateText,
+        percentage: this.state.value,
+        isCompleted: (this.state.value === 100)
+      };
+      if (this.state.edit) {
+        url = `${dbConfig.ipAddress}api/editGoal/${this.state.goalId}`;
+        axios.put(url, body).then(res => {
+          this.props.navigation.navigate('Home'); 
+        }).catch(err => {
+          console.log(err);
+        });
+      } else {
+        url = `${dbConfig.ipAddress}api/createGoal`;
+        axios.post(url, body).then(res => {
+          this.props.navigation.navigate('Home'); 
+        }).catch(err => {
+          console.log(err);
+        });
+      }
   }
+});
+}
   render() {
-    const data = [{
-        value: 'Abhijeet',
-      }, {
-        value: 'Abhishek',
-      }, {
-        value: 'Ayush',
-      },
-      {
-        value: 'Ravi',
-      }, 
-      {
-        value: 'Ganapati',
-      }, 
-      {
-        value: 'Shaili',
-      }, 
-      {
-        value: 'Suprita',
-      }, 
-    ];
     const { navigation } = this.props;
-    let goalDetails = [];
+    let goalDetails = {};
     if (navigation.state.params) {
-      goalDetails = navigation.getParam(goalDetails, navigation.state.params.itemId); 
-      this.setState({
-        goalName: goalDetails.goalName,
-        description: goalDetails.description,
-        DateText: moment(goalDetails.dueOnDate).format('DD-MMM-YYYY'),
-        edit: true
+      goalDetails = navigation.getParam('goalDetails', {});
+      console.log('goalDetails.dueOn', goalDetails);
+      const dataAlreadyLoaded = goalDetails.name === this.state.goalName;
+      if (!dataAlreadyLoaded) {
+        this.setState({
+          goalId: navigation.state.params.itemId,
+          goalName: goalDetails.name,
+          description: goalDetails.description,
+          DateText: moment.utc(goalDetails.dueOn).format('MM-DD-YYYY'),
+          value: goalDetails.percentage,
+          isHighImpact: goalDetails.isHighImpact,
+          isCompleted: (goalDetails.percentage === 100),
+          edit: true,
+          sliderValue: goalDetails.percentage
+        });
+        if (goalDetails.isHighImpact) {
+          this.setState({ showHighImpactIcon: true });
+        }
+      }
+      AsyncStorage.getItem('userId')
+      .then(user => {
+        console.log('user: ', user);
+      })
+      .catch(er => {
+        console.log(er);
       });
     } else if (this.state.edit) {
       this.setState({
@@ -230,10 +280,6 @@ componentDidMount() {
       color: '#424372',
       type: 'solid'
     };
-    const deleteButtonStyle = {
-      color: '#424372',
-      type: 'clear'
-    };
     return (
   
         <ScrollView>
@@ -241,7 +287,7 @@ componentDidMount() {
           {/* Goal Name */}
           <Input
             label="Goal Name"
-            value={this.state.goalName}
+            defaultValue={this.state.goalName}
             onChange={text => this.setState({ nameError: '', goalName: text })}
             errorMessage={this.state.nameError}
           />
@@ -250,7 +296,7 @@ componentDidMount() {
             label="Description"
             multiline
             numberOfLines={4}
-            value={this.state.description}
+            defaultValue={this.state.description}
             onChange={text => this.setState({ descriptionError: '', description: text })}
             errorMessage={this.state.descriptionError}
           />
@@ -280,12 +326,15 @@ componentDidMount() {
             <View style={styles.datePickerBoxContainer}>
               <Text style={{ marginLeft: 10 }}>Progress</Text>
               <RangeSlider
+                ref="_rangeSlider1"
                 style={{ width: 350, height: 60 }}
                 min={0}
+                selectedMaximum={this.state.value}
                 rangeEnabled={false}
                 thumbBorderWidth={12}
                 lineWidth={15}
                 step={1}
+                initialLowValue={this.state.sliderValue}
                 labelBorderWidth={1}
                 labelBorderRadius={1}
                 selectionColor="#B46BAB"
@@ -307,7 +356,7 @@ componentDidMount() {
               <View style={{ marginLeft: 10, marginRight: 10 }}>
                 <Dropdown
                 label='Select Member to Assign!'
-                data={data}
+                data={this.state.userList}
                 onChangeText={(value) => this.onChangeHandler(value)}
                 />
               </View>
@@ -318,9 +367,9 @@ componentDidMount() {
           </View>
 
         <Button title="Save" style={saveButtonStyle} onPress={this.validate.bind(this)} />
-        {this.state.edit && (
+        {/* {this.state.edit && (
           <Button title="Delete" style={deleteButtonStyle} />
-        )}
+        )} */}
         <DatePickerDialog
           ref="DatePickerDialog"
           onDatePicked={this.onDatePickedFunction.bind(this)}

@@ -61,7 +61,7 @@ const RootStack = createStackNavigator({
         headerStyle: {
           backgroundColor: '#2E2F50',
         },
-        title: 'Create Goal',
+        // title: 'Create Goal',
       })
     },
     GoalDetails: {
