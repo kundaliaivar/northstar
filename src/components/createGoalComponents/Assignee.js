@@ -5,33 +5,34 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const Assignee = (props) => {
     const onPress = () => props.fnPressButton();
-    // Default value
-    const user = {
-        name: 'Abhishek P',
-        initials: 'AP',
-        designation: 'UX Developer',
-        location: 'Bellandur'
+    AsyncStorage.getItem('userId').then(id => {
+
+        if (!user.name) {
+            // NOTE: remove later
+            user.name = 'Abhishek P';
+            user.designation = 'UX Developer';
+            user.location = 'Bellandur';
+        }
+    });
+    const userInitials = () => {
+        const names = user.name.split(' ');
+        let initials = names[0].substring(0, 1).toUpperCase();
+        
+        if (names.length > 1) {
+            initials += names[names.length - 1].substring(0, 1).toUpperCase();
+        }
+        return initials;
     };
-        AsyncStorage.getItem('userId').then(id => {
-            if (!id) {
-                return;
-            }
-            const names = id.split(' ');
-            let initials = names[0].substring(0, 1).toUpperCase();
-            
-            if (names.length > 1) {
-                initials += names[names.length - 1].substring(0, 1).toUpperCase();
-            }
-            user.name = id;
-            user.initials = initials;
-        });
+    changeParentState = () =>  {
+        this.props.changeState;
+      }
 
     return (
         <View style={styles.containerStyles}>
             <Avatar
-                size='small'
+                size='Small'
                 rounded
-                title={user.initials}
+                title={userInitials()}
                 onPress={() => console.log('Works!')}
                 activeOpacity={0.7}
             />

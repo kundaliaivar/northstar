@@ -7,7 +7,7 @@ import GoalTemplate from './goalTemplate';
 
 
 class GoalIndividualist extends React.Component {
-    state = { collapsed: true };
+    state = { collapsed: false };
 
     renderImage() {
         if (!this.state.collapsed) {

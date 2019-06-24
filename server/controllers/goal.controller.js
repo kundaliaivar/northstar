@@ -71,5 +71,17 @@ const editGoal = (req, res) => {
     });
 };
 
+const deleteGoal = (req, res) => {
+    const reqBody = req.body;
+    GoalModel.findByIdAndDelete(req.params.goalId)
+    .then(response => {
+        res.send(response);
+    })
+    .catch(error => {
+        console.log(error);
+    });
+    
+};
 
-module.exports = { getGoal, goalLandingDetail, createGoal, editGoal };
+
+module.exports = { getGoal, goalLandingDetail, createGoal, editGoal , deleteGoal };

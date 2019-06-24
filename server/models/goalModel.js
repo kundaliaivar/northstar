@@ -51,8 +51,7 @@ const GoalSchema = new Schema({
         type: Boolean
     },
     percentage: {
-        type: Number,
-        default: 0
+        type: Number
     }
 }, {
     timestamps: {
