@@ -54,7 +54,7 @@ componentDidMount() {
     const edit = navigation.getParam('edit', false); 
     if (edit) {
     this.setState({
-      goalName: goalDetails.goalName,
+      goalName: goalDetails.name,
       description: goalDetails.description,
       DateText: goalDetails.dueOn
     });
