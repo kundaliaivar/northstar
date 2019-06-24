@@ -67,11 +67,11 @@ componentDidMount() {
       });   
     }
 
-    AsyncStorage.getItem('userId')
-    .then(user => {
-      console.log('user:', user);
-      this.setState({ currentUser: user })
-    });
+    // AsyncStorage.getItem('userId')
+    // .then(user => {
+    //   console.log('user:', user);
+    //   this.setState({ currentUser: user })
+    // });
 
     axios.get(`${dbConfig.ipAddress}api/users`)
     .then(response => {
@@ -95,7 +95,7 @@ componentDidMount() {
   }
   assignGoal() {
     if (this.state.assignToMySelf) {
-      return (<Assignee currentUser={this.state.currentUser} fnPressButton={this.changeStateValue.bind(this)} />);
+      return (<Assignee fnPressButton={this.changeStateValue.bind(this)} />);
     } 
     return (
         <TouchableOpacity
