@@ -366,7 +366,7 @@ componentDidMount() {
           {/* Assign To */}
 
           <Text style={styles.assignToStyle}>Assign To</Text>
-          <Text>{this.state.currentUser !== '' ? this.assignGoal : ''}</Text>
+         {this.assignGoal()}
           {this.state.autosuggest && (
               <View style={{ marginLeft: 10, marginRight: 10 }}>
                 <Dropdown
@@ -439,8 +439,8 @@ const styles = {
     width: '98%'
   },
   AddPerson: {
-    height: 50,
-    width: 50,
+    height: 30,
+    width: 30,
     marginLeft: 10
   },
   highImpactStyle: {
