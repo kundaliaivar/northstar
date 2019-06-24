@@ -247,6 +247,16 @@ componentDidMount() {
   }
 });
 }
+  deleteGoal(goalId){
+    url = `${dbConfig.ipAddress}api/deleteGoal/${this.state.goalId}`;
+    axios.delete(url)
+      .then(res => {
+        this.props.navigation.navigate('Home'); 
+      })
+    .catch(err => {
+        console.log(err);
+    });
+}
   render() {
     // const { navigation } = this.props;
     // let goalDetails = {};
@@ -278,6 +288,10 @@ componentDidMount() {
     // }
     const saveButtonStyle = {
       color: '#424372',
+      type: 'solid'
+    };
+    const deleteButtonStyle = {
+      color: '#d11a2a',
       type: 'solid'
     };
     return (
@@ -368,9 +382,9 @@ componentDidMount() {
           </View>
 
         <Button title="Save" style={saveButtonStyle} onPress={this.validate.bind(this)} />
-        {/* {this.state.edit && (
-          <Button title="Delete" style={deleteButtonStyle} />
-        )} */}
+        {this.state.edit && (
+          <Button title="Delete" style={deleteButtonStyle} onPress={() => this.deleteGoal(this.state.goalId)} />
+        )}
         <DatePickerDialog
           ref="DatePickerDialog"
           onDatePicked={this.onDatePickedFunction.bind(this)}

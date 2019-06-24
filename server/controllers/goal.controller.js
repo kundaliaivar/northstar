@@ -4,7 +4,7 @@ const GoalModel = require('../models/goalModel');
 //     res.send("Hello, its working! i am from goal controller :)");
 //   }
 
-const getGoal=function(req,res){
+const getGoal = function (req, res) {
     // var goal = new GoalModel({
     //      name: 'goal3', 
     //      description: '...', 
@@ -20,34 +20,68 @@ const getGoal=function(req,res){
     //      percentage:30
     //     });
     //     goal.save().then(result=>res.send(result)).catch(err=>res.status(400).send(err.message));
-    GoalModel.find({"createdFor.userId":req.params.userId})
-    .then(response=>{
+    GoalModel.find({ 'createdFor.userId': req.params.userId })
+    .then(response => {
         res.json(response);
     })
-    .catch(err=>{
+    .catch(err => {
         console.log(err);
         res.status(400).send(err.message);
-    })
-}
+    });
+};
 
-const goalLandingDetail = function(req, res){
-    GoalModel.findOne({_id:req.params.goalId})
-    .then(Response=>{
+const goalLandingDetail = (req, res) => {
+    GoalModel.findOne({ _id: req.params.goalId })
+    .then(Response => {
         res.json(Response);
     })
-    .catch(err=>res.status(400).send(err.message))
-}
+    .catch(err => res.status(400).send(err.message));
+};
 
-const createGoal = function (req, res) {
+const createGoal = (req, res) => {
     const reqBody = req.body;
     const newGoal = new GoalModel(reqBody);
     
     newGoal.save()
-    .then(Response => {
+    .then(() => {
         res.send('Success');
     })
     .catch(err => res.status(400).send(err.message));
 };
 
+const editGoal = (req, res) => {
+    const reqBody = req.body;
+    console.log(req.params.goalId);
+    GoalModel.updateOne({
+        _id: req.params.goalId
+    }, { 
+        name: reqBody.name,
+        description: reqBody.description,
+        isHighImpact: reqBody.isHighImpact,
+        dueOn: reqBody.dueOn,
+        percentage: reqBody.percentage,
+        isCompleted: reqBody.isCompleted
+    })
+    .then(response => {
+        console.log(response);
+        res.send(response);
+    })
+    .catch(error => {
+        console.log(error);
+    });
+};
 
-module.exports = { getGoal, goalLandingDetail, createGoal };
+const deleteGoal = (req, res) => {
+    const reqBody = req.body;
+    GoalModel.findByIdAndDelete(req.params.goalId)
+    .then(response => {
+        res.send(response);
+    })
+    .catch(error => {
+        console.log(error);
+    });
+    
+};
+
+
+module.exports = { getGoal, goalLandingDetail, createGoal, editGoal , deleteGoal };
